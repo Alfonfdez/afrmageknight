@@ -3,6 +3,7 @@ package com.afr.afrmageknight.model;
 public class CartaTactica extends Carta {
 
     //Atributos
+    private int numeroOrden;
     private String descripcion;
 
     //Constructores
@@ -10,12 +11,21 @@ public class CartaTactica extends Carta {
         // TODO Auto-generated constructor stub
     }
 
-    public CartaTactica(String descripcion) {
+    public CartaTactica(int numeroOrden, String descripcion) {
         super();
+        this.numeroOrden = numeroOrden;
         this.descripcion = descripcion;
     }
 
     //Getters & Setters
+    public int getNumeroOrden() {
+        return numeroOrden;
+    }
+
+    public void setNumeroOrden(int numeroOrden) {
+        this.numeroOrden = numeroOrden;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -25,34 +35,5 @@ public class CartaTactica extends Carta {
     }
 
     //Métodos
-    @Override
-    public String toString() {
-        return "CartaTactica [descripcion=" + descripcion + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CartaTactica other = (CartaTactica) obj;
-        if (descripcion == null) {
-            if (other.descripcion != null)
-                return false;
-        } else if (!descripcion.equals(other.descripcion))
-            return false;
-        return true;
-    }
 
 }

@@ -6,17 +6,19 @@ public class CartaAvanzada extends Carta {
     private String color;
     private String descripcionBasica;
     private String descripcionAvanzada;
+    private Heroe heroe;
 
     //Constructores
     public CartaAvanzada() {
         // TODO Auto-generated constructor stub
     }
 
-    public CartaAvanzada(String color, String descripcionBasica, String descripcionAvanzada) {
+    public CartaAvanzada(String color, String descripcionBasica, String descripcionAvanzada, Heroe heroe) {
         super();
         this.color = color;
         this.descripcionBasica = descripcionBasica;
         this.descripcionAvanzada = descripcionAvanzada;
+        this.heroe = heroe;
     }
 
     //Getters & Setters
@@ -44,48 +46,16 @@ public class CartaAvanzada extends Carta {
         this.descripcionAvanzada = descripcionAvanzada;
     }
 
+    public Heroe getHeroe() {
+        return heroe;
+    }
+
+    public void setHeroe(Heroe heroe) {
+        this.heroe = heroe;
+    }
+
+
     //Métodos
-    @Override
-    public String toString() {
-        return "CartaAvanzada [color=" + color + ", descripcionBasica=" + descripcionBasica + ", descripcionAvanzada="
-                + descripcionAvanzada + "]";
-    }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((color == null) ? 0 : color.hashCode());
-        result = prime * result + ((descripcionAvanzada == null) ? 0 : descripcionAvanzada.hashCode());
-        result = prime * result + ((descripcionBasica == null) ? 0 : descripcionBasica.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CartaAvanzada other = (CartaAvanzada) obj;
-        if (color == null) {
-            if (other.color != null)
-                return false;
-        } else if (!color.equals(other.color))
-            return false;
-        if (descripcionAvanzada == null) {
-            if (other.descripcionAvanzada != null)
-                return false;
-        } else if (!descripcionAvanzada.equals(other.descripcionAvanzada))
-            return false;
-        if (descripcionBasica == null) {
-            if (other.descripcionBasica != null)
-                return false;
-        } else if (!descripcionBasica.equals(other.descripcionBasica))
-            return false;
-        return true;
-    }
 
 }
