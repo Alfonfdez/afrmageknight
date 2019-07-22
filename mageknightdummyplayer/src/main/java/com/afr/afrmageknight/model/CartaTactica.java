@@ -12,8 +12,8 @@ public class CartaTactica extends Carta {
         // TODO Auto-generated constructor stub
     }
 
-    public CartaTactica(String tipo, int numeroOrden, String descripcion) {
-        super();
+    public CartaTactica(int numero, String nombre, String tipo, int numeroOrden, String descripcion) {
+        super(numero, nombre);
         this.tipo = tipo;
         this.numeroOrden = numeroOrden;
         this.descripcion = descripcion;

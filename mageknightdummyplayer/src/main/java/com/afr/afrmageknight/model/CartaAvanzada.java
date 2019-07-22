@@ -3,7 +3,7 @@ package com.afr.afrmageknight.model;
 public class CartaAvanzada extends Carta {
 
     //Atributos
-    private String color;
+    private Cristal color;
     private String descripcionBasica;
     private String descripcionAvanzada;
     private Heroe heroe;
@@ -13,8 +13,8 @@ public class CartaAvanzada extends Carta {
         // TODO Auto-generated constructor stub
     }
 
-    public CartaAvanzada(String color, String descripcionBasica, String descripcionAvanzada, Heroe heroe) {
-        super();
+    public CartaAvanzada(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada, Heroe heroe) {
+        super(numero, nombre);
         this.color = color;
         this.descripcionBasica = descripcionBasica;
         this.descripcionAvanzada = descripcionAvanzada;
@@ -22,11 +22,11 @@ public class CartaAvanzada extends Carta {
     }
 
     //Getters & Setters
-    public String getColor() {
+    public Cristal getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Cristal color) {
         this.color = color;
     }
 
