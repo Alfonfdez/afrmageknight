@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAvanzada;
+import com.afr.afrmageknight.model.CartaAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
@@ -18,16 +19,58 @@ import com.afr.afrmageknight.model.TipoTactica;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    // Nombre de la base de datos
     public static final String DATABASE_NAME = "mageknight.db";
 
+    // Nombre de las tablas
     public static final String CARTAS_TABLE = "CARTAS";
+    public static final String CARTAS_AVANZADAS_TABLE = "CARTAS_AVANZADAS";
+    public static final String CARTAS_AVANZADAS_ESPECIALES_TABLE = "CARTAS_AVANZADAS_ESPECIALES";
+    public static final String CARTAS_HECHIZOS_TABLE = "CARTAS_HECHIZOS";
+    public static final String CARTAS_TACTICAS_TABLE = "CARTAS_TACTICAS";
+    public static final String FICHAS_HABILIDAD_TABLE = "FICHAS_HABILIDAD";
 
+    // Nombre de las columnas
+    // CARTAS_TABLE
     public static final String COL_1 = "NUMERO";
     public static final String COL_2 = "NOMBRE";
+
+    // CARTAS_AVANZADAS_TABLE
+    public static final String COL_01 = "NUMERO";
+    public static final String COL_02 = "COLOR";
+    public static final String COL_03 = "DESCRIPCION_BASICA";
+    public static final String COL_04 = "DESCRIPCION_AVANZADA";
+    public static final String COL_05 = "HEROE";
+
+    // CARTAS_AVANZADAS_ESPECIALES_TABLE
+    public static final String COL_001 = "NUMERO";
+    public static final String COL_002 = "COLOR_PRIMARIO";
+    public static final String COL_003 = "COLOR_SECUNDARIO";
+    public static final String COL_004 = "DESCRIPCION_BASICA";
+    public static final String COL_005 = "DESCRIPCION_AVANZADA";
+    public static final String COL_006 = "HEROE";
+
+    // CARTAS_HECHIZOS_TABLE
+    public static final String COL_0001 = "NUMERO";
+    public static final String COL_0002 = "NOMBRE_SECUNDARIO";
+    public static final String COL_0003 = "COLOR";
+    public static final String COL_0004 = "DESCRIPCION_BASICA";
+    public static final String COL_0005 = "DESCRIPCION_AVANZADA";
+
+    // CARTAS_TACTICAS_TABLE
+    public static final String COL_00001 = "NUMERO";
+    public static final String COL_00002 = "TIPO_TACTICA";
+    public static final String COL_00003 = "NUMERO_ORDEN";
+    public static final String COL_00004 = "DESCRIPCION";
+
+    // FICHAS_HABILIDAD_TABLE
+    public static final String COL_000001 = "ID";
+    public static final String COL_000002 = "NOMBRE";
+    public static final String COL_000003 = "DESCRIPCION";
+    public static final String COL_000004 = "HEROE";
 
     //'Harcodeamos' 3 argumentos: name, factory, version
     public DatabaseHelper(Context context) {
@@ -40,6 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Log.d("DATABASE", "SEGUNDO - ONCREATE");
 
+        // CARTAS_TABLE
         StringBuilder strSQL = new StringBuilder();
 
         strSQL.append("CREATE TABLE ").append(CARTAS_TABLE).append(" (")
@@ -52,16 +96,116 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(strSQL.toString());
 
+
+        // CARTAS_AVANZADAS_TABLE
+        StringBuilder strSQL2 = new StringBuilder();
+
+        strSQL2.append("CREATE TABLE ").append(CARTAS_AVANZADAS_TABLE).append(" (")
+                .append(COL_01).append(" INTEGER PRIMARY KEY NOT NULL, ")
+                .append(COL_02).append(" TEXT NOT NULL,")
+                .append(COL_03).append(" TEXT NOT NULL,")
+                .append(COL_04).append(" TEXT NOT NULL,")
+                .append(COL_05).append(" TEXT")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE");
+        Log.d("DATABASE", strSQL2.toString());
+
+        db.execSQL(strSQL2.toString());
+
+
+        // CARTAS_AVANZADAS_ESPECIALES_TABLE
+        StringBuilder strSQL3 = new StringBuilder();
+
+        strSQL3.append("CREATE TABLE ").append(CARTAS_AVANZADAS_ESPECIALES_TABLE).append(" (")
+                .append(COL_001).append(" INTEGER PRIMARY KEY NOT NULL, ")
+                .append(COL_002).append(" TEXT NOT NULL,")
+                .append(COL_003).append(" TEXT NOT NULL,")
+                .append(COL_004).append(" TEXT NOT NULL,")
+                .append(COL_005).append(" TEXT NOT NULL,")
+                .append(COL_006).append(" TEXT")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE");
+        Log.d("DATABASE", strSQL3.toString());
+
+        db.execSQL(strSQL3.toString());
+
+
+        // CARTAS_HECHIZOS_TABLE
+        StringBuilder strSQL4 = new StringBuilder();
+
+        strSQL4.append("CREATE TABLE ").append(CARTAS_HECHIZOS_TABLE).append(" (")
+                .append(COL_0001).append(" INTEGER PRIMARY KEY NOT NULL, ")
+                .append(COL_0002).append(" TEXT NOT NULL,")
+                .append(COL_0003).append(" TEXT NOT NULL,")
+                .append(COL_0004).append(" TEXT NOT NULL,")
+                .append(COL_0005).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE");
+        Log.d("DATABASE", strSQL4.toString());
+
+        db.execSQL(strSQL4.toString());
+
+
+        // CARTAS_TACTICAS_TABLE
+        StringBuilder strSQL5 = new StringBuilder();
+
+        strSQL5.append("CREATE TABLE ").append(CARTAS_TACTICAS_TABLE).append(" (")
+                .append(COL_00001).append(" INTEGER PRIMARY KEY NOT NULL, ")
+                .append(COL_00002).append(" TEXT NOT NULL,")
+                .append(COL_00003).append(" INTEGER NOT NULL,")
+                .append(COL_00004).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE");
+        Log.d("DATABASE", strSQL5.toString());
+
+        db.execSQL(strSQL5.toString());
+
+
+        // FICHAS_HABILIDAD_TABLE
+        StringBuilder strSQL6 = new StringBuilder();
+
+        strSQL6.append("CREATE TABLE ").append(FICHAS_HABILIDAD_TABLE).append(" (")
+                .append(COL_000001).append(" INTEGER PRIMARY KEY NOT NULL, ")
+                .append(COL_000002).append(" TEXT NOT NULL,")
+                .append(COL_000003).append(" TEXT NOT NULL,")
+                .append(COL_000004).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE");
+        Log.d("DATABASE", strSQL6.toString());
+
+        db.execSQL(strSQL6.toString());
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + CARTAS_TABLE);
         onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_AVANZADAS_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_AVANZADAS_ESPECIALES_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_HECHIZOS_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_TACTICAS_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + FICHAS_HABILIDAD_TABLE);
+        onCreate(db);
+
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertData(int numero, String nombre){
+    public boolean insertDataCarta(int numero, String nombre){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -74,6 +218,125 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, nombre);
 
         long resultado = db.insert(CARTAS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal
+        //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+
+        return resultado == -1 ? false : true;
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertDataCartaAvanzada(int numero, Cristal color, String descripcionBasica, String descripcionAvanzada, Heroe heroe){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_01, numero);
+        contentValues.put(COL_02, color.toString());
+        contentValues.put(COL_03, descripcionBasica);
+        contentValues.put(COL_04, descripcionAvanzada);
+        contentValues.put(COL_05, "");
+
+        long resultado = db.insert(CARTAS_AVANZADAS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal
+        //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+
+        return resultado == -1 ? false : true;
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertDataCartaAvanzadaEspecial(int numero, Cristal colorPrimario, Cristal colorSecundario, String descripcionBasica, String descripcionAvanzada, Heroe heroe){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_001, numero);
+        contentValues.put(COL_002, colorPrimario.toString());
+        contentValues.put(COL_003, colorSecundario.toString());
+        contentValues.put(COL_004, descripcionBasica);
+        contentValues.put(COL_005, descripcionAvanzada);
+        contentValues.put(COL_006, "");
+
+        long resultado = db.insert(CARTAS_AVANZADAS_ESPECIALES_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal
+        //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+
+        return resultado == -1 ? false : true;
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertDataCartaHechizo(int numero, String nombreSecundario, Cristal color, String descripcionBasica, String descripcionAvanzada){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_0001, numero);
+        contentValues.put(COL_0002, nombreSecundario);
+        contentValues.put(COL_0003, color.toString());
+        contentValues.put(COL_0004, descripcionBasica);
+        contentValues.put(COL_0005, descripcionAvanzada);
+
+        long resultado = db.insert(CARTAS_HECHIZOS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal
+        //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+
+        return resultado == -1 ? false : true;
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertDataCartaTactica(int numero, TipoTactica tipoTactica, int numeroOrden, String descripcion){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_00001, numero);
+        contentValues.put(COL_00002, tipoTactica.toString());
+        contentValues.put(COL_00003, numeroOrden);
+        contentValues.put(COL_00004, descripcion);
+
+        long resultado = db.insert(CARTAS_TACTICAS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal
+        //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+
+        return resultado == -1 ? false : true;
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertDataFichaHabilidad(long id, String nombre, String descripcion, Heroe heroe){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_000001, id);
+        contentValues.put(COL_000002, nombre);
+        contentValues.put(COL_000003, descripcion);
+        contentValues.put(COL_000004, heroe.getNombre());
+
+        long resultado = db.insert(FICHAS_HABILIDAD_TABLE, null, contentValues);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal
         //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
@@ -102,16 +365,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //TODO insertar carta en las tablas....
 
         // 1.- Se guarda la información genérica, independientemente del tipo de carta (tabla CARTAS)
-
+        insertDataCarta(carta.getNumero(), carta.getNombre());
 
         // 2.- En función del tipo de carta, insertamos en la tabla que toque....
-
         if (carta.getClass() == CartaAvanzada.class){
-
-        } else { // CartaTactica
-
+            CartaAvanzada cartaAvanzada = (CartaAvanzada) carta;
+            insertDataCartaAvanzada(carta.getNumero(), cartaAvanzada.getColor(), cartaAvanzada.getDescripcionBasica(), cartaAvanzada.getDescripcionAvanzada(), cartaAvanzada.getHeroe());
+        } else if(carta.getClass() == CartaAvanzadaEspecial.class) {
+            CartaAvanzadaEspecial cartaAvanzadaEspecial = (CartaAvanzadaEspecial) carta;
+            insertDataCartaAvanzadaEspecial(carta.getNumero(), cartaAvanzadaEspecial.getColorPrimario(), cartaAvanzadaEspecial.getColorSecundario(), cartaAvanzadaEspecial.getDescripcionBasica(), cartaAvanzadaEspecial.getDescripcionAvanzada(), cartaAvanzadaEspecial.getHeroe());
+        } else if(carta.getClass() == Hechizo.class) {
+            Hechizo hechizo = (Hechizo) carta;
+            insertDataCartaHechizo(carta.getNumero(), hechizo.getNombreSecundario(), hechizo.getColor(), hechizo.getDescripcionBasica(), hechizo.getDescripcionAvanzada());
+        } else{ // CartaTactica
+            CartaTactica cartaTactica = (CartaTactica) carta;
+            insertDataCartaTactica(carta.getNumero(), cartaTactica.getTipoTactica(), cartaTactica.getNumeroOrden(), cartaTactica.getDescripcion());
         }
-
 
         return null;
     }
@@ -119,22 +388,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Insertar datos de la Ficha de Habilidad en su correspondiente tabla
     public FichaHabilidad createFicha(FichaHabilidad fichaHabilidad){
 
-
+       insertDataFichaHabilidad(fichaHabilidad.getId(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.getHeroe());
 
        return null;
     }
 
 
-    private void insertCards(){
+    public void insertCards(){
+
+        ArrayList<Cristal> cristalesArythea = new ArrayList<>();
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.BLANCO);
+
+        ArrayList<Cristal> cristalesTovak = new ArrayList<>();
+        cristalesArythea.add(Cristal.VERDE);
+        cristalesArythea.add(Cristal.VERDE);
+        cristalesArythea.add(Cristal.AZUL);
+
+        ArrayList<Cristal> cristalesNorowas = new ArrayList<>();
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.ROJO);
+
+        ArrayList<Cristal> cristalesGoldyx = new ArrayList<>();
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.VERDE);
+
+        ArrayList<Cristal> cristalesWolfhawk = new ArrayList<>();
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.AZUL);
+
+        ArrayList<Cristal> cristalesKrang = new ArrayList<>();
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.VERDE);
+
+        ArrayList<Cristal> cristalesBraevalar = new ArrayList<>();
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.VERDE);
+
+        Heroe arythea = new Heroe("Arythea",  cristalesArythea);
+        Heroe tovak = new Heroe("Tovak",  cristalesTovak);
+        Heroe norowas = new Heroe("Norowas",  cristalesNorowas);
+        Heroe goldyx = new Heroe("Goldyx",  cristalesGoldyx);
+        Heroe wolfhawk = new Heroe("Wolfhawk",  cristalesWolfhawk);
+        Heroe krang = new Heroe("Krang",  cristalesKrang);
+        Heroe braevalar = new Heroe("Braevalar",  cristalesBraevalar);
+
 
         // Los 7 Heroes
-        Heroe arythea = new Heroe("Arythea",  (ArrayList<Cristal>) Arrays.asList(Cristal.ROJO, Cristal.ROJO,Cristal.BLANCO));
+        /*Heroe arythea = new Heroe("Arythea",  (ArrayList<Cristal>) Arrays.asList(Cristal.ROJO, Cristal.ROJO,Cristal.BLANCO));
         Heroe tovak = new Heroe("Tovak",  (ArrayList<Cristal>) Arrays.asList(Cristal.VERDE, Cristal.VERDE,Cristal.AZUL));
         Heroe norowas = new Heroe("Norowas",  (ArrayList<Cristal>) Arrays.asList(Cristal.AZUL, Cristal.AZUL,Cristal.ROJO));
         Heroe goldyx = new Heroe("Goldyx",  (ArrayList<Cristal>) Arrays.asList(Cristal.BLANCO, Cristal.BLANCO,Cristal.VERDE));
         Heroe wolfhawk = new Heroe("Wolfhawk",  (ArrayList<Cristal>) Arrays.asList(Cristal.BLANCO, Cristal.BLANCO,Cristal.AZUL));
         Heroe krang = new Heroe("Krang",  (ArrayList<Cristal>) Arrays.asList(Cristal.ROJO, Cristal.ROJO,Cristal.VERDE));
-        Heroe braevalar = new Heroe("Braevalar",  (ArrayList<Cristal>) Arrays.asList(Cristal.AZUL, Cristal.AZUL,Cristal.VERDE));
+        Heroe braevalar = new Heroe("Braevalar",  (ArrayList<Cristal>) Arrays.asList(Cristal.AZUL, Cristal.AZUL,Cristal.VERDE));*/
+
 
         // Las 176 Cartas Avanzadas
         // 16 cartas del Mazo de Gesta de Arythea (Acción Básica)
@@ -311,11 +625,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         create(new Hechizo(107, "Llamada a las Armas","Llamada a la Gloria", Cristal.BLANCO, "Puedes usar una aptitud de una Unidad en la oferta de Unidades en este turno, como si fuese una de las reclutadas por ti. No puedes asignar daño a esta Unidad.", "Recluta cualquier Unidad de la oferta de Unidades sin coste. (Si no tienes espacio para añadirla, debes disolver una Unidad primero.)"));
         create(new Hechizo(108, "Meditación", "Trance",Cristal.VERDE, "Toma 2 cartas al azar de tu pila de descarte y colócalas en la parte inferior o superior de tu mazo de Gesta. Tu límite de mano aumenta en 2 la próxima vez que robes cartas.", "Igual que el efecto básico, excepto que eliges las cartas en vez de tomarlas al azar."));
 
-        // 4 cartas de Acción Avanzada (Ultimate Edition)
-        /*create(new CartaAvanzada(266, "Poder de los Cristales", Cristal.VERDE,  Cristal.AZUL, "Gana 1 cristal para tu Inventario de un color básico que aún no tengas.", "Movimiento 4, o Curación 2, o roba dos cartas. Por cada conjunto de 4 cristales de diferentes colores en tu Inventario: Movimiento 2, o Curación 1, o roba una carta.", null));
-        create(new CartaAvanzada(267, "Descarga de Adrenalina", Cristal.ROJO, Cristal.VERDE, "Por cada una de las primeras 3 Heridas que llevas a la mano en este turno, roba 1 carta.", "Tras tomar la primera Herida a la mano en este turno, retírala y roba 1 carta. Por cada 1 de las 3 Heridas siguientes que tomes, roba 1 carta.", null));
-        create(new CartaAvanzada(268, "Rayo Explosivo", Cristal.BLANCO, Cristal.ROJO, "Recibe 1 Herida. Gana 1 cristal blanco y rojo para tu Inventario.", "Ataque a Distancia 3. Por cada enemigo derrotado con este ataque, otro enemigo obtiene Armadura -1 (hasta un mínimo de 1).", null));
-        create(new CartaAvanzada(269, "Mirada Penetrante", Cristal.AZUL, Cristal.BLANCO, "Influencia 3, o el ataque del enemigo objetivo pierde todas sus aptitudes (pero no su color).", "Influencia 5, o el enemigo objetivo no ataca en este turno.", null));*/
+        // 4 cartas de Acción Avanzada Especiales(Ultimate Edition) (2 colores)
+        create(new CartaAvanzadaEspecial(266, "Poder de los Cristales", Cristal.VERDE,  Cristal.AZUL, "Gana 1 cristal para tu Inventario de un color básico que aún no tengas.", "Movimiento 4, o Curación 2, o roba dos cartas. Por cada conjunto de 4 cristales de diferentes colores en tu Inventario: Movimiento 2, o Curación 1, o roba una carta.", null));
+        create(new CartaAvanzadaEspecial(267, "Descarga de Adrenalina", Cristal.ROJO, Cristal.VERDE, "Por cada una de las primeras 3 Heridas que llevas a la mano en este turno, roba 1 carta.", "Tras tomar la primera Herida a la mano en este turno, retírala y roba 1 carta. Por cada 1 de las 3 Heridas siguientes que tomes, roba 1 carta.", null));
+        create(new CartaAvanzadaEspecial(268, "Rayo Explosivo", Cristal.BLANCO, Cristal.ROJO, "Recibe 1 Herida. Gana 1 cristal blanco y rojo para tu Inventario.", "Ataque a Distancia 3. Por cada enemigo derrotado con este ataque, otro enemigo obtiene Armadura -1 (hasta un mínimo de 1).", null));
+        create(new CartaAvanzadaEspecial(269, "Mirada Penetrante", Cristal.AZUL, Cristal.BLANCO, "Influencia 3, o el ataque del enemigo objetivo pierde todas sus aptitudes (pero no su color).", "Influencia 5, o el enemigo objetivo no ataca en este turno.", null));
 
         // 12 cartas de Acción Avanzada (Legión Perdida)
         create(new CartaAvanzada(287, "Contraataque", Cristal.ROJO, "Ataque 2. Gana Ataque 2 adicional por cada enemigo bloqueado en este turno.", "Ataque 4. Gana Ataque 3 adicional por cada enemigo bloqueado en este turno.", null));
@@ -353,16 +667,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private void insertSkillTokens(){
+    public void insertSkillTokens(){
+
+        ArrayList<Cristal> cristalesArythea = new ArrayList<>();
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.BLANCO);
+
+        ArrayList<Cristal> cristalesTovak = new ArrayList<>();
+        cristalesArythea.add(Cristal.VERDE);
+        cristalesArythea.add(Cristal.VERDE);
+        cristalesArythea.add(Cristal.AZUL);
+
+        ArrayList<Cristal> cristalesNorowas = new ArrayList<>();
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.ROJO);
+
+        ArrayList<Cristal> cristalesGoldyx = new ArrayList<>();
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.VERDE);
+
+        ArrayList<Cristal> cristalesWolfhawk = new ArrayList<>();
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.BLANCO);
+        cristalesArythea.add(Cristal.AZUL);
+
+        ArrayList<Cristal> cristalesKrang = new ArrayList<>();
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.ROJO);
+        cristalesArythea.add(Cristal.VERDE);
+
+        ArrayList<Cristal> cristalesBraevalar = new ArrayList<>();
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.AZUL);
+        cristalesArythea.add(Cristal.VERDE);
+
+        Heroe arythea = new Heroe("Arythea",  cristalesArythea);
+        Heroe tovak = new Heroe("Tovak",  cristalesTovak);
+        Heroe norowas = new Heroe("Norowas",  cristalesNorowas);
+        Heroe goldyx = new Heroe("Goldyx",  cristalesGoldyx);
+        Heroe wolfhawk = new Heroe("Wolfhawk",  cristalesWolfhawk);
+        Heroe krang = new Heroe("Krang",  cristalesKrang);
+        Heroe braevalar = new Heroe("Braevalar",  cristalesBraevalar);
 
         // Los 7 Heroes
-        Heroe arythea = new Heroe("Arythea",  (ArrayList<Cristal>) Arrays.asList(Cristal.ROJO, Cristal.ROJO,Cristal.BLANCO));
+        /*Heroe arythea = new Heroe("Arythea",  (ArrayList<Cristal>) Arrays.asList(Cristal.ROJO, Cristal.ROJO,Cristal.BLANCO));
         Heroe tovak = new Heroe("Tovak",  (ArrayList<Cristal>) Arrays.asList(Cristal.VERDE, Cristal.VERDE,Cristal.AZUL));
         Heroe norowas = new Heroe("Norowas",  (ArrayList<Cristal>) Arrays.asList(Cristal.AZUL, Cristal.AZUL,Cristal.ROJO));
         Heroe goldyx = new Heroe("Goldyx",  (ArrayList<Cristal>) Arrays.asList(Cristal.BLANCO, Cristal.BLANCO,Cristal.VERDE));
         Heroe wolfhawk = new Heroe("Wolfhawk",  (ArrayList<Cristal>) Arrays.asList(Cristal.BLANCO, Cristal.BLANCO,Cristal.AZUL));
         Heroe krang = new Heroe("Krang",  (ArrayList<Cristal>) Arrays.asList(Cristal.ROJO, Cristal.ROJO,Cristal.VERDE));
-        Heroe braevalar = new Heroe("Braevalar",  (ArrayList<Cristal>) Arrays.asList(Cristal.AZUL, Cristal.AZUL,Cristal.VERDE));
+        Heroe braevalar = new Heroe("Braevalar",  (ArrayList<Cristal>) Arrays.asList(Cristal.AZUL, Cristal.AZUL,Cristal.VERDE));*/
 
         // Las 70 Fichas de Habilidad
         // 10 Fichas de Habilidad de Arythea
@@ -448,7 +805,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createFicha(new FichaHabilidad(68, "CAMINOS SECRETOS", "Una vez por turno: Movimiento 1. Puedes entrar en montañas por un coste de Movimiento de 5 y se consideran un espacio seguro para ti. Si pagas 1 maná azul, puedes entrar en lagos por un coste de Movimiento de 2 en este turno y los lagos se consideran un espacio seguro para ti al final de este turno.", braevalar));
         createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.", braevalar));
         createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.", braevalar));
-
 
     }
 

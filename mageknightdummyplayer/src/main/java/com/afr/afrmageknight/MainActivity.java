@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonCrear;
     private Button buttonListar;
-    private Button buttonEliminar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +26,19 @@ public class MainActivity extends AppCompatActivity {
 
         buttonCrear = (Button) findViewById(R.id.idButtonCrear);
         buttonListar = (Button) findViewById(R.id.idButtonListar);
-        buttonEliminar = (Button) findViewById(R.id.idButtonEliminar);
 
         myDB = new DatabaseHelper(this);
 
+        // Botón para insertar toda la información en la base de datos
         buttonCrear.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int numero = 1;
-                String nombre = "Versatilidad en la Batalla";
 
-                String cartaCompleta = numero + " " + nombre;
-                Log.d("DATABASE","INSERT DATA ON DATABASE");
-                Toast.makeText(MainActivity.this, cartaCompleta, Toast.LENGTH_SHORT).show();
+                Log.d("DATABASE","INSERT ALL DATA ON DATABASE");
 
-                myDB.insertData(numero, nombre);
+                myDB.insertCards();
+                myDB.insertSkillTokens();
             }
         });
 
@@ -74,29 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        buttonEliminar.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Log.d("DATABASE","DELETE TABLE ON DATABASE");
-
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

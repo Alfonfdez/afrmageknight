@@ -4,5 +4,7 @@ public enum Cristal {
     ROJO,
     AZUL,
     BLANCO,
-    VERDE
+    VERDE;
 }
+
+
