@@ -10,7 +10,6 @@ public class FichaHabilidad {
 
     //Constructores
     public FichaHabilidad() {
-        // TODO Auto-generated constructor stub
     }
 
     public FichaHabilidad(long id, String nombre, String descripcion, Heroe heroe) {

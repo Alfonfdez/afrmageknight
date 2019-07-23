@@ -1,34 +1,26 @@
 package com.afr.afrmageknight.model;
 
-public class Hechizo extends Carta {
+public class CartaAccionBasica extends Carta {
 
     //Atributos
-    private String nombreSecundario;
     private Cristal color;
     private String descripcionBasica;
     private String descripcionAvanzada;
+    private Heroe heroe;
 
     //Constructores
-    public Hechizo() {
+    public CartaAccionBasica() {
     }
 
-    public Hechizo(int numero, String nombre, String nombreSecundario, Cristal color, String descripcionBasica, String descripcionAvanzada) {
+    public CartaAccionBasica(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada, Heroe heroe) {
         super(numero, nombre);
-        this.nombreSecundario = nombreSecundario;
         this.color = color;
         this.descripcionBasica = descripcionBasica;
         this.descripcionAvanzada = descripcionAvanzada;
+        this.heroe = heroe;
     }
 
-    //Getters y setters
-    public String getNombreSecundario() {
-        return nombreSecundario;
-    }
-
-    public void setNombreSecundario(String nombreSecundario) {
-        this.nombreSecundario = nombreSecundario;
-    }
-
+    //Getters & Setters
     public Cristal getColor() {
         return color;
     }
@@ -52,5 +44,15 @@ public class Hechizo extends Carta {
     public void setDescripcionAvanzada(String descripcionAvanzada) {
         this.descripcionAvanzada = descripcionAvanzada;
     }
+
+    public Heroe getHeroe() {
+        return heroe;
+    }
+
+    public void setHeroe(Heroe heroe) {
+        this.heroe = heroe;
+    }
+
+    //Métodos
 
 }

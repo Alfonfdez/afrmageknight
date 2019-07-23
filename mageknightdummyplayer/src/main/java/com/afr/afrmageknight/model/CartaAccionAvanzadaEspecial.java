@@ -1,25 +1,23 @@
 package com.afr.afrmageknight.model;
 
-public class CartaAvanzadaEspecial extends Carta {
+public class CartaAccionAvanzadaEspecial extends Carta {
 
     //Atributos
     private Cristal colorPrimario;
     private Cristal colorSecundario;
     private String descripcionBasica;
     private String descripcionAvanzada;
-    private Heroe heroe;
 
     //Constructores
-    public CartaAvanzadaEspecial() {
+    public CartaAccionAvanzadaEspecial() {
     }
 
-    public CartaAvanzadaEspecial(int numero, String nombre, Cristal colorPrimario, Cristal colorSecundario, String descripcionBasica, String descripcionAvanzada, Heroe heroe) {
+    public CartaAccionAvanzadaEspecial(int numero, String nombre, Cristal colorPrimario, Cristal colorSecundario, String descripcionBasica, String descripcionAvanzada) {
         super(numero, nombre);
         this.colorPrimario = colorPrimario;
         this.colorSecundario = colorSecundario;
         this.descripcionBasica = descripcionBasica;
         this.descripcionAvanzada = descripcionAvanzada;
-        this.heroe = heroe;
     }
 
     //Getters y setters
@@ -55,13 +53,6 @@ public class CartaAvanzadaEspecial extends Carta {
         this.descripcionAvanzada = descripcionAvanzada;
     }
 
-    public Heroe getHeroe() {
-        return heroe;
-    }
-
-    public void setHeroe(Heroe heroe) {
-        this.heroe = heroe;
-    }
-
     //Métodos
+
 }

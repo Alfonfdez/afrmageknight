@@ -8,7 +8,6 @@ public abstract class Carta {
 
     //Constructores
     public Carta() {
-
     }
 
     public Carta(int numero, String nombre) {

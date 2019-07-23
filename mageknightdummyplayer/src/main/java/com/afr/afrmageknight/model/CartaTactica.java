@@ -9,7 +9,7 @@ public class CartaTactica extends Carta {
 
     //Constructores
     public CartaTactica() {
-        // TODO Auto-generated constructor stub
+
     }
 
     public CartaTactica(int numero, String nombre, TipoTactica tipoTactica, int numeroOrden, String descripcion) {

@@ -10,7 +10,6 @@ public class Heroe {
 
     //Constructores
     public Heroe() {
-        // TODO Auto-generated constructor stub
     }
 
     public Heroe(String nombre, ArrayList<Cristal> cristales) {

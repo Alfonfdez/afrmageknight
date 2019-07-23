@@ -3,7 +3,7 @@ package com.afr.afrmageknight.servicios;
 import android.content.Context;
 
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
-import com.afr.afrmageknight.model.CartaAvanzada;
+import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 
@@ -25,7 +25,7 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public List<CartaAvanzada> getShuffleCards(Heroe heroe) {
+    public List<CartaAccionBasica> getShuffleCards(Heroe heroe) {
         return null;
     }
 
