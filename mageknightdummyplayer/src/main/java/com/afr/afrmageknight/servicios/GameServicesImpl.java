@@ -11,13 +11,14 @@ import java.util.List;
 
 public class GameServicesImpl implements GameServices {
 
+    //I - Declarar las variables
     private DatabaseHelper databaseHelper = null;
 
     public GameServicesImpl (Context context){
         this.databaseHelper = new DatabaseHelper(context);
     }
 
-
+    // Implementar los métodos de la interfaz 'GameServices'
     @Override
     public Heroe getRandomHeroe(List<Heroe> selectedByPlayer) {
         return null;

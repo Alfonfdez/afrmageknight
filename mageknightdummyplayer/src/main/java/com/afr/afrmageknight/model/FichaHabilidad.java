@@ -4,6 +4,7 @@ public class FichaHabilidad {
 
     //Atributos
     private long id;
+    private String nombre;
     private String descripcion;
     private Heroe heroe;
 
@@ -12,9 +13,9 @@ public class FichaHabilidad {
         // TODO Auto-generated constructor stub
     }
 
-    public FichaHabilidad(long id, String descripcion, Heroe heroe) {
-        super();
+    public FichaHabilidad(long id, String nombre, String descripcion, Heroe heroe) {
         this.id = id;
+        this.nombre = nombre;
         this.descripcion = descripcion;
         this.heroe = heroe;
     }
@@ -26,6 +27,14 @@ public class FichaHabilidad {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {

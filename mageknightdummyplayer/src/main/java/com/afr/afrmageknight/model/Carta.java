@@ -12,7 +12,6 @@ public abstract class Carta {
     }
 
     public Carta(int numero, String nombre) {
-        super();
         this.numero = numero;
         this.nombre = nombre;
     }

@@ -3,7 +3,7 @@ package com.afr.afrmageknight.model;
 public class CartaTactica extends Carta {
 
     //Atributos
-    private String tipo;
+    private TipoTactica tipoTactica;
     private int numeroOrden;
     private String descripcion;
 
@@ -12,20 +12,20 @@ public class CartaTactica extends Carta {
         // TODO Auto-generated constructor stub
     }
 
-    public CartaTactica(int numero, String nombre, String tipo, int numeroOrden, String descripcion) {
+    public CartaTactica(int numero, String nombre, TipoTactica tipoTactica, int numeroOrden, String descripcion) {
         super(numero, nombre);
-        this.tipo = tipo;
+        this.tipoTactica = tipoTactica;
         this.numeroOrden = numeroOrden;
         this.descripcion = descripcion;
     }
 
     //Getters & Setters
-    public String getTipo() {
-        return tipo;
+    public TipoTactica getTipoTactica() {
+        return tipoTactica;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoTactica(TipoTactica tipoTactica) {
+        this.tipoTactica = tipoTactica;
     }
 
     public int getNumeroOrden() {

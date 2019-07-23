@@ -14,7 +14,6 @@ public class Heroe {
     }
 
     public Heroe(String nombre, ArrayList<Cristal> cristales) {
-        super();
         this.nombre = nombre;
         this.cristales = cristales;
     }
