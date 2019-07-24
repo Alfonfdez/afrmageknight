@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonListarCartaHechizo;
     private Button buttonListarCartaTactica;
     private Button buttonListarFichaHabilidad;
+    private Button buttonListarHeroes;
 
 
     @Override
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         buttonListarCartaHechizo = (Button) findViewById(R.id.idButtonListarCartaHechizo);
         buttonListarCartaTactica = (Button) findViewById(R.id.idButtonListarCartaTactica);
         buttonListarFichaHabilidad = (Button) findViewById(R.id.idButtonListarFichaHabilidad);
+        buttonListarHeroes = (Button) findViewById(R.id.idButtonListarHeroes);
 
         myDB = new DatabaseHelper(this);
 
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                 myDB.insertCards();
                 myDB.insertSkillTokens();
+                myDB.insertHeroes();
             }
         });
 
@@ -232,6 +235,33 @@ public class MainActivity extends AppCompatActivity {
                     String heroe = cursor.getString(3);
 
                     String cartaCompleta = id + ": " + nombre + " " + descripcion + " " + heroe;
+
+                    Log.d("DATABASE", cartaCompleta);
+                }
+
+            }
+        });
+
+        buttonListarHeroes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Log.d("DATABASE","LIST SKILL TOKENS ON DATABASE");
+
+                Cursor cursor = myDB.getAllHeroes();
+
+                if(cursor == null || cursor.getCount() == 0){
+                    return;
+                }
+
+                while(cursor.moveToNext()){
+                    String nombre = cursor.getString(0);
+                    String cristal1 = cursor.getString(1);
+                    String cristal2 = cursor.getString(2);
+                    String cristal3 = cursor.getString(3);
+
+                    String cartaCompleta = nombre + ": " + cristal1 + " " + cristal2 + " " + cristal3;
 
                     Log.d("DATABASE", cartaCompleta);
                 }

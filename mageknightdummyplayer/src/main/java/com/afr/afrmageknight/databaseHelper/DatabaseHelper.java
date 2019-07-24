@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CARTAS_HECHIZOS_TABLE = "CARTAS_HECHIZOS";
     public static final String CARTAS_TACTICAS_TABLE = "CARTAS_TACTICAS";
     public static final String FICHAS_HABILIDAD_TABLE = "FICHAS_HABILIDAD";
+    public static final String HEROES_TABLE = "HEROES";
 
     // Nombre de las columnas
     // CARTAS_TABLE
@@ -78,6 +79,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2_FICHAS_HABILIDAD_TABLE = "NOMBRE";
     public static final String COL_3_FICHAS_HABILIDAD_TABLE = "DESCRIPCION";
     public static final String COL_4_FICHAS_HABILIDAD_TABLE = "HEROE";
+
+    // HEROES_TABLE
+    public static final String COL_1_HEROES_TABLE = "NOMBRE";
+    public static final String COL_2_HEROES_TABLE = "CRISTAL1";
+    public static final String COL_3_HEROES_TABLE = "CRISTAL2";
+    public static final String COL_4_HEROES_TABLE = "CRISTAL3";
+
 
     //'Harcodeamos' 3 argumentos: name, factory, version
     public DatabaseHelper(Context context) {
@@ -202,6 +210,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(strSQLFichasHabilidadTable.toString());
 
+
+        // HEROES_TABLE
+        StringBuilder strSQLHeroesTable = new StringBuilder();
+
+        strSQLHeroesTable.append("CREATE TABLE ").append(HEROES_TABLE).append(" (")
+                .append(COL_1_HEROES_TABLE).append(" TEXT PRIMARY KEY NOT NULL, ")
+                .append(COL_2_HEROES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_HEROES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_4_HEROES_TABLE).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "DECIMO - ONCREATE - HEROES_TABLE");
+        Log.d("DATABASE", strSQLHeroesTable.toString());
+
+        db.execSQL(strSQLHeroesTable.toString());
+
     }
 
     @Override
@@ -225,6 +249,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + FICHAS_HABILIDAD_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + HEROES_TABLE);
         onCreate(db);
 
     }
@@ -394,6 +421,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return resultado == -1 ? false : true;
     }
 
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertHeroe(String nombre, Cristal cristal1, Cristal cristal2, Cristal cristal3){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_HEROES_TABLE, nombre);
+        contentValues.put(COL_2_HEROES_TABLE, cristal1.toString());
+        contentValues.put(COL_3_HEROES_TABLE, cristal2.toString());
+        contentValues.put(COL_4_HEROES_TABLE, cristal3.toString());
+
+        long resultado = db.insert(HEROES_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal
+        //Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+
+        return resultado == -1 ? false : true;
+    }
+
     //Un 'Cursor' es una tabla virtual
     public Cursor getAllCartas(){
 
@@ -475,6 +525,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor getAllHeroes(){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ HEROES_TABLE, null);
+
+        return cursor;
+    }
+
     //Insertar datos de la carta en su correspondiente tabla
     public Carta create(Carta carta){
 
@@ -510,6 +571,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
        return null;
     }
+
+    //Insertar datos de la Ficha de Habilidad en su correspondiente tabla
+    public Heroe createHeroe(Heroe heroe){
+
+        insertHeroe(heroe.getNombre(), heroe.getCristales().get(0), heroe.getCristales().get(1), heroe.getCristales().get(2));
+
+        return null;
+    }
+
 
 
     public void insertCards(){
@@ -896,6 +966,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.", braevalar));
         createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.", braevalar));
 
+    }
+
+    public void insertHeroes(){
+
+        ArrayList<Cristal> cristalesArythea = new ArrayList<>();
+        Collections.addAll(cristalesArythea, Cristal.ROJO, Cristal.ROJO, Cristal.BLANCO);
+
+        ArrayList<Cristal> cristalesTovak = new ArrayList<>();
+        Collections.addAll( cristalesTovak, Cristal.VERDE, Cristal.VERDE, Cristal.AZUL);
+
+        ArrayList<Cristal> cristalesNorowas = new ArrayList<>();
+        Collections.addAll( cristalesNorowas, Cristal.AZUL, Cristal.AZUL, Cristal.ROJO);
+
+        ArrayList<Cristal> cristalesGoldyx = new ArrayList<>();
+        Collections.addAll( cristalesGoldyx, Cristal.BLANCO, Cristal.BLANCO, Cristal.VERDE);
+
+        ArrayList<Cristal> cristalesWolfhawk = new ArrayList<>();
+        Collections.addAll( cristalesWolfhawk, Cristal.BLANCO, Cristal.BLANCO, Cristal.AZUL);
+
+        ArrayList<Cristal> cristalesKrang = new ArrayList<>();
+        Collections.addAll( cristalesKrang, Cristal.ROJO, Cristal.ROJO, Cristal.VERDE);
+
+        ArrayList<Cristal> cristalesBraevalar = new ArrayList<>();
+        Collections.addAll( cristalesBraevalar, Cristal.AZUL, Cristal.AZUL, Cristal.VERDE);
+
+        createHeroe(new Heroe("Arythea",  cristalesArythea));
+        createHeroe(new Heroe("Tovak",  cristalesTovak));
+        createHeroe(new Heroe("Norowas",  cristalesNorowas));
+        createHeroe(new Heroe("Goldyx",  cristalesGoldyx));
+        createHeroe(new Heroe("Wolfhawk",  cristalesWolfhawk));
+        createHeroe(new Heroe("Krang",  cristalesKrang));
+        createHeroe(new Heroe("Braevalar",  cristalesBraevalar));
     }
 
 
