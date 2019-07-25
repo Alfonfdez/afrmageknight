@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.d("DATABASE","LIST SKILL TOKENS ON DATABASE");
+                Log.d("DATABASE","LIST HEROES ON DATABASE");
 
                 Cursor cursor = myDB.getAllHeroes();
 
