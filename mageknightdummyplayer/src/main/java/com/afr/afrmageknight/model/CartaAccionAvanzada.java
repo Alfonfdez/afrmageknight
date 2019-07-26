@@ -6,16 +6,18 @@ public class CartaAccionAvanzada extends Carta{
     private Cristal color;
     private String descripcionBasica;
     private String descripcionAvanzada;
+    private boolean descartada;
 
     //Constructores
     public CartaAccionAvanzada() {
     }
 
-    public CartaAccionAvanzada(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada) {
+    public CartaAccionAvanzada(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada) {
         super(numero, nombre);
         this.color = color;
         this.descripcionBasica = descripcionBasica;
         this.descripcionAvanzada = descripcionAvanzada;
+        this.descartada = descartada;
     }
 
     //Getters y setters
@@ -42,4 +44,15 @@ public class CartaAccionAvanzada extends Carta{
     public void setDescripcionAvanzada(String descripcionAvanzada) {
         this.descripcionAvanzada = descripcionAvanzada;
     }
+
+    public boolean isDescartada() {
+        return descartada;
+    }
+
+    public void setDescartada(boolean descartada) {
+        this.descartada = descartada;
+    }
+
+    //Métodos
+
 }

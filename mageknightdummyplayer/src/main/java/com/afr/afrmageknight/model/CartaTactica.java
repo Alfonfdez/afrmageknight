@@ -9,7 +9,6 @@ public class CartaTactica extends Carta {
 
     //Constructores
     public CartaTactica() {
-
     }
 
     public CartaTactica(int numero, String nombre, TipoTactica tipoTactica, int numeroOrden, String descripcion) {

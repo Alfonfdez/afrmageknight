@@ -51,13 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("DATABASE","INSERT ALL DATA ON DATABASE");
 
-                myDB.insertCards();
-                myDB.insertSkillTokens();
-                myDB.insertHeroes();
+                myDB.insertAllData();
             }
         });
 
-        buttonListarCarta.setOnClickListener(new View.OnClickListener() {
+        /*buttonListarCarta.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -267,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
 
     }
