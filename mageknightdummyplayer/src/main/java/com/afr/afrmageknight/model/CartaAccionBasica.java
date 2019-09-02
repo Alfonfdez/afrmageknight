@@ -1,6 +1,6 @@
 package com.afr.afrmageknight.model;
 
-public class CartaAccionBasica extends CartaAccionAvanzada {
+public class CartaAccionBasica extends CartaAccion {
 
     //Atributos
     private Heroe heroe;

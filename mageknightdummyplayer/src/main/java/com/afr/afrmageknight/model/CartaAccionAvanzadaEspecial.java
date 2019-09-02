@@ -1,6 +1,6 @@
 package com.afr.afrmageknight.model;
 
-public class CartaAccionAvanzadaEspecial extends CartaAccionAvanzada {
+public class CartaAccionAvanzadaEspecial extends CartaAccion {
 
     //Atributos
     private Cristal colorSecundario;

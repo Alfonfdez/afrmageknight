@@ -1,6 +1,6 @@
 package com.afr.afrmageknight.model;
 
-public class Hechizo extends CartaAccionAvanzada {
+public class Hechizo extends CartaAccion {
 
     //Atributos
     private String nombreSecundario;

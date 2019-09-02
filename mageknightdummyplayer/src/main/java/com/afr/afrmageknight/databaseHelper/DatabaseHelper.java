@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.afr.afrmageknight.model.Carta;
+import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionAvanzada;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
@@ -89,19 +90,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //'Harcodeamos' 3 argumentos: name, factory, version
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-        Log.d("DATABASE", "PRIMERO - CONSTRUCTOR");
+        Log.d("DATABASE", "1º) - CONSTRUCTOR");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("DATABASE", "SEGUNDO - ONCREATE");
+        Log.d("DATABASE", "2º) - ONCREATE");
 
         // HEROES_TABLE
         StringBuilder strSQLHeroesTable = new StringBuilder();
 
         strSQLHeroesTable.append("CREATE TABLE ").append(HEROES_TABLE).append(" (")
-                .append(COL_1_HEROES_TABLE).append(" TEXT PRIMARY KEY NOT NULL")
+                .append(COL_1_HEROES_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
         Log.d("DATABASE", "PRIMERO - ONCREATE - HEROES_TABLE");
@@ -114,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCristalesTable = new StringBuilder();
 
         strSQLCristalesTable.append("CREATE TABLE ").append(CRISTALES_TABLE).append(" (")
-                .append(COL_1_CRISTALES_TABLE).append(" TEXT PRIMARY KEY NOT NULL")
+                .append(COL_1_CRISTALES_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
         Log.d("DATABASE", "SEGUNDO - ONCREATE - CRISTALES_TABLE");
@@ -127,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLHeroesCristalesTable = new StringBuilder();
 
         strSQLHeroesCristalesTable.append("CREATE TABLE ").append(HEROES_CRISTALES_TABLE).append(" (")
-                .append(COL_1_HEROES_CRISTALES_TABLE).append(" TEXT PRIMARY KEY NOT NULL,")
+                .append(COL_1_HEROES_CRISTALES_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_2_HEROES_CRISTALES_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
@@ -141,7 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCartasTable = new StringBuilder();
 
         strSQLCartasTable.append("CREATE TABLE ").append(CARTAS_TABLE).append(" (")
-                .append(COL_1_CARTAS_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_CARTAS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
@@ -155,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCartasAccionesAvanzadasTable = new StringBuilder();
 
         strSQLCartasAccionesAvanzadasTable.append("CREATE TABLE ").append(CARTAS_ACCIONES_AVANZADAS_TABLE).append(" (")
-                .append(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_4_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" TEXT NOT NULL,")
@@ -172,7 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCartasAccionesBasicasTable = new StringBuilder();
 
         strSQLCartasAccionesBasicasTable.append("CREATE TABLE ").append(CARTAS_ACCIONES_BASICAS_TABLE).append(" (")
-                .append(COL_1_CARTAS_ACCIONES_BASICAS_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_CARTAS_ACCIONES_BASICAS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_ACCIONES_BASICAS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
@@ -186,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCartasAccionesAvanzadasEspecialesTable = new StringBuilder();
 
         strSQLCartasAccionesAvanzadasEspecialesTable.append("CREATE TABLE ").append(CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE).append(" (")
-                .append(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
@@ -200,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCartasHechizosTable = new StringBuilder();
 
         strSQLCartasHechizosTable.append("CREATE TABLE ").append(CARTAS_HECHIZOS_TABLE).append(" (")
-                .append(COL_1_CARTAS_HECHIZOS_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_CARTAS_HECHIZOS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_HECHIZOS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
@@ -214,7 +215,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLCartasTacticasTable = new StringBuilder();
 
         strSQLCartasTacticasTable.append("CREATE TABLE ").append(CARTAS_TACTICAS_TABLE).append(" (")
-                .append(COL_1_CARTAS_TACTICAS_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_CARTAS_TACTICAS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_CARTAS_TACTICAS_TABLE).append(" INTEGER NOT NULL,")
                 .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL")
@@ -230,7 +231,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLFichasHabilidadTable = new StringBuilder();
 
         strSQLFichasHabilidadTable.append("CREATE TABLE ").append(FICHAS_HABILIDAD_TABLE).append(" (")
-                .append(COL_1_FICHAS_HABILIDAD_TABLE).append(" INTEGER PRIMARY KEY NOT NULL,")
+                .append(COL_1_FICHAS_HABILIDAD_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_4_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL")
@@ -605,22 +606,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // 1.- Se guarda la información genérica, independientemente del tipo de carta (tabla CARTAS)
         insertDataCarta(carta.getNumero(), carta.getNombre());
 
-        CartaAccionAvanzada cartaAccionAvanzada = (CartaAccionAvanzada) carta;
-        insertDataCartaAccionAvanzada(carta.getNumero(), cartaAccionAvanzada.getColor(), cartaAccionAvanzada.getDescripcionBasica(), cartaAccionAvanzada.getDescripcionAvanzada(), cartaAccionAvanzada.isDescartada());
-
-        // 2.- En función del tipo de carta, insertamos en la tabla que toque....
-        if (carta.getClass() == CartaAccionBasica.class){
-            CartaAccionBasica cartaAccionBasica = (CartaAccionBasica) cartaAccionAvanzada;
-            insertDataCartaAccionBasica(carta.getNumero(),cartaAccionBasica.getHeroe());
-        } else if(carta.getClass() == CartaAccionAvanzadaEspecial.class) {
-            CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = (CartaAccionAvanzadaEspecial) cartaAccionAvanzada;
-            insertDataCartaAccionAvanzadaEspecial(carta.getNumero(), cartaAccionAvanzadaEspecial.getColorSecundario());
-        } else if(carta.getClass() == Hechizo.class) {
-            Hechizo hechizo = (Hechizo) cartaAccionAvanzada;
-            insertDataCartaHechizo(carta.getNumero(), hechizo.getNombreSecundario());
-        } else{ // CartaTactica
+        if(carta.getClass() == CartaTactica.class){
             CartaTactica cartaTactica = (CartaTactica) carta;
             insertDataCartaTactica(carta.getNumero(), cartaTactica.getTipoTactica(), cartaTactica.getNumeroOrden(), cartaTactica.getDescripcion());
+
+            return null;
+        }
+
+        CartaAccion cartaAccion = (CartaAccion) carta;
+
+        // 2.- En función del tipo de carta, insertamos en la tabla que toque....
+        if(carta.getClass() == CartaAccionAvanzada.class){
+            insertDataCartaAccionAvanzada(carta.getNumero(), cartaAccion.getColor(), cartaAccion.getDescripcionBasica(), cartaAccion.getDescripcionAvanzada(), cartaAccion.isDescartada());
+        } else if (carta.getClass() == CartaAccionBasica.class){
+            CartaAccionBasica cartaAccionBasica = (CartaAccionBasica) cartaAccion;
+            insertDataCartaAccionBasica(carta.getNumero(),cartaAccionBasica.getHeroe());
+        } else if(carta.getClass() == CartaAccionAvanzadaEspecial.class) {
+            CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = (CartaAccionAvanzadaEspecial) cartaAccion;
+            insertDataCartaAccionAvanzadaEspecial(carta.getNumero(), cartaAccionAvanzadaEspecial.getColorSecundario());
+        } else {  //(carta.getClass() == Hechizo.class)
+            Hechizo hechizo = (Hechizo) cartaAccion;
+            insertDataCartaHechizo(carta.getNumero(), hechizo.getNombreSecundario());
         }
 
         return null;
@@ -934,7 +940,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // 10 Fichas de Habilidad de Arythea
         createFicha(new FichaHabilidad(1, "CAMINOS OSCUROS", "Una vez por turno: Movimiento 1 (durante el Día), o Movimiento 2 (durante la Noche).", arythea));
         createFicha(new FichaHabilidad(2, "PODER ABRASADOR", "Una vez por turno: Ataque de Asedio 1, o Ataque de Asedio de Fuego 1.", arythea));
-        createFicha(new FichaHabilidad(3, "ESPADA ARDIENTE", " Una vez por turno: Ataque 2, o Ataque de Fuego 2.", arythea));
+        createFicha(new FichaHabilidad(3, "ESPADA ARDIENTE", "Una vez por turno: Ataque 2, o Ataque de Fuego 2.", arythea));
         createFicha(new FichaHabilidad(4, "NEGOCIACIÓN TURBIA", "Una vez por turno: Influencia 2 (durante el Día) o Influencia 3 (durante la Noche).", arythea));
         createFicha(new FichaHabilidad(5, "MAGIA OSCURA DE FUEGO", "Una vez por ronda: Voltea para ganar 1 cristal rojo para tu inventario y 1 ficha de maná rojo o negro.", arythea));
         createFicha(new FichaHabilidad(6, "EL PODER DEL DOLOR", "Una vez por turno: Puedes jugar 1 Herida girada como si no fuese una carta de Herida. Otorga +2 en vez de +1. Al final de tu turno, coloca esa Herida en tu pila de descarte.", arythea));
@@ -973,7 +979,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createFicha(new FichaHabilidad(33, "ARTESANÍA DE CRISTAL BLANCO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná blanco.", goldyx));
         createFicha(new FichaHabilidad(34, "ARTESANÍA DE CRISTAL VERDE", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y una ficha de maná verde.", goldyx));
         createFicha(new FichaHabilidad(35, "ARTESANÍA DE CRISTAL ROJO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná rojo.", goldyx));
-        createFicha(new FichaHabilidad(36, "FORTUNA RELUCIENTE", " Una vez por turno, durante la interacción: Gana Influencia +1 por cada cristal de color diferente en tu inventario. Esta Influencia no puede ser utilizada fuera de una interacción.", goldyx));
+        createFicha(new FichaHabilidad(36, "FORTUNA RELUCIENTE", "Una vez por turno, durante la interacción: Gana Influencia +1 por cada cristal de color diferente en tu inventario. Esta Influencia no puede ser utilizada fuera de una interacción.", goldyx));
         createFicha(new FichaHabilidad(37, "VUELO", "Una vez por Ronda: Voltea para moverte a 1 espacio adyacente sin coste, o a 2 espacios por 2 puntos de Movimiento. Debes terminar este Movimiento en un espacio seguro. Este Movimiento no provoca a los enemigos acechantes.", goldyx));
         createFicha(new FichaHabilidad(38, "PODER UNIVERSAL", "Una vez por turno: Puedes añadir maná a una carta girada. Si lo haces, la carta otorga +3 en vez de +1. Si es una Acción o un Hechizo del mismo color que el maná, otorga +4.", goldyx));
         createFicha(new FichaHabilidad(39, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná verde. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", goldyx));
