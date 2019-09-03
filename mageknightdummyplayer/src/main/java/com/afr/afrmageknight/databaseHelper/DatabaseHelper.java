@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CRISTALES_TABLE = "CRISTALES";
     public static final String HEROES_CRISTALES_TABLE = "HEROES_CRISTALES_TABLE";
     public static final String CARTAS_TABLE = "CARTAS";
+    public static final String CARTAS_ACCIONES_TABLE = "CARTAS_ACCIONES";
     public static final String CARTAS_ACCIONES_BASICAS_TABLE = "CARTAS_ACCIONES_BASICAS";
     public static final String CARTAS_ACCIONES_AVANZADAS_TABLE = "CARTAS_ACCIONES_AVANZADAS";
     public static final String CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE = "CARTAS_ACCIONES_AVANZADAS_ESPECIALES";
@@ -55,16 +56,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_1_CARTAS_TABLE = "NUMERO";
     public static final String COL_2_CARTAS_TABLE = "NOMBRE";
 
-    // CARTAS_ACCIONES_AVANZADAS_TABLE
-    public static final String COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE = "NUMERO";
-    public static final String COL_2_CARTAS_ACCIONES_AVANZADAS_TABLE = "COLOR";
-    public static final String COL_3_CARTAS_ACCIONES_AVANZADAS_TABLE = "DESCRIPCION_BASICA";
-    public static final String COL_4_CARTAS_ACCIONES_AVANZADAS_TABLE = "DESCRIPCION_AVANZADA";
-    public static final String COL_5_CARTAS_ACCIONES_AVANZADAS_TABLE = "DESCARTADA";
+    // CARTAS_ACCIONES_TABLE
+    public static final String COL_1_CARTAS_ACCIONES_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_ACCIONES_TABLE = "COLOR";
+    public static final String COL_3_CARTAS_ACCIONES_TABLE = "DESCRIPCION_BASICA";
+    public static final String COL_4_CARTAS_ACCIONES_TABLE = "DESCRIPCION_AVANZADA";
+    public static final String COL_5_CARTAS_ACCIONES_TABLE = "DESCARTADA";
 
     // CARTAS_ACCIONES_BASICAS_TABLE
     public static final String COL_1_CARTAS_ACCIONES_BASICAS_TABLE = "NUMERO";
     public static final String COL_2_CARTAS_ACCIONES_BASICAS_TABLE = "HEROE";
+
+    // CARTAS_ACCIONES_AVANZADAS_TABLE
+    public static final String COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE = "NUMERO";
 
     // CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE
     public static final String COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE = "NUMERO";
@@ -152,21 +156,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(strSQLCartasTable.toString());
 
 
-        // CARTAS_ACCIONES_AVANZADAS_TABLE
-        StringBuilder strSQLCartasAccionesAvanzadasTable = new StringBuilder();
+        // CARTAS_ACCIONES_TABLE
+        StringBuilder strSQLCartasAccionesTable = new StringBuilder();
 
-        strSQLCartasAccionesAvanzadasTable.append("CREATE TABLE ").append(CARTAS_ACCIONES_AVANZADAS_TABLE).append(" (")
-                .append(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" INTEGER PRIMARY KEY,")
-                .append(COL_2_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_3_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_4_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_5_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" BIT DEFAULT 0")
+        strSQLCartasAccionesTable.append("CREATE TABLE ").append(CARTAS_ACCIONES_TABLE).append(" (")
+                .append(COL_1_CARTAS_ACCIONES_TABLE).append(" INTEGER PRIMARY KEY,")
+                .append(COL_2_CARTAS_ACCIONES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_CARTAS_ACCIONES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_4_CARTAS_ACCIONES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_5_CARTAS_ACCIONES_TABLE).append(" BIT DEFAULT 0")
                 .append(")");
 
-        Log.d("DATABASE", "QUINTO - ONCREATE - CARTAS_ACCIONES_AVANZADAS_TABLE");
-        Log.d("DATABASE", strSQLCartasAccionesAvanzadasTable.toString());
+        Log.d("DATABASE", "QUINTO - ONCREATE - CARTAS_ACCIONES_TABLE");
+        Log.d("DATABASE", strSQLCartasAccionesTable.toString());
 
-        db.execSQL(strSQLCartasAccionesAvanzadasTable.toString());
+        db.execSQL(strSQLCartasAccionesTable.toString());
 
 
         // CARTAS_ACCIONES_BASICAS_TABLE
@@ -183,6 +187,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(strSQLCartasAccionesBasicasTable.toString());
 
 
+        // CARTAS_ACCIONES_AVANZADAS_TABLE
+        StringBuilder strSQLCartasAccionesAvanzadasTable = new StringBuilder();
+
+        strSQLCartasAccionesAvanzadasTable.append("CREATE TABLE ").append(CARTAS_ACCIONES_AVANZADAS_TABLE).append(" (")
+                .append(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" INTEGER PRIMARY KEY")
+                .append(")");
+
+        Log.d("DATABASE", "SEPTIMO - ONCREATE - CARTAS_ACCIONES_AVANZADAS_TABLE");
+        Log.d("DATABASE", strSQLCartasAccionesAvanzadasTable.toString());
+
+        db.execSQL(strSQLCartasAccionesAvanzadasTable.toString());
+
+
         // CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE
         StringBuilder strSQLCartasAccionesAvanzadasEspecialesTable = new StringBuilder();
 
@@ -191,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEPTIMO - ONCREATE - CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE");
+        Log.d("DATABASE", "OCTAVO - ONCREATE - CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE");
         Log.d("DATABASE", strSQLCartasAccionesAvanzadasEspecialesTable.toString());
 
         db.execSQL(strSQLCartasAccionesAvanzadasEspecialesTable.toString());
@@ -205,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_2_CARTAS_HECHIZOS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "OCTAVO - ONCREATE - CARTAS_HECHIZOS_TABLE");
+        Log.d("DATABASE", "NOVENO - ONCREATE - CARTAS_HECHIZOS_TABLE");
         Log.d("DATABASE", strSQLCartasHechizosTable.toString());
 
         db.execSQL(strSQLCartasHechizosTable.toString());
@@ -221,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "NOVENO - ONCREATE - CARTAS_TACTICAS_TABLE");
+        Log.d("DATABASE", "DECIMO - ONCREATE - CARTAS_TACTICAS_TABLE");
         Log.d("DATABASE", strSQLCartasTacticasTable.toString());
 
         db.execSQL(strSQLCartasTacticasTable.toString());
@@ -237,7 +254,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_4_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "DECIMO - ONCREATE - FICHAS_HABILIDAD_TABLE");
+        Log.d("DATABASE", "DECIMO PRIMERO - ONCREATE - FICHAS_HABILIDAD_TABLE");
         Log.d("DATABASE", strSQLFichasHabilidadTable.toString());
 
         db.execSQL(strSQLFichasHabilidadTable.toString());
@@ -259,10 +276,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CARTAS_TABLE);
         onCreate(db);
 
-        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_ACCIONES_AVANZADAS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_ACCIONES_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + CARTAS_ACCIONES_BASICAS_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + CARTAS_ACCIONES_AVANZADAS_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE);
@@ -350,7 +370,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaAccionAvanzada(int numero, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada){
+    public boolean insertDataCartaAccion(int numero, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -358,17 +378,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE, numero);
-        contentValues.put(COL_2_CARTAS_ACCIONES_AVANZADAS_TABLE, color.toString());
-        contentValues.put(COL_3_CARTAS_ACCIONES_AVANZADAS_TABLE, descripcionBasica);
-        contentValues.put(COL_4_CARTAS_ACCIONES_AVANZADAS_TABLE, descripcionAvanzada);
-        contentValues.put(COL_5_CARTAS_ACCIONES_AVANZADAS_TABLE, descartada);
+        contentValues.put(COL_1_CARTAS_ACCIONES_TABLE, numero);
+        contentValues.put(COL_2_CARTAS_ACCIONES_TABLE, color.toString());
+        contentValues.put(COL_3_CARTAS_ACCIONES_TABLE, descripcionBasica);
+        contentValues.put(COL_4_CARTAS_ACCIONES_TABLE, descripcionAvanzada);
+        contentValues.put(COL_5_CARTAS_ACCIONES_TABLE, descartada);
 
-        long resultado = db.insert(CARTAS_ACCIONES_AVANZADAS_TABLE, null, contentValues);
+        long resultado = db.insert(CARTAS_ACCIONES_TABLE, null, contentValues);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
     }
+
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
     public boolean insertDataCartaAccionBasica(int numero, Heroe heroe){
@@ -383,6 +404,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2_CARTAS_ACCIONES_BASICAS_TABLE, heroe.getNombre());
 
         long resultado = db.insert(CARTAS_ACCIONES_BASICAS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    public boolean insertDataCartaAccionAvanzada(int numero){
+
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE, numero);
+
+        long resultado = db.insert(CARTAS_ACCIONES_AVANZADAS_TABLE, null, contentValues);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
@@ -519,13 +558,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasAccionesAvanzadas(){
+    public Cursor getAllCartasAcciones(){
 
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
         // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ CARTAS_ACCIONES_AVANZADAS_TABLE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ CARTAS_ACCIONES_TABLE, null);
 
         return cursor;
     }
@@ -537,6 +576,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // 'selectionArgs' es un array de Strings -> Array[]
         // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
         Cursor cursor = db.rawQuery("SELECT * FROM "+ CARTAS_ACCIONES_BASICAS_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getAllCartasAccionesAvanzadas(){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ CARTAS_ACCIONES_AVANZADAS_TABLE, null);
 
         return cursor;
     }
@@ -602,10 +652,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Carta createCarta(Carta carta){
 
-        //TODO insertar carta en las tablas....
         // 1.- Se guarda la información genérica, independientemente del tipo de carta (tabla CARTAS)
         insertDataCarta(carta.getNumero(), carta.getNombre());
 
+        // 2.- Si la carta es de tipo TACTICA, insertamos en su tabla CARTAS_TACTICAS todo los datos y salimos del método
         if(carta.getClass() == CartaTactica.class){
             CartaTactica cartaTactica = (CartaTactica) carta;
             insertDataCartaTactica(carta.getNumero(), cartaTactica.getTipoTactica(), cartaTactica.getNumeroOrden(), cartaTactica.getDescripcion());
@@ -613,14 +663,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return null;
         }
 
+        // 3.- Si la carta NO es de tipo TACTICA, sólo puede ser de tipo ACCION. Insertaremos los datos en su tabla CARTAS_ACCIONES
         CartaAccion cartaAccion = (CartaAccion) carta;
 
-        // 2.- En función del tipo de carta, insertamos en la tabla que toque....
-        if(carta.getClass() == CartaAccionAvanzada.class){
-            insertDataCartaAccionAvanzada(carta.getNumero(), cartaAccion.getColor(), cartaAccion.getDescripcionBasica(), cartaAccion.getDescripcionAvanzada(), cartaAccion.isDescartada());
-        } else if (carta.getClass() == CartaAccionBasica.class){
+        insertDataCartaAccion(carta.getNumero(), cartaAccion.getColor(), cartaAccion.getDescripcionBasica(), cartaAccion.getDescripcionAvanzada(), cartaAccion.isDescartada());
+
+        // 4.- Según el tipo específico de carta de ACCIÓN, insertaremos los datos extra de las cartas (AccionBasica, AccionAvanzada, AccionAvanzadaEspecial, Hechizo)
+        if (carta.getClass() == CartaAccionBasica.class){
             CartaAccionBasica cartaAccionBasica = (CartaAccionBasica) cartaAccion;
             insertDataCartaAccionBasica(carta.getNumero(),cartaAccionBasica.getHeroe());
+        } else if(carta.getClass() == CartaAccionAvanzada.class){
+            insertDataCartaAccionAvanzada(carta.getNumero());
         } else if(carta.getClass() == CartaAccionAvanzadaEspecial.class) {
             CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = (CartaAccionAvanzadaEspecial) cartaAccion;
             insertDataCartaAccionAvanzadaEspecial(carta.getNumero(), cartaAccionAvanzadaEspecial.getColorSecundario());
