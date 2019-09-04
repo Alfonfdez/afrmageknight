@@ -3,6 +3,7 @@ package com.afr.afrmageknight.servicios;
 import android.content.Context;
 
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
+import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
@@ -21,7 +22,7 @@ public class GameServicesImpl implements GameServices {
     private DatabaseHelper databaseHelper = null;
 
     public GameServicesImpl (Context context){
-        this.databaseHelper = new DatabaseHelper(context);
+        this.databaseHelper = new DatabaseHelperInsertInitialData(context);
     }
 
     // Implementar los métodos de la interfaz 'GameServices'
