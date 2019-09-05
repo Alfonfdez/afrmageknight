@@ -10,90 +10,93 @@
         android:id="@+id/idButtonInsertAllData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:text="INSERT ALL DATA"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <CheckBox
-        android:id="@+id/checkBoxArythea"
+    <Button
+        android:id="@+id/idButtonInsertAllGameData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Arythea"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox5"
-        app:layout_constraintEnd_toStartOf="@+id/checkBoxTovak"
-        app:layout_constraintHorizontal_bias="0.179"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <CheckBox
-        android:id="@+id/checkBoxTovak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Tovak"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox6"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_editor_absoluteX="108dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Norowas"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox6"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxTovak"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <CheckBox
-        android:id="@+id/checkBoxGoldyx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Goldyx"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox7"
+        android:layout_marginBottom="12dp"
+        android:text="Insert all game data"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.644"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <CheckBox
-        android:id="@+id/checkBox5"
+    <Button
+        android:id="@+id/idButtonDeleteAllGameData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wolfhawk"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox6"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="498dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Krang"
-        tools:layout_editor_absoluteX="171dp"
-        tools:layout_editor_absoluteY="498dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Braevalar"
+        android:text="Delete all game data"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox6"
-        tools:layout_editor_absoluteY="498dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <RadioGroup
+        android:id="@+id/idRadioGroup"
+        android:layout_width="120dp"
+        android:layout_height="226dp"
+        app:layout_constraintBottom_toTopOf="@+id/idButtonInsertAllGameData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <RadioButton
+            android:id="@+id/idRadioButtonArythea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Arythea" />
+
+        <RadioButton
+            android:id="@+id/idRadioButtonTovak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tovak" />
+
+        <RadioButton
+            android:id="@+id/idRadioButtonNorowas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Norowas" />
+
+        <RadioButton
+            android:id="@+id/idRadioButtonGoldyx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Goldyx" />
+
+        <RadioButton
+            android:id="@+id/idRadioButtonWolfhawk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wolfhawk" />
+
+        <RadioButton
+            android:id="@+id/idRadioButtonKrang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Krang" />
+
+        <RadioButton
+            android:id="@+id/idRadioButtonBraevalar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Braevalar" />
+
+    </RadioGroup>
 
     <Switch
-        android:id="@+id/switch2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Modo de juego"
+        android:id="@+id/idSwitchTipoPartida"
+        android:layout_width="383dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="24dp"
+        android:checked="false"
+        android:text="Modo de juego: Solitario / Cooperativo"
         android:textOff="Solitario"
         android:textOn="Cooperativo"
         android:textSize="18sp"
@@ -117,37 +120,44 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
         android:text="Selección tipo de partida"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/switch2"
+        app:layout_constraintBottom_toTopOf="@+id/idSwitchTipoPartida"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="Heroes del jugador"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="391dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="207dp" />
+        app:layout_constraintGuide_begin="157dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="354dp" />
+        app:layout_constraintGuide_begin="286dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="636dp" />
 
 
 </android.support.constraint.ConstraintLayout>
