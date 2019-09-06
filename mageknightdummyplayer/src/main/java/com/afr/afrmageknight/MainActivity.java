@@ -20,6 +20,7 @@ import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.servicios.GameServices;
 import com.afr.afrmageknight.servicios.GameServicesImpl;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelperInsertInitialData myInitialDB;
     private DatabaseHelperInsertGameData myGameDB;
 
-    private GameServicesImpl gameServicesImpl;
+    private GameServices gameServices;
 
     private Switch switchModoJuego;
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         myDB = new DatabaseHelperInsertInitialData(this);
         myInitialDB = new DatabaseHelperInsertInitialData(this);
         myGameDB = new DatabaseHelperInsertGameData(this);
+
+        gameServices = new GameServicesImpl(this);
 
         switchModoJuego = (Switch) findViewById(R.id.idSwitchTipoPartida);
 
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
                             case R.id.idRadioButtonArythea:
 
-                                Heroe heroe = gameServicesImpl.getAHeroe("Arythea", heroesCristalesCursor);
+                                /*Heroe heroe = gameServicesImpl.getAHeroe("Arythea", heroesCristalesCursor);
                                 myGameDB.insertDataHeroeSelectedByPlayer(heroe);
 
                                 Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroe, heroesCristalesCursor);
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                                 myGameDB.insertDataShuffledCardsHeroeSelectedByDummyPlayer(cartaAccionBasicas);
 
                                 List<FichaHabilidad> fichaHabilidades = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-                                myGameDB.insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(fichaHabilidades);
+                                myGameDB.insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(fichaHabilidades);*/
 
                                 break;
 
