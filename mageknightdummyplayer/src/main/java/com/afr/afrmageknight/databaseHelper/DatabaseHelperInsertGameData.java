@@ -1,8 +1,12 @@
 package com.afr.afrmageknight.databaseHelper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoPartida;
 
 public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
@@ -120,6 +124,55 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
     @Override
     public void insertAllData() {
+
+    }
+
+    public boolean insertDataGameMode(TipoPartida tipoPartida){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_MODO_TABLE, tipoPartida.toString());
+
+        long resultado = db.insert(PARTIDA_MODO_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    public boolean insertDataHeroeSelectedByPlayer(Heroe heroe){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_HEROES_JUGADOR_TABLE, heroe.getNombre());
+
+        long resultado = db.insert(PARTIDA_HEROES_JUGADOR_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    public boolean insertDataHeroeSelectedByDummyPlayer(Heroe randomHeroeDummyPlayer){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_HEROE_DUMMY_TABLE, randomHeroeDummyPlayer.getNombre());
+
+        long resultado = db.insert(PARTIDA_HEROE_DUMMY_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    public void insertAllDataFromOneHeroeSelected(Heroe heroe) {
 
     }
 

@@ -13,9 +13,14 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
+import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertGameData;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
+import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.Cristal;
+import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.servicios.GameServicesImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,9 +31,12 @@ public class MainActivity extends AppCompatActivity {
     // I - Declarar las variables
     //private DatabaseHelperInsertInitialData myDB;
     private DatabaseHelper myDB;
-    private DatabaseHelper myGameDB;
+    //private DatabaseHelper myGameDB;
 
     private DatabaseHelperInsertInitialData myInitialDB;
+    private DatabaseHelperInsertGameData myGameDB;
+
+    private GameServicesImpl gameServicesImpl;
 
     private Switch switchModoJuego;
 
@@ -51,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         myDB = new DatabaseHelperInsertInitialData(this);
-
         myInitialDB = new DatabaseHelperInsertInitialData(this);
+        myGameDB = new DatabaseHelperInsertGameData(this);
 
         switchModoJuego = (Switch) findViewById(R.id.idSwitchTipoPartida);
 
@@ -96,33 +104,29 @@ public class MainActivity extends AppCompatActivity {
                     if(radioGroupHeroes.getCheckedRadioButtonId() == -1){
                         Toast.makeText(MainActivity.this, "Se debe seleccionar 1 héroe", Toast.LENGTH_SHORT).show();
                     } else {
-                        List<Heroe> heroes = new ArrayList<Heroe>();
+                        myGameDB.insertDataGameMode(TipoPartida.SOLITARIO);
 
-                        List<Cristal> cristales = new ArrayList<Cristal>();
-
-                        Cursor heroesCursor = myInitialDB.getAllHeroes();
-
-                        if (heroesCursor.moveToFirst()){
-                            do{
-                                String data = heroesCursor.getString(heroesCursor.getColumnIndex("NOMBRE"));
-
-                                Heroe heroe = new Heroe(data,);
-
-
-                            }while(heroesCursor.moveToNext());
-                        }
-
-                        heroesCursor.close();
-
+                        //Cursor heroesCursor = myInitialDB.getAllHeroes();
+                        Cursor heroesCristalesCursor = myInitialDB.getAllHeroesCristales();
+                        Cursor cartasCursor = myInitialDB.getAllCartas();
+                        Cursor cartasAccionesCursor = myInitialDB.getAllCartasAcciones();
+                        Cursor cartasAccionesBasicasCursor = myInitialDB.getAllCartasAccionesBasicas();
 
                         switch(radioGroupHeroes.getCheckedRadioButtonId()){
 
-
-
                             case R.id.idRadioButtonArythea:
 
+                                Heroe heroe = gameServicesImpl.getAHeroe("Arythea", heroesCristalesCursor);
+                                myGameDB.insertDataHeroeSelectedByPlayer(heroe);
 
+                                Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroe, heroesCristalesCursor);
+                                myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
 
+                                List<CartaAccionBasica> cartaAccionBasicas = gameServicesImpl.getShuffledCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer,cartasCursor,cartasAccionesCursor,cartasAccionesBasicasCursor);
+                                myGameDB.insertDataShuffledCardsHeroeSelectedByDummyPlayer(cartaAccionBasicas);
+
+                                List<FichaHabilidad> fichaHabilidades = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                myGameDB.insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(fichaHabilidades);
 
                                 break;
 
