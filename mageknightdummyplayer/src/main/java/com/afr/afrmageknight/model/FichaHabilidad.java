@@ -3,7 +3,7 @@ package com.afr.afrmageknight.model;
 public class FichaHabilidad {
 
     //Atributos
-    private long id;
+    private int id;
     private String nombre;
     private String descripcion;
     private Heroe heroe;
@@ -12,7 +12,7 @@ public class FichaHabilidad {
     public FichaHabilidad() {
     }
 
-    public FichaHabilidad(long id, String nombre, String descripcion, Heroe heroe) {
+    public FichaHabilidad(int id, String nombre, String descripcion, Heroe heroe) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -20,11 +20,11 @@ public class FichaHabilidad {
     }
 
     //Getters & Setters
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

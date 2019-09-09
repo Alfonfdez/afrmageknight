@@ -17,10 +17,12 @@ import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Hechizo;
 import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoPartida;
 import com.afr.afrmageknight.model.TipoTactica;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public abstract class DatabaseHelper extends SQLiteOpenHelper {
 

@@ -16,10 +16,12 @@ import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Hechizo;
 import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoPartida;
 import com.afr.afrmageknight.model.TipoTactica;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
@@ -94,7 +96,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("DATABASE", "2º) - ONCREATE");
+        Log.d("DATABASE", "2º) - ONCREATE_INITIAL DATA");
 
         // HEROES_TABLE
         StringBuilder strSQLHeroesTable = new StringBuilder();
@@ -103,7 +105,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_1_HEROES_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "PRIMERO - ONCREATE - HEROES_TABLE");
+        Log.d("DATABASE", "PRIMERO - ONCREATE_INITIAL DATA - HEROES_TABLE");
         Log.d("DATABASE", strSQLHeroesTable.toString());
 
         db.execSQL(strSQLHeroesTable.toString());
@@ -116,7 +118,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_1_CRISTALES_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "SEGUNDO - ONCREATE - CRISTALES_TABLE");
+        Log.d("DATABASE", "SEGUNDO - ONCREATE_INITIAL DATA - CRISTALES_TABLE");
         Log.d("DATABASE", strSQLCristalesTable.toString());
 
         db.execSQL(strSQLCristalesTable.toString());
@@ -130,7 +132,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_2_HEROES_CRISTALES_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "TERCERO - ONCREATE - HEROES_CRISTALES_TABLE");
+        Log.d("DATABASE", "TERCERO - ONCREATE_INITIAL DATA - HEROES_CRISTALES_TABLE");
         Log.d("DATABASE", strSQLHeroesCristalesTable.toString());
 
         db.execSQL(strSQLHeroesCristalesTable.toString());
@@ -144,7 +146,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_2_CARTAS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "CUARTO - ONCREATE - CARTAS_TABLE");
+        Log.d("DATABASE", "CUARTO - ONCREATE_INITIAL DATA - CARTAS_TABLE");
         Log.d("DATABASE", strSQLCartasTable.toString());
 
         db.execSQL(strSQLCartasTable.toString());
@@ -161,7 +163,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_5_CARTAS_ACCIONES_TABLE).append(" BIT DEFAULT 0")
                 .append(")");
 
-        Log.d("DATABASE", "QUINTO - ONCREATE - CARTAS_ACCIONES_TABLE");
+        Log.d("DATABASE", "QUINTO - ONCREATE_INITIAL DATA - CARTAS_ACCIONES_TABLE");
         Log.d("DATABASE", strSQLCartasAccionesTable.toString());
 
         db.execSQL(strSQLCartasAccionesTable.toString());
@@ -175,7 +177,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_2_CARTAS_ACCIONES_BASICAS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEXTO - ONCREATE - CARTAS_ACCIONES_BASICAS_TABLE");
+        Log.d("DATABASE", "SEXTO - ONCREATE_INITIAL DATA - CARTAS_ACCIONES_BASICAS_TABLE");
         Log.d("DATABASE", strSQLCartasAccionesBasicasTable.toString());
 
         db.execSQL(strSQLCartasAccionesBasicasTable.toString());
@@ -188,7 +190,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE).append(" INTEGER PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "SEPTIMO - ONCREATE - CARTAS_ACCIONES_AVANZADAS_TABLE");
+        Log.d("DATABASE", "SEPTIMO - ONCREATE_INITIAL DATA - CARTAS_ACCIONES_AVANZADAS_TABLE");
         Log.d("DATABASE", strSQLCartasAccionesAvanzadasTable.toString());
 
         db.execSQL(strSQLCartasAccionesAvanzadasTable.toString());
@@ -202,7 +204,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "OCTAVO - ONCREATE - CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE");
+        Log.d("DATABASE", "OCTAVO - ONCREATE_INITIAL DATA - CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE");
         Log.d("DATABASE", strSQLCartasAccionesAvanzadasEspecialesTable.toString());
 
         db.execSQL(strSQLCartasAccionesAvanzadasEspecialesTable.toString());
@@ -216,7 +218,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_2_CARTAS_HECHIZOS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "NOVENO - ONCREATE - CARTAS_HECHIZOS_TABLE");
+        Log.d("DATABASE", "NOVENO - ONCREATE_INITIAL DATA - CARTAS_HECHIZOS_TABLE");
         Log.d("DATABASE", strSQLCartasHechizosTable.toString());
 
         db.execSQL(strSQLCartasHechizosTable.toString());
@@ -232,7 +234,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "DECIMO - ONCREATE - CARTAS_TACTICAS_TABLE");
+        Log.d("DATABASE", "DECIMO - ONCREATE_INITIAL DATA - CARTAS_TACTICAS_TABLE");
         Log.d("DATABASE", strSQLCartasTacticasTable.toString());
 
         db.execSQL(strSQLCartasTacticasTable.toString());
@@ -248,7 +250,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_4_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "DECIMO PRIMERO - ONCREATE - FICHAS_HABILIDAD_TABLE");
+        Log.d("DATABASE", "DECIMO PRIMERO - ONCREATE_INITIAL DATA - FICHAS_HABILIDAD_TABLE");
         Log.d("DATABASE", strSQLFichasHabilidadTable.toString());
 
         db.execSQL(strSQLFichasHabilidadTable.toString());
@@ -479,7 +481,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataFichaHabilidad(long id, String nombre, String descripcion, Heroe heroe){
+    public boolean insertDataFichaHabilidad(int id, String nombre, String descripcion, Heroe heroe){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -1068,7 +1070,6 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         createFicha(new FichaHabilidad(68, "CAMINOS SECRETOS", "Una vez por turno: Movimiento 1. Puedes entrar en montañas por un coste de Movimiento de 5 y se consideran un espacio seguro para ti. Si pagas 1 maná azul, puedes entrar en lagos por un coste de Movimiento de 2 en este turno y los lagos se consideran un espacio seguro para ti al final de este turno.", braevalar));
         createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.", braevalar));
         createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.", braevalar));
-
     }
 
 }

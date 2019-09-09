@@ -33,6 +33,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor cartasAccionesAvanzadasEspecialesCursor;
     private Cursor cartasHechizosCursor;
     private Cursor cartasTacticasCursor;
+    private Cursor fichasHabilidadesCursor;
 
     public GameServicesImpl (Context context){
         this.databaseHelper = new DatabaseHelperInsertInitialData(context);
@@ -73,7 +74,7 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe selectedByPlayer) {
+    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe heroeSelectedByPlayer) {
 
         List<String> heroeNames = new ArrayList<>();
         heroesCursor = myInitialDB.getAllHeroes();
@@ -86,26 +87,26 @@ public class GameServicesImpl implements GameServices {
         }
         heroesCursor.close();
 
-        heroeNames.remove(selectedByPlayer.getNombre());
+        heroeNames.remove(heroeSelectedByPlayer.getNombre());
 
         //Selecciona un número aleatorio entre 0 y 5, ambos incluidos (heroeNames.size()=6)
         int randomNumber = (int)(Math.random() * heroeNames.size());
         String randomHeroeNameSelected = heroeNames.get(randomNumber);
 
-        Heroe heroe = new Heroe(randomHeroeNameSelected, getCristalesFromAHeroe(randomHeroeNameSelected));
+        Heroe heroeDummyPlayer = new Heroe(randomHeroeNameSelected, getCristalesFromAHeroe(randomHeroeNameSelected));
 
-        return heroe;
+        return heroeDummyPlayer;
     }
 
     @Override
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
-        ArrayList<CartaAccionBasica> cartaAccionBasicas = getBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+        List<CartaAccionBasica> cartaAccionBasicasBarajadas = getBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
         //Barajar aleatoriamente la baraja de cartas de Acción Básica del Jugador Virtual
-        Collections.shuffle(cartaAccionBasicas);
+        Collections.shuffle(cartaAccionBasicasBarajadas);
 
-        return cartaAccionBasicas;
+        return cartaAccionBasicasBarajadas;
     }
 
     @Override
@@ -149,7 +150,6 @@ public class GameServicesImpl implements GameServices {
 
                 if(numeroCartaTable==basicActionCardNumber){
                     nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex("NOMBRE"));
-                    cartasCursor.close();
                     ++i;
                 }
             }while(cartasCursor.moveToNext() && i < 1);
@@ -163,43 +163,79 @@ public class GameServicesImpl implements GameServices {
 
                 if(numeroCartaTable==basicActionCardNumber){
                     cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("COLOR"));
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_BASICA"));
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_AVANZADA"));
                     ++i;
                 }
             }while(cartasAccionesCursor.moveToNext() && i < 1);
         }
-
-        if (cartasAccionesCursor.moveToFirst()){
-            int i = 0;
-            do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
-
-                if(numeroCartaTable==basicActionCardNumber){
-                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_BASICA"));
-                    ++i;
-                }
-            }while(cartasAccionesCursor.moveToNext()&& i < 1);
-        }
-
-        if (cartasAccionesCursor.moveToFirst()){
-            int i = 0;
-            do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
-
-                if(numeroCartaTable==basicActionCardNumber){
-                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_AVANZADA"));
-                    cartasAccionesCursor.close();
-                    ++i;
-                }
-            }while(cartasAccionesCursor.moveToNext()&& i < 1);
-        }
+        cartasAccionesCursor.close();
 
         CartaAccionBasica cartaAccionBasica = new CartaAccionBasica(basicActionCardNumber, nombreCarta, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, false, randomHeroeDummyPlayer);
 
         return cartaAccionBasica;
     }
 
+    @Override
+    public List<FichaHabilidad> getShuffledSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
+        List<FichaHabilidad> fichasHabilidadesBarajadas = getSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
+        //Barajar aleatoriamente las fichas de Habilidad del Jugador Virtual
+        Collections.shuffle(fichasHabilidadesBarajadas);
+
+        return fichasHabilidadesBarajadas;
+    }
+
+    @Override
+    public List<FichaHabilidad> getSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
+
+        ArrayList<FichaHabilidad> fichasHabilidades = new ArrayList<FichaHabilidad>();
+        fichasHabilidadesCursor = myInitialDB.getAllFichasHabilidad();
+
+        if (fichasHabilidadesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                String heroeNameTable = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("HEROE"));
+
+                if(heroeNameTable.equals(randomHeroeDummyPlayer.getNombre())){
+                    int numeroFichaHabilidad = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex("ID"));
+                    fichasHabilidades.add(getSkillToken(numeroFichaHabilidad, randomHeroeDummyPlayer));
+                    ++i;
+                }
+            }while(fichasHabilidadesCursor.moveToNext() && i<10);
+        }
+        fichasHabilidadesCursor.close();
+
+        return fichasHabilidades;
+    }
+
+    @Override
+    public FichaHabilidad getSkillToken(int id, Heroe randomHeroeDummyPlayer) {
+
+        fichasHabilidadesCursor = myInitialDB.getAllFichasHabilidad();
+
+        String nombre = "";
+        String descripcion = "";
+
+        if (fichasHabilidadesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex("ID"));
+
+                if(numeroCartaTable==id){
+                    nombre = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("NOMBRE"));
+                    descripcion = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("DESCRIPCION"));
+                    ++i;
+                }
+            }while(fichasHabilidadesCursor.moveToNext() && i < 1);
+        }
+        fichasHabilidadesCursor.close();
+
+        FichaHabilidad fichaHabilidad = new FichaHabilidad(id, nombre, descripcion, randomHeroeDummyPlayer);
+
+        return fichaHabilidad;
+    }
 
 
     @Override

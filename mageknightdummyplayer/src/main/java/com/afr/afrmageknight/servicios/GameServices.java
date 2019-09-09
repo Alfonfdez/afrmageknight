@@ -21,10 +21,10 @@ public interface GameServices {
     //Método para recoger todos los cristales iniciales de un héroe en concreto
     public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName);
 
-    //Método para seleccionar aleatoriamente un héroe a partir de la selección de un único héroe por parte del jugador
-    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe selectedByPlayer);
+    //Método para obtener aleatoriamente un héroe a partir de la selección de un único héroe por parte del jugador
+    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe heroeSelectedByPlayer);
 
-    //Método para seleccionar todas las cartas de Acción Básica del Jugador Virtual y obtenerlas ya barajadas
+    //Método para obtener todas las cartas de Acción Básica del Jugador Virtual ya barajadas
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
 
     //Método para obtener todas las cartas de Acción Básica del Jugador Virtual
@@ -32,6 +32,16 @@ public interface GameServices {
 
     //Método para obtener una carta de Acción Básica
     public CartaAccionBasica getBasicActionCard(int basicActionCardNumber, Heroe randomHeroeDummyPlayer);
+
+    //Método para obtener todas las fichas de Habilidad del Jugador Virtual ya barajadas
+    public List<FichaHabilidad> getShuffledSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
+
+    //Método para obtener todas las fichas de Habilidad del Jugador Virtual
+    public List<FichaHabilidad> getSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
+
+    //Método para obtener una ficha de Habilidad
+    public FichaHabilidad getSkillToken(int id, Heroe randomHeroeDummyPlayer);
+
 
 
 

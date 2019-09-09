@@ -30,11 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    //private DatabaseHelperInsertInitialData myDB;
-    private DatabaseHelper myDB;
-    //private DatabaseHelper myGameDB;
-
-    private DatabaseHelperInsertInitialData myInitialDB;
+    private DatabaseHelper myInitialDB;
     private DatabaseHelperInsertGameData myGameDB;
 
     private GameServices gameServices;
@@ -59,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myDB = new DatabaseHelperInsertInitialData(this);
         myInitialDB = new DatabaseHelperInsertInitialData(this);
         myGameDB = new DatabaseHelperInsertGameData(this);
 
@@ -88,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("DATABASE","INSERT ALL DATA ON DATABASE");
 
-                myDB.insertAllData();
+                myInitialDB.insertAllData();
             }
         });
 
@@ -109,36 +104,21 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         myGameDB.insertDataGameMode(TipoPartida.SOLITARIO);
 
-                        //Cursor heroesCursor = myInitialDB.getAllHeroes();
-                        Cursor heroesCristalesCursor = myInitialDB.getAllHeroesCristales();
-                        Cursor cartasCursor = myInitialDB.getAllCartas();
-                        Cursor cartasAccionesCursor = myInitialDB.getAllCartasAcciones();
-                        Cursor cartasAccionesBasicasCursor = myInitialDB.getAllCartasAccionesBasicas();
-
                         switch(radioGroupHeroes.getCheckedRadioButtonId()){
 
                             case R.id.idRadioButtonArythea:
 
-                                Heroe heroe = gameServices.getAHeroeSelectedByPlayer("Arythea");
-                                myGameDB.insertDataHeroeSelectedByPlayer(heroe);
+                                Heroe heroeSelectedByPlayer = gameServices.getAHeroeSelectedByPlayer("Arythea");
+                                myGameDB.insertDataHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
-                                Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroe);
+                                Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
                                 myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
 
                                 List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServices.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
                                 myGameDB.insertAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
 
-                                /*Heroe heroe = gameServicesImpl.getAHeroe("Arythea", heroesCristalesCursor);
-                                myGameDB.insertDataHeroeSelectedByPlayer(heroe);
-
-                                Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroe, heroesCristalesCursor);
-                                myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
-
-                                List<CartaAccionBasica> cartaAccionBasicas = gameServicesImpl.getShuffledCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer,cartasCursor,cartasAccionesCursor,cartasAccionesBasicasCursor);
-                                myGameDB.insertDataShuffledCardsHeroeSelectedByDummyPlayer(cartaAccionBasicas);
-
-                                List<FichaHabilidad> fichaHabilidades = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-                                myGameDB.insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(fichaHabilidades);*/
+                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServices.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                myGameDB.insertAllSkillTokensFromDummyPlayer(fichaHabilidadesBarajadasDummyPlayer);
 
                                 break;
 
