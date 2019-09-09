@@ -15,40 +15,32 @@ import java.util.List;
 
 public interface GameServices {
 
-    // Método que devuelve 1 héroe del juego mediante un Cursor como parámetro
-    public Heroe getAHeroe(String heroeName, Cursor heroesCristalesCursor);
+    // Método que devuelve 1 héroe concreto seleccionado por el jugador
+    public Heroe getAHeroeSelectedByPlayer(String heroeName);
 
-    // Método que devuelve los héroes del juego mediante un Cursor como parámetro
-    public List<Heroe> getAllHeroes(Cursor heroesCursor, Cursor heroesCristalesCursor);
-
-    // Método que devuelve todos los cristales que perteneces a cada héroe
-    public List<Cristal> getHeroeCristal(String heroeName, Cursor heroesCristalesCursor);
+    //Método para recoger todos los cristales iniciales de un héroe en concreto
+    public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName);
 
     //Método para seleccionar aleatoriamente un héroe a partir de la selección de un único héroe por parte del jugador
-    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe selectedByPlayer, Cursor heroesCristalesCursor);
-
-    /**
-     *  Método para seleccionar aleatoriamente el héroe que controlará el Jugador Virtual a partir de los héroes no seleccionados por los jugadores
-     *
-     * @param selectedByPlayer
-     * @return
-     */
-    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer);
+    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe selectedByPlayer);
 
     //Método para seleccionar todas las cartas de Acción Básica del Jugador Virtual y obtenerlas ya barajadas
-    public List<CartaAccionBasica> getShuffledCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer, Cursor cartasCursor, Cursor cartasAccionesCursor, Cursor cartasAccionesBasicasCursor);
+    public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
 
-    //Método para obtener nombre de una Carta
-    public String getCartaNombre(int numeroCarta, Cursor cartasCursor);
+    //Método para obtener todas las cartas de Acción Básica del Jugador Virtual
+    public List<CartaAccionBasica> getBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
 
-    //Método para obtener el cristal de una Carta
-    public String getCartaCristal(int numeroCarta, Cursor cartasAccionesCursor);
+    //Método para obtener una carta de Acción Básica
+    public CartaAccionBasica getBasicActionCard(int basicActionCardNumber, Heroe randomHeroeDummyPlayer);
 
-    //Método para obtener la descripcion básica de una Carta
-    public String getCartaDescripcionBasica(int numeroCarta, Cursor cartasAccionesCursor);
 
-    //Método para obtener la descripcion avanzada de una Carta
-    public String getCartaDescripcionAvanzada(int numeroCarta, Cursor cartasAccionesCursor);
+
+
+    //Método para seleccionar aleatoriamente el héroe que controlará el Jugador Virtual a partir de los héroes no seleccionados por los jugadores
+    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer);
+
+    // Método que devuelve todos los héroes del juego
+    public List<Heroe> getAllHeroes();
 
     // Método para selecionar el mazo inicial de Gesta del Jugador Virtual: las correspondientes 16 cartas de su héroe
     public List<Carta> getDummyPlayerCards(Heroe heroe);

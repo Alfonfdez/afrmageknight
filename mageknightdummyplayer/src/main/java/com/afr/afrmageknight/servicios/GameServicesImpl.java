@@ -23,6 +23,16 @@ public class GameServicesImpl implements GameServices {
 
     //I - Declarar las variables
     private DatabaseHelper databaseHelper = null;
+    private DatabaseHelperInsertInitialData myInitialDB;
+    private Cursor heroesCursor;
+    private Cursor heroesCristalesCursor;
+    private Cursor cartasCursor;
+    private Cursor cartasAccionesCursor;
+    private Cursor cartasAccionesBasicasCursor;
+    private Cursor cartasAccionesAvanzadasCursor;
+    private Cursor cartasAccionesAvanzadasEspecialesCursor;
+    private Cursor cartasHechizosCursor;
+    private Cursor cartasTacticasCursor;
 
     public GameServicesImpl (Context context){
         this.databaseHelper = new DatabaseHelperInsertInitialData(context);
@@ -30,126 +40,67 @@ public class GameServicesImpl implements GameServices {
 
     // Implementar los métodos de la interfaz 'GameServices'
     @Override
-    public Heroe getAHeroe(String heroeName, Cursor heroesCristalesCursor) {
+    public Heroe getAHeroeSelectedByPlayer(String heroeName) {
 
-        ArrayList<Cristal> cristales = new ArrayList<Cristal>();
-
-        if (heroesCristalesCursor.moveToFirst()){
-            do{
-                String heroeNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("NOMBRE"));
-
-                if(heroeNameTable.equals(heroeName)){
-                    String cristalNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("CRISTAL"));
-
-                    cristales.add(Cristal.valueOf(cristalNameTable));
-                }
-
-            }while(heroesCristalesCursor.moveToNext());
-        }
-
-        heroesCristalesCursor.close();
-
-        Heroe heroe = new Heroe(heroeName, cristales);
+        Heroe heroe = new Heroe(heroeName, getCristalesFromAHeroe(heroeName));
 
         return heroe;
     }
 
     @Override
-    public List<Heroe> getAllHeroes(Cursor heroesCursor, Cursor heroesCristalesCursor) {
-        List<Heroe> heroes = new ArrayList<Heroe>();
+    public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName) {
 
-        if (heroesCursor.moveToFirst()){
-            do{
-                String heroeName = heroesCursor.getString(heroesCursor.getColumnIndex("NOMBRE"));
-
-                ArrayList<Cristal> heroeCristales = getHeroeCristal(heroeName, heroesCristalesCursor);
-
-                Heroe heroe = new Heroe(heroeName, heroeCristales);
-
-                heroes.add(heroe);
-
-            }while(heroesCursor.moveToNext());
-        }
-
-        heroesCursor.close();
-
-        return heroes;
-    }
-
-    @Override
-    public ArrayList<Cristal> getHeroeCristal(String heroeName, Cursor heroesCristalesCursor) {
+        heroesCristalesCursor = myInitialDB.getAllHeroesCristales();
 
         ArrayList<Cristal> cristales = new ArrayList<Cristal>();
 
         if (heroesCristalesCursor.moveToFirst()){
+            int i = 0;
             do{
                 String heroeNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("NOMBRE"));
 
                 if(heroeNameTable.equals(heroeName)){
                     String cristalNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("CRISTAL"));
-
                     cristales.add(Cristal.valueOf(cristalNameTable));
+                    ++i;
                 }
 
-            }while(heroesCristalesCursor.moveToNext());
+            }while(heroesCristalesCursor.moveToNext() && i<3);
         }
-
         heroesCristalesCursor.close();
 
         return cristales;
     }
 
     @Override
-    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe selectedByPlayer, Cursor heroesCristalesCursor) {
+    public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe selectedByPlayer) {
 
         List<String> heroeNames = new ArrayList<>();
-        Collections.addAll( heroeNames, "Arythea","Tovak","Norowas","Goldyx","Wolfhawk","Krang","Braevalar");
+        heroesCursor = myInitialDB.getAllHeroes();
 
-        String heroeName = selectedByPlayer.getNombre();
-        heroeNames.remove(heroeName);
+        if(heroesCursor.moveToFirst()){
+            do{
+                String heroNameTable = heroesCursor.getString(heroesCursor.getColumnIndex("NOMBRE"));
+                heroeNames.add(heroNameTable);
+            }while(heroesCursor.moveToNext());
+        }
+        heroesCursor.close();
 
-        //Selecciona un número aleatorio entre 0 y 5, ambos incluidos
-        int randomNumber = (int)(Math.random() * 6);
+        heroeNames.remove(selectedByPlayer.getNombre());
 
+        //Selecciona un número aleatorio entre 0 y 5, ambos incluidos (heroeNames.size()=6)
+        int randomNumber = (int)(Math.random() * heroeNames.size());
         String randomHeroeNameSelected = heroeNames.get(randomNumber);
 
-        ArrayList<Cristal> cristales = getHeroeCristal(randomHeroeNameSelected, heroesCristalesCursor);
-
-        Heroe heroe = new Heroe(randomHeroeNameSelected, cristales);
+        Heroe heroe = new Heroe(randomHeroeNameSelected, getCristalesFromAHeroe(randomHeroeNameSelected));
 
         return heroe;
     }
 
     @Override
-    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer) {
-        return null;
-    }
+    public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
-    @Override
-    public List<CartaAccionBasica> getShuffledCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer, Cursor cartasCursor, Cursor cartasAccionesCursor, Cursor cartasAccionesBasicasCursor) {
-
-        ArrayList<CartaAccionBasica> cartaAccionBasicas = new ArrayList<CartaAccionBasica>();
-
-        if (cartasAccionesBasicasCursor.moveToFirst()){
-            do{
-                String heroeNameTable = cartasAccionesBasicasCursor.getString(cartasAccionesBasicasCursor.getColumnIndex("HEROE"));
-
-                if(heroeNameTable.equals(randomHeroeDummyPlayer.getNombre())){
-                    int numeroCartaBasica = cartasAccionesBasicasCursor.getInt(cartasAccionesBasicasCursor.getColumnIndex("NUMERO"));
-                    String nombreCarta = getCartaNombre(numeroCartaBasica, cartasCursor);
-                    String cristalColor = getCartaCristal(numeroCartaBasica, cartasAccionesCursor);
-                    String descripcionBasica = getCartaDescripcionBasica(numeroCartaBasica, cartasAccionesCursor);
-                    String descripcionAvanzada= getCartaDescripcionAvanzada(numeroCartaBasica, cartasAccionesCursor);
-
-                    CartaAccionBasica cartaAccionBasica = new CartaAccionBasica(numeroCartaBasica, nombreCarta, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, false, randomHeroeDummyPlayer);
-
-                    cartaAccionBasicas.add(cartaAccionBasica);
-                }
-
-            }while(cartasAccionesBasicasCursor.moveToNext());
-        }
-
-        cartasAccionesBasicasCursor.close();
+        ArrayList<CartaAccionBasica> cartaAccionBasicas = getBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
         //Barajar aleatoriamente la baraja de cartas de Acción Básica del Jugador Virtual
         Collections.shuffle(cartaAccionBasicas);
@@ -158,92 +109,106 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public String getCartaNombre(int numeroCarta, Cursor cartasCursor) {
+    public ArrayList<CartaAccionBasica> getBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
+
+        ArrayList<CartaAccionBasica> cartaAccionBasicas = new ArrayList<CartaAccionBasica>();
+        cartasAccionesBasicasCursor = myInitialDB.getAllCartasAccionesBasicas();
+
+        if (cartasAccionesBasicasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                String heroeNameTable = cartasAccionesBasicasCursor.getString(cartasAccionesBasicasCursor.getColumnIndex("HEROE"));
+
+                if(heroeNameTable.equals(randomHeroeDummyPlayer.getNombre())){
+                    int numeroCartaBasica = cartasAccionesBasicasCursor.getInt(cartasAccionesBasicasCursor.getColumnIndex("NUMERO"));
+                    cartaAccionBasicas.add(getBasicActionCard(numeroCartaBasica, randomHeroeDummyPlayer));
+                    ++i;
+                }
+            }while(cartasAccionesBasicasCursor.moveToNext() && i<16);
+        }
+        cartasAccionesBasicasCursor.close();
+
+        return cartaAccionBasicas;
+    }
+
+    @Override
+    public CartaAccionBasica getBasicActionCard(int basicActionCardNumber, Heroe randomHeroeDummyPlayer) {
+
+        cartasCursor = myInitialDB.getAllCartas();
+        cartasAccionesCursor = myInitialDB.getAllCartasAcciones();
+
+        String nombreCarta = "";
+        String cristalColor = "";
+        String descripcionBasica = "";
+        String descripcionAvanzada = "";
 
         if (cartasCursor.moveToFirst()){
+            int i = 0;
             do{
                 int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex("NUMERO"));
 
-                if(numeroCartaTable==numeroCarta){
-                    String nombreCartaTable = cartasCursor.getString(cartasCursor.getColumnIndex("NOMBRE"));
-
+                if(numeroCartaTable==basicActionCardNumber){
+                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex("NOMBRE"));
                     cartasCursor.close();
-
-                    return nombreCartaTable;
+                    ++i;
                 }
-
-            }while(cartasCursor.moveToNext());
+            }while(cartasCursor.moveToNext() && i < 1);
         }
-
         cartasCursor.close();
 
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
+
+                if(numeroCartaTable==basicActionCardNumber){
+                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("COLOR"));
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext() && i < 1);
+        }
+
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
+
+                if(numeroCartaTable==basicActionCardNumber){
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_BASICA"));
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext()&& i < 1);
+        }
+
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
+
+                if(numeroCartaTable==basicActionCardNumber){
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_AVANZADA"));
+                    cartasAccionesCursor.close();
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext()&& i < 1);
+        }
+
+        CartaAccionBasica cartaAccionBasica = new CartaAccionBasica(basicActionCardNumber, nombreCarta, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, false, randomHeroeDummyPlayer);
+
+        return cartaAccionBasica;
+    }
+
+
+
+
+
+    @Override
+    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer) {
         return null;
     }
 
     @Override
-    public String getCartaCristal(int numeroCarta, Cursor cartasAccionesCursor) {
-
-        if (cartasAccionesCursor.moveToFirst()){
-            do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
-
-                if(numeroCartaTable==numeroCarta){
-                    String cristalCartaTable = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("COLOR"));
-
-                    cartasAccionesCursor.close();
-
-                    return cristalCartaTable;
-                }
-
-            }while(cartasAccionesCursor.moveToNext());
-        }
-
-        cartasAccionesCursor.close();
-
-        return null;
-    }
-
-    @Override
-    public String getCartaDescripcionBasica(int numeroCarta, Cursor cartasAccionesCursor) {
-        if (cartasAccionesCursor.moveToFirst()){
-            do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
-
-                if(numeroCartaTable==numeroCarta){
-                    String descripcionBasicaCartaTable = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_BASICA"));
-
-                    cartasAccionesCursor.close();
-
-                    return descripcionBasicaCartaTable;
-                }
-
-            }while(cartasAccionesCursor.moveToNext());
-        }
-
-        cartasAccionesCursor.close();
-
-        return null;
-    }
-
-    @Override
-    public String getCartaDescripcionAvanzada(int numeroCarta, Cursor cartasAccionesCursor) {
-        if (cartasAccionesCursor.moveToFirst()){
-            do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
-
-                if(numeroCartaTable==numeroCarta){
-                    String descripcionAvanzadaCartaTable = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_AVANZADA"));
-
-                    cartasAccionesCursor.close();
-
-                    return descripcionAvanzadaCartaTable;
-                }
-
-            }while(cartasAccionesCursor.moveToNext());
-        }
-
-        cartasAccionesCursor.close();
-
+    public List<Heroe> getAllHeroes() {
         return null;
     }
 
@@ -286,5 +251,6 @@ public class GameServicesImpl implements GameServices {
     public ArrayList<Cristal> getUpdatedDummyPlayerManaCrystals(ArrayList<Cristal> dummyPlayerManaCrystals) {
         return null;
     }
+
 
 }

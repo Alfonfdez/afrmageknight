@@ -119,6 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
                             case R.id.idRadioButtonArythea:
 
+                                Heroe heroe = gameServices.getAHeroeSelectedByPlayer("Arythea");
+                                myGameDB.insertDataHeroeSelectedByPlayer(heroe);
+
+                                Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroe);
+                                myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
+
+                                List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServices.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                myGameDB.insertAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
+
                                 /*Heroe heroe = gameServicesImpl.getAHeroe("Arythea", heroesCristalesCursor);
                                 myGameDB.insertDataHeroeSelectedByPlayer(heroe);
 

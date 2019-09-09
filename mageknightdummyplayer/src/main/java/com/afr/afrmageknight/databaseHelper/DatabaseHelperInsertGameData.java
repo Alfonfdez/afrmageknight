@@ -5,8 +5,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
@@ -14,7 +18,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     public static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
     public static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
     public static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
-    public static final String PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_HEROE_DUMMY";
+    public static final String PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_BASICAS_HEROE_DUMMY";
     public static final String PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY";
 
     //Nombre de las columnas
@@ -28,7 +32,12 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     public static final String COL_1_PARTIDA_HEROE_DUMMY_TABLE = "NOMBRE";
 
     // PARTIDA_CARTAS_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NUMERO";
+    public static final String COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "NUMERO";
+    public static final String COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "NOMBRE";
+    public static final String COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "CRISTAL";
+    public static final String COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
+    public static final String COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
+    public static final String COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCARTADA";
 
     //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
     public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID";
@@ -77,11 +86,16 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         db.execSQL(strSQLPartidaHeroeDummyTable.toString());
 
 
-        //PARTIDA_CARTAS_HEROE_DUMMY_TABLE
+        //PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE
         StringBuilder strSQLPartidaCartasHeroeDummyTable = new StringBuilder();
 
-        strSQLPartidaCartasHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" (")
-                .append(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY")
+        strSQLPartidaCartasHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" (")
+                .append(COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY,")
+                .append(COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" BIT DEFAULT 0")
                 .append(")");
 
         Log.d("DATABASE", strSQLPartidaCartasHeroeDummyTable.toString());
@@ -114,7 +128,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROE_DUMMY_TABLE);
         onCreate(db);
 
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_HEROE_DUMMY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE);
@@ -170,6 +184,34 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
+    }
+
+    public boolean insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer(CartaAccionBasica cartaAccionBasica){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, cartaAccionBasica.getNumero());
+        contentValues.put(COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, cartaAccionBasica.getNombre());
+        contentValues.put(COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, cartaAccionBasica.getColor().toString());
+        contentValues.put(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, cartaAccionBasica.getDescripcionBasica());
+        contentValues.put(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, cartaAccionBasica.getDescripcionAvanzada());
+        contentValues.put(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, cartaAccionBasica.isDescartada());
+
+        long resultado = db.insert(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+    
+    public void insertAllBasicCardsFromDummyPlayer(List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer){
+        int i = 0;
+        while(i<cartasAccionBasicasBarajadasDummyPlayer.size()){
+            insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer.get(i));
+            ++i;
+        }
     }
 
     public void insertAllDataFromOneHeroeSelected(Heroe heroe) {
