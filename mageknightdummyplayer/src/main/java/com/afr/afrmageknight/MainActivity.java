@@ -25,10 +25,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    //private DatabaseHelper myInitialDB;
-    //private DatabaseHelper myGameDB;
-    private DatabaseHelperInsertInitialData myInitialDB;
-    private DatabaseHelperInsertGameData myGameDB;
+    private DatabaseHelper myInitialDB;
+    private DatabaseHelper myGameDB;
+    //private DatabaseHelperInsertInitialData myInitialDB;
+    //private DatabaseHelperInsertGameData myGameDB;
 
     private GameServices gameServices;
 
@@ -95,8 +95,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Botón para insertar toda la información de la partida:
-        // 1) Modo de juego (Solitario/Cooperativo) - 2) Héroes seleccionados por el jugador/los jugadores
-        // 3) Héroe aleatorio del Jugador Virtual (Dummy player) - 4) Barajar aleatoriamente el mazo del héroe del Jugador Virtual
+        // 1) Modo de juego (Solitario/Cooperativo)
+        // 2) Héroes seleccionados por el jugador/los jugadores
+        // 3) Héroe aleatorio del Jugador Virtual (Dummy player)
+        // 4) Barajar aleatoriamente el mazo del héroe del Jugador Virtual
         buttonInsertGameData.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,16 +117,12 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.idRadioButtonArythea:
 
                                 Heroe heroeSelectedByPlayer = gameServices.getAHeroeSelectedByPlayer("Arythea");
-                                //myGameDB.insertDataHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
                                 Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
-                                //myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
 
                                 List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServices.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-                                //myGameDB.createAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
 
                                 List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServices.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-                                //myGameDB.createAllSkillTokensFromDummyPlayer(fichaHabilidadesBarajadasDummyPlayer);
 
                                 myGameDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer);
 

@@ -229,43 +229,29 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public void createTipoPartida(TipoPartida tipoPartida){
+    public TipoPartida createTipoPartida(TipoPartida tipoPartida){
         insertDataGameMode(tipoPartida);
+        return null;
     }
 
-    public void createHeroeSelectedByPlayer(Heroe heroSelectedByPlayer){
+    public Heroe createHeroeSelectedByPlayer(Heroe heroSelectedByPlayer){
         insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
+        return null;
     }
 
-    public void createRandomHeroeDummyPlayer(Heroe randomHeroeDummyPlayer){
+    public Heroe createRandomHeroeDummyPlayer(Heroe randomHeroeDummyPlayer){
         insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
-    }
-    
-    public void createAllBasicCardsFromDummyPlayer(List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer){
-        int i = 0;
-        while(i<cartasAccionBasicasBarajadasDummyPlayer.size()){
-            int numeroCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getNumero();
-            String nombreCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getNombre();
-            String colorCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getColor().toString();
-            String descripcionBasicaCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getDescripcionBasica();
-            String descripcionAvanzadaCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getDescripcionAvanzada();
-            boolean isDescartadaCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).isDescartada();
-
-            insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, colorCartaAccionBasica, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, isDescartadaCartaAccionBasica);
-            ++i;
-        }
+        return null;
     }
 
-    public void createAllSkillTokensFromDummyPlayer(List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer){
-        int i = 0;
-        while(i<fichaHabilidadesBarajadasDummyPlayer.size()){
-            int numeroFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getIdFicha();
-            String nombreFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getNombre();
-            String descripcionFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getDescripcion();
+    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica){
+        insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, colorCartaAccionBasica, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, isDescartadaCartaAccionBasica);
+        return null;
+    }
 
-            insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad);
-            ++i;
-        }
+    public FichaHabilidad createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad){
+        insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad);
+        return null;
     }
 
     @Override
@@ -282,9 +268,23 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
         createRandomHeroeDummyPlayer(randomHeroeDummyPlayer);
 
-        createAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
+        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), false);
+        }
 
-        createAllSkillTokensFromDummyPlayer(fichaHabilidadesBarajadasDummyPlayer);
+        for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
+            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion());
+        }
+
+    }
+
+    @Override
+    public void insertAllDataPartOne() {
+
+    }
+
+    @Override
+    public void insertAllDataPartTwo() {
 
     }
 

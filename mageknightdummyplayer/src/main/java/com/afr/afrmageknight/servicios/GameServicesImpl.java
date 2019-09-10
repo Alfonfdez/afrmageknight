@@ -7,6 +7,7 @@ import android.util.Log;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
 import com.afr.afrmageknight.model.Carta;
+import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
@@ -63,6 +64,9 @@ public class GameServicesImpl implements GameServices {
                 if(heroeNameTable.equals(heroeName)){
                     String cristalNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("CRISTAL"));
                     cristales.add(Cristal.valueOf(cristalNameTable));
+
+                    Log.d("DATABASE","Heroe: "+heroeNameTable+" - Cristal: "+String.valueOf(cristalNameTable));
+
                     ++i;
                 }
 
@@ -105,6 +109,10 @@ public class GameServicesImpl implements GameServices {
 
         //Barajar aleatoriamente la baraja de cartas de Acción Básica del Jugador Virtual
         Collections.shuffle(cartaAccionBasicasBarajadas);
+
+        for(CartaAccionBasica cartaAccionBasica: cartaAccionBasicasBarajadas){
+            Log.d("DATABASE","** Cartas Accion Básica barajadas ** - Número carta Acción Básica: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre()+" - Color: "+cartaAccionBasica.getColor()+ " - Descripción básica: "+cartaAccionBasica.getDescripcionBasica()+ " - Descripción avanzada: "+cartaAccionBasica.getDescripcionAvanzada()+" - Heroe: "+cartaAccionBasica.getHeroe().getNombre());
+        }
 
         return cartaAccionBasicasBarajadas;
     }
@@ -171,6 +179,8 @@ public class GameServicesImpl implements GameServices {
         }
         cartasAccionesCursor.close();
 
+        Log.d("DATABASE","Número carta Acción Básica: "+basicActionCardNumber+" - Nombre: "+nombreCarta+" - Color: "+Cristal.valueOf(cristalColor)+ " - Descripción básica: "+descripcionBasica+ " - Descripción avanzada: "+descripcionAvanzada+" - Heroe: "+randomHeroeDummyPlayer.getNombre());
+
         CartaAccionBasica cartaAccionBasica = new CartaAccionBasica(basicActionCardNumber, nombreCarta, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, false, randomHeroeDummyPlayer);
 
         return cartaAccionBasica;
@@ -183,6 +193,10 @@ public class GameServicesImpl implements GameServices {
 
         //Barajar aleatoriamente las fichas de Habilidad del Jugador Virtual
         Collections.shuffle(fichasHabilidadesBarajadas);
+
+        for(FichaHabilidad fichaHabilidad: fichasHabilidadesBarajadas){
+            Log.d("DATABASE","** Fichas Habilidad barajadas ** - Ficha habilidad número: "+fichaHabilidad.getIdFicha() +" - Nombre: "+fichaHabilidad.getNombre()+" - Descripción: "+fichaHabilidad.getDescripcion()+" - Heroe: "+fichaHabilidad.getHeroe().getNombre());
+        }
 
         return fichasHabilidadesBarajadas;
     }
@@ -203,7 +217,7 @@ public class GameServicesImpl implements GameServices {
                     String nombreFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("NOMBRE"));
                     String descripcionFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("DESCRIPCION"));
 
-                    Log.d("DATABASE","Heroe: "+heroeNameTable+" - Ficha habilidad número: "+String.valueOf(numeroFichaHabilidad) +" - Nombre: "+nombreFichaHabilidad+" - Descripción: "+descripcionFichaHabilidad);
+                    Log.d("DATABASE","Ficha habilidad número: "+numeroFichaHabilidad +" - Nombre: "+nombreFichaHabilidad+" - Descripción: "+descripcionFichaHabilidad+" - Heroe: "+heroeNameTable);
 
                     fichasHabilidades.add(getSkillToken(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, randomHeroeDummyPlayer));
                     ++i;
