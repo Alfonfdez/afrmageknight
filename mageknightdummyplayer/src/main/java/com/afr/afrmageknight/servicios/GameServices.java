@@ -40,8 +40,7 @@ public interface GameServices {
     public List<FichaHabilidad> getSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
 
     //Método para obtener una ficha de Habilidad
-    public FichaHabilidad getSkillToken(int id, Heroe randomHeroeDummyPlayer);
-
+    public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer);
 
 
 

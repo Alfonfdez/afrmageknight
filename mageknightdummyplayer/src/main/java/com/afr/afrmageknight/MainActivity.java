@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton radioButtonKrang;
     private RadioButton radioButtonBraevalar;
 
-    private Button buttonInsertAllData;
+    private Button buttonInsertAllDataOne;
+    private Button buttonInsertAllDataTwo;
     private Button buttonInsertGameData;
     private Button buttonDeleteGameData;
 
@@ -68,18 +69,28 @@ public class MainActivity extends AppCompatActivity {
         radioButtonKrang = (RadioButton) findViewById(R.id.idRadioButtonKrang);
         radioButtonBraevalar = (RadioButton) findViewById(R.id.idRadioButtonBraevalar);
 
-        buttonInsertAllData = (Button) findViewById(R.id.idButtonInsertAllData);
+        buttonInsertAllDataOne = (Button) findViewById(R.id.idButtonInsertAllDataOne);
+        buttonInsertAllDataTwo = (Button) findViewById(R.id.idButtonInsertAllDataTwo);
         buttonInsertGameData = (Button) findViewById(R.id.idButtonInsertAllGameData);
         buttonDeleteGameData = (Button) findViewById(R.id.idButtonDeleteAllGameData);
 
         // Botón para insertar toda la información en la base de datos
-        buttonInsertAllData.setOnClickListener(new View.OnClickListener() {
+        buttonInsertAllDataOne.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                Log.d("DATABASE","INSERT ALL DATA ON DATABASE PART ONE");
+                myInitialDB.insertAllDataPartOne();
+            }
+        });
 
-                Log.d("DATABASE","INSERT ALL DATA ON DATABASE");
-                myInitialDB.insertAllData();
+        // Botón para insertar toda la información en la base de datos
+        buttonInsertAllDataTwo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.d("DATABASE","INSERT ALL DATA ON DATABASE PART TWO");
+                myInitialDB.insertAllDataPartTwo();
             }
         });
 

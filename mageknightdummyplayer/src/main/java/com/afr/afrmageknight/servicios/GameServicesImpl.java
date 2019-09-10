@@ -2,6 +2,7 @@ package com.afr.afrmageknight.servicios;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
@@ -198,8 +199,13 @@ public class GameServicesImpl implements GameServices {
                 String heroeNameTable = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("HEROE"));
 
                 if(heroeNameTable.equals(randomHeroeDummyPlayer.getNombre())){
-                    int numeroFichaHabilidad = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex("ID"));
-                    fichasHabilidades.add(getSkillToken(numeroFichaHabilidad, randomHeroeDummyPlayer));
+                    int numeroFichaHabilidad = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex("ID_FICHA"));
+                    String nombreFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("NOMBRE"));
+                    String descripcionFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("DESCRIPCION"));
+
+                    Log.d("DATABASE","Heroe: "+heroeNameTable+" - Ficha habilidad número: "+String.valueOf(numeroFichaHabilidad) +" - Nombre: "+nombreFichaHabilidad+" - Descripción: "+descripcionFichaHabilidad);
+
+                    fichasHabilidades.add(getSkillToken(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, randomHeroeDummyPlayer));
                     ++i;
                 }
             }while(fichasHabilidadesCursor.moveToNext() && i<10);
@@ -210,28 +216,9 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public FichaHabilidad getSkillToken(int id, Heroe randomHeroeDummyPlayer) {
+    public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer) {
 
-        fichasHabilidadesCursor = myInitialDB.getAllFichasHabilidad();
-
-        String nombre = "";
-        String descripcion = "";
-
-        if (fichasHabilidadesCursor.moveToFirst()){
-            int i = 0;
-            do{
-                int numeroCartaTable = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex("ID"));
-
-                if(numeroCartaTable==id){
-                    nombre = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("NOMBRE"));
-                    descripcion = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("DESCRIPCION"));
-                    ++i;
-                }
-            }while(fichasHabilidadesCursor.moveToNext() && i < 1);
-        }
-        fichasHabilidadesCursor.close();
-
-        FichaHabilidad fichaHabilidad = new FichaHabilidad(id, nombre, descripcion, randomHeroeDummyPlayer);
+        FichaHabilidad fichaHabilidad = new FichaHabilidad(idFicha, nombreFichaHabilidad, descripcionFichaHabilidad, randomHeroeDummyPlayer);
 
         return fichaHabilidad;
     }
