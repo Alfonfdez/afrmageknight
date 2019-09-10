@@ -38,6 +38,12 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     public static final String CARTAS_TACTICAS_TABLE = "CARTAS_TACTICAS";
     public static final String FICHAS_HABILIDAD_TABLE = "FICHAS_HABILIDAD";
 
+    public static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
+    public static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
+    public static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
+    public static final String PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_BASICAS_HEROE_DUMMY";
+    public static final String PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY";
+
     // Nombre de las columnas
     // HEROES_TABLE
     public static final String COL_1_HEROES_TABLE = "NOMBRE";
@@ -85,7 +91,33 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     public static final String COL_1_FICHAS_HABILIDAD_TABLE = "ID_FICHA";
     public static final String COL_2_FICHAS_HABILIDAD_TABLE = "NOMBRE";
     public static final String COL_3_FICHAS_HABILIDAD_TABLE = "DESCRIPCION";
-    public static final String COL_4_FICHAS_HABILIDAD_TABLE = "HEROE";
+    public static final String COL_4_FICHAS_HABILIDAD_TABLE = "DESCARTADA";
+    public static final String COL_5_FICHAS_HABILIDAD_TABLE = "HEROE";
+
+    //PARTIDA_MODO_TABLE
+    public static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
+
+    // PARTIDA_HEROES_JUGADOR_TABLE
+    public static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
+
+    // PARTIDA_HEROE_DUMMY_TABLE
+    public static final String COL_1_PARTIDA_HEROE_DUMMY_TABLE = "NOMBRE";
+
+    // PARTIDA_CARTAS_HEROE_DUMMY_TABLE
+    public static final String COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "NUMERO";
+    public static final String COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "NOMBRE";
+    public static final String COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "CRISTAL";
+    public static final String COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
+    public static final String COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
+    public static final String COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
+
+    //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
+    public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID_FICHA";
+    public static final String COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "NOMBRE";
+    public static final String COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCRIPCION";
+    public static final String COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
 
     //Constructor
     public DatabaseHelperInsertInitialData(Context context) {
@@ -96,7 +128,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("DATABASE", "2º) - ONCREATE_INITIAL DATA");
+        Log.d("DATABASE", " ** 2º) - ONCREATE_INITIAL DATA ** ");
 
         // HEROES_TABLE
         StringBuilder strSQLHeroesTable = new StringBuilder();
@@ -247,13 +279,92 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_1_FICHAS_HABILIDAD_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_4_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL")
+                .append(COL_4_FICHAS_HABILIDAD_TABLE).append(" BIT DEFAULT 0,")
+                .append(COL_5_FICHAS_HABILIDAD_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
         Log.d("DATABASE", "DECIMO PRIMERO - ONCREATE_INITIAL DATA - FICHAS_HABILIDAD_TABLE");
         Log.d("DATABASE", strSQLFichasHabilidadTable.toString());
 
         db.execSQL(strSQLFichasHabilidadTable.toString());
+
+
+
+        Log.d("DATABASE", " ** 2º) - ONCREATE_GAME DATA ** ");
+
+        //PARTIDA_MODO_TABLE
+        StringBuilder strSQLPartidaModoTable = new StringBuilder();
+
+        strSQLPartidaModoTable.append("CREATE TABLE ").append(PARTIDA_MODO_TABLE).append(" (")
+                .append(COL_1_PARTIDA_MODO_TABLE).append(" TEXT PRIMARY KEY")
+                .append(")");
+
+        Log.d("DATABASE", "PRIMERO - ONCREATE_GAME DATA - PARTIDA_MODO_TABLE");
+        Log.d("DATABASE", strSQLPartidaModoTable.toString());
+
+        db.execSQL(strSQLPartidaModoTable.toString());
+
+
+        //PARTIDA_HEROES_JUGADOR_TABLE
+        StringBuilder strSQLPartidaHeroesJugadorTable = new StringBuilder();
+
+        strSQLPartidaHeroesJugadorTable.append("CREATE TABLE ").append(PARTIDA_HEROES_JUGADOR_TABLE).append(" (")
+                .append(COL_1_PARTIDA_HEROES_JUGADOR_TABLE).append(" TEXT PRIMARY KEY")
+                .append(")");
+
+        Log.d("DATABASE", "SEGUNDO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
+        Log.d("DATABASE", strSQLPartidaHeroesJugadorTable.toString());
+
+        db.execSQL(strSQLPartidaHeroesJugadorTable.toString());
+
+
+        //PARTIDA_HEROE_DUMMY_TABLE
+        StringBuilder strSQLPartidaHeroeDummyTable = new StringBuilder();
+
+        strSQLPartidaHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_HEROE_DUMMY_TABLE).append(" (")
+                .append(COL_1_PARTIDA_HEROE_DUMMY_TABLE).append(" TEXT PRIMARY KEY")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", strSQLPartidaHeroeDummyTable.toString());
+
+        db.execSQL(strSQLPartidaHeroeDummyTable.toString());
+
+
+        //PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE
+        StringBuilder strSQLPartidaCartasHeroeDummyTable = new StringBuilder();
+
+        strSQLPartidaCartasHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" (")
+                .append(COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY,")
+                .append(COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" BIT DEFAULT 0,")
+                .append(COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", strSQLPartidaCartasHeroeDummyTable.toString());
+
+        db.execSQL(strSQLPartidaCartasHeroeDummyTable.toString());
+
+
+        //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
+        StringBuilder strSQLPartidaFichasHabilidadHeroeDummyTable = new StringBuilder();
+
+        strSQLPartidaFichasHabilidadHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" (")
+                .append(COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY,")
+                .append(COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" BIT DEFAULT 0,")
+                .append(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
+
+        db.execSQL(strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
 
     }
 
@@ -291,6 +402,22 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + FICHAS_HABILIDAD_TABLE);
+        onCreate(db);
+
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_MODO_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROES_JUGADOR_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROE_DUMMY_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE);
         onCreate(db);
 
     }
@@ -366,7 +493,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaAccion(int numero, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada){
+    public boolean insertDataCartaAccion(int numero, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean isDescartada){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -378,7 +505,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         contentValues.put(COL_2_CARTAS_ACCIONES_TABLE, color.toString());
         contentValues.put(COL_3_CARTAS_ACCIONES_TABLE, descripcionBasica);
         contentValues.put(COL_4_CARTAS_ACCIONES_TABLE, descripcionAvanzada);
-        contentValues.put(COL_5_CARTAS_ACCIONES_TABLE, descartada);
+        contentValues.put(COL_5_CARTAS_ACCIONES_TABLE, isDescartada);
 
         long resultado = db.insert(CARTAS_ACCIONES_TABLE, null, contentValues);
 
@@ -481,7 +608,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataFichaHabilidad(int id, String nombre, String descripcion, Heroe heroe){
+    public boolean insertDataFichaHabilidad(int id, String nombre, String descripcion, boolean isDescartada, Heroe heroe){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -492,7 +619,8 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         contentValues.put(COL_1_FICHAS_HABILIDAD_TABLE, id);
         contentValues.put(COL_2_FICHAS_HABILIDAD_TABLE, nombre);
         contentValues.put(COL_3_FICHAS_HABILIDAD_TABLE, descripcion);
-        contentValues.put(COL_4_FICHAS_HABILIDAD_TABLE, heroe.getNombre());
+        contentValues.put(COL_4_FICHAS_HABILIDAD_TABLE, isDescartada);
+        contentValues.put(COL_5_FICHAS_HABILIDAD_TABLE, heroe.getNombre());
 
         long resultado = db.insert(FICHAS_HABILIDAD_TABLE, null, contentValues);
 
@@ -683,7 +811,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
     //Insertar datos de la Ficha de Habilidad en su correspondiente tabla
     public FichaHabilidad createFicha(FichaHabilidad fichaHabilidad){
-        insertDataFichaHabilidad(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.getHeroe());
+        insertDataFichaHabilidad(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(),  fichaHabilidad.isDescartada(), fichaHabilidad.getHeroe());
 
         return null;
     }
@@ -987,88 +1115,89 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
         // Las 70 Fichas de Habilidad
         // 10 Fichas de Habilidad de Arythea
-        createFicha(new FichaHabilidad(1, "CAMINOS OSCUROS", "Una vez por turno: Movimiento 1 (durante el Día), o Movimiento 2 (durante la Noche).", arythea));
-        createFicha(new FichaHabilidad(2, "PODER ABRASADOR", "Una vez por turno: Ataque de Asedio 1, o Ataque de Asedio de Fuego 1.", arythea));
-        createFicha(new FichaHabilidad(3, "ESPADA ARDIENTE", "Una vez por turno: Ataque 2, o Ataque de Fuego 2.", arythea));
-        createFicha(new FichaHabilidad(4, "NEGOCIACIÓN TURBIA", "Una vez por turno: Influencia 2 (durante el Día) o Influencia 3 (durante la Noche).", arythea));
-        createFicha(new FichaHabilidad(5, "MAGIA OSCURA DE FUEGO", "Una vez por ronda: Voltea para ganar 1 cristal rojo para tu inventario y 1 ficha de maná rojo o negro.", arythea));
-        createFicha(new FichaHabilidad(6, "EL PODER DEL DOLOR", "Una vez por turno: Puedes jugar 1 Herida girada como si no fuese una carta de Herida. Otorga +2 en vez de +1. Al final de tu turno, coloca esa Herida en tu pila de descarte.", arythea));
-        createFicha(new FichaHabilidad(7, "INVOCACIÓN", "Una vez por turno: Descarta 1 carta de Herida para ganar 1 ficha de maná rojo o negro, o descarta 1 carta que no sea Herida para ganar 1 ficha de maná verde o blanco. El maná conseguido de esta manera debe ser usado inmediatamente, o no podrás usar esta Habilidad.", arythea));
-        createFicha(new FichaHabilidad(8, "POLARIZACIÓN", "Una vez por turno: Puedes usar 1 maná como maná del color opuesto (ver el diagrama). Durante el día, puedes usar maná negro como si fuera otro color (no puedes usarlo como maná negro para potenciar los Hechizos). Durante la noche, puedes usar maná dorado como si fuera maná negro y potenciar un Hechizo, pero no como cualquier otro color.", arythea));
-        createFicha(new FichaHabilidad(9, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná rojo. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", arythea));
-        createFicha(new FichaHabilidad(10, "RITUAL DEL DOLOR", "Una vez por ronda, excepto durante el combate: Retira hasta 2 cartas de Herida de tu mano. Coloca esta ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para jugar una carta de Herida girada como si no fuera una carta de Herida, y obtener +3 en vez de +1.", arythea));
+        createFicha(new FichaHabilidad(1, "CAMINOS OSCUROS", "Una vez por turno: Movimiento 1 (durante el Día), o Movimiento 2 (durante la Noche).",false, arythea));
+        createFicha(new FichaHabilidad(2, "PODER ABRASADOR", "Una vez por turno: Ataque de Asedio 1, o Ataque de Asedio de Fuego 1.",false, arythea));
+        createFicha(new FichaHabilidad(3, "ESPADA ARDIENTE", "Una vez por turno: Ataque 2, o Ataque de Fuego 2.",false, arythea));
+        createFicha(new FichaHabilidad(4, "NEGOCIACIÓN TURBIA", "Una vez por turno: Influencia 2 (durante el Día) o Influencia 3 (durante la Noche).",false, arythea));
+        createFicha(new FichaHabilidad(5, "MAGIA OSCURA DE FUEGO", "Una vez por ronda: Voltea para ganar 1 cristal rojo para tu inventario y 1 ficha de maná rojo o negro.",false, arythea));
+        createFicha(new FichaHabilidad(6, "EL PODER DEL DOLOR", "Una vez por turno: Puedes jugar 1 Herida girada como si no fuese una carta de Herida. Otorga +2 en vez de +1. Al final de tu turno, coloca esa Herida en tu pila de descarte.",false, arythea));
+        createFicha(new FichaHabilidad(7, "INVOCACIÓN", "Una vez por turno: Descarta 1 carta de Herida para ganar 1 ficha de maná rojo o negro, o descarta 1 carta que no sea Herida para ganar 1 ficha de maná verde o blanco. El maná conseguido de esta manera debe ser usado inmediatamente, o no podrás usar esta Habilidad.",false, arythea));
+        createFicha(new FichaHabilidad(8, "POLARIZACIÓN", "Una vez por turno: Puedes usar 1 maná como maná del color opuesto (ver el diagrama). Durante el día, puedes usar maná negro como si fuera otro color (no puedes usarlo como maná negro para potenciar los Hechizos). Durante la noche, puedes usar maná dorado como si fuera maná negro y potenciar un Hechizo, pero no como cualquier otro color.",false, arythea));
+        createFicha(new FichaHabilidad(9, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná rojo. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, arythea));
+        createFicha(new FichaHabilidad(10, "RITUAL DEL DOLOR", "Una vez por ronda, excepto durante el combate: Retira hasta 2 cartas de Herida de tu mano. Coloca esta ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para jugar una carta de Herida girada como si no fuera una carta de Herida, y obtener +3 en vez de +1.",false, arythea));
 
         // 10 Fichas de Habilidad de Tovak
-        createFicha(new FichaHabilidad(11, "DOBLE RITMO", "Una vez por turno: Movimiento 2 (durante el día), o Movimiento 1 (durante la Noche).", tovak));
-        createFicha(new FichaHabilidad(12, "PUNTERÍA DE NOCHE", "Una vez por turno: Ataque a Distancia 2 (durante la Noche), o Ataque a Distancia 1 (durante el Día).", tovak));
-        createFicha(new FichaHabilidad(13, "ESPADA GÉLIDA", "Una vez por turno: Ataque 2, o Ataque de Hielo 2.", tovak));
-        createFicha(new FichaHabilidad(14, "DOMINIO DEL ESCUDO", "Una vez por turno: Bloqueo 3, o Bloqueo de Hielo 2, o Bloqueo de Fuego 2.", tovak));
-        createFicha(new FichaHabilidad(15, "RESISTENCIA QUEBRADA", "Una vez por turno: Escoge 1 ficha de enemigo. Obtiene Armadura -1 por cada resistencia que tenga (hasta un mínimo de 1).", tovak));
-        createFicha(new FichaHabilidad(16, "NO SIENTO DOLOR…", "Una vez por turno, excepto durante el combate: Descarta 1 Herida de tu mano. Si lo haces, roba 1 carta.", tovak));
-        createFicha(new FichaHabilidad(17, "¡NO ME IMPORTA NADA!", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si es una Acción Avanzada, Hechizo o Artefacto, otorga +3.", tovak));
-        createFicha(new FichaHabilidad(18, "¿QUIÉN NECESITA MAGIA?", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si no usas ningún dado de maná de la Fuente en este turno, otorga +3.", tovak));
-        createFicha(new FichaHabilidad(19, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná azul. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", tovak));
-        createFicha(new FichaHabilidad(20, "SOBRECARGA DE MANÁ", "Una vez por Ronda: Elige un color que no sea dorado y gana 1 ficha de maná de ese color. Coloca esta ficha de Habilidad en el centro y márcala con una segunda ficha de maná de ese color. El primer jugador que utilice maná de ese color para potenciar una carta que otorgue Movimiento, Influencia, o cualquier tipo de Ataque o Bloqueo, obtiene +4 para esa carta y te devuelve la ficha de Habilidad, boca abajo.", tovak));
+        createFicha(new FichaHabilidad(11, "DOBLE RITMO", "Una vez por turno: Movimiento 2 (durante el día), o Movimiento 1 (durante la Noche).",false, tovak));
+        createFicha(new FichaHabilidad(12, "PUNTERÍA DE NOCHE", "Una vez por turno: Ataque a Distancia 2 (durante la Noche), o Ataque a Distancia 1 (durante el Día).",false, tovak));
+        createFicha(new FichaHabilidad(13, "ESPADA GÉLIDA", "Una vez por turno: Ataque 2, o Ataque de Hielo 2.",false, tovak));
+        createFicha(new FichaHabilidad(14, "DOMINIO DEL ESCUDO", "Una vez por turno: Bloqueo 3, o Bloqueo de Hielo 2, o Bloqueo de Fuego 2.",false, tovak));
+        createFicha(new FichaHabilidad(15, "RESISTENCIA QUEBRADA", "Una vez por turno: Escoge 1 ficha de enemigo. Obtiene Armadura -1 por cada resistencia que tenga (hasta un mínimo de 1).",false, tovak));
+        createFicha(new FichaHabilidad(16, "NO SIENTO DOLOR…", "Una vez por turno, excepto durante el combate: Descarta 1 Herida de tu mano. Si lo haces, roba 1 carta.",false, tovak));
+        createFicha(new FichaHabilidad(17, "¡NO ME IMPORTA NADA!", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si es una Acción Avanzada, Hechizo o Artefacto, otorga +3.",false, tovak));
+        createFicha(new FichaHabilidad(18, "¿QUIÉN NECESITA MAGIA?", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si no usas ningún dado de maná de la Fuente en este turno, otorga +3.",false, tovak));
+        createFicha(new FichaHabilidad(19, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná azul. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, tovak));
+        createFicha(new FichaHabilidad(20, "SOBRECARGA DE MANÁ", "Una vez por Ronda: Elige un color que no sea dorado y gana 1 ficha de maná de ese color. Coloca esta ficha de Habilidad en el centro y márcala con una segunda ficha de maná de ese color. El primer jugador que utilice maná de ese color para potenciar una carta que otorgue Movimiento, Influencia, o cualquier tipo de Ataque o Bloqueo, obtiene +4 para esa carta y te devuelve la ficha de Habilidad, boca abajo.",false, tovak));
 
         // 10 Fichas de Habilidad de Norowas
-        createFicha(new FichaHabilidad(21, "¡MARCHA LIGERA!", "Una vez por turno: Gana Movimiento 1 por cada Unidad Preparada y no Herida que controles, hasta un máximo de Movimiento 3.", norowas));
-        createFicha(new FichaHabilidad(22, "PUNTERÍA DE DÍA", "Una vez por turno: Ataque a Distancia 2 (durante el Día), o Ataque a Distancia 1 (durante la Noche).", norowas));
-        createFicha(new FichaHabilidad(23, "INSPIRACIÓN", "Una vez por Ronda, excepto durante el combate: Voltea para Preparar o Curar 1 Unidad.", norowas));
-        createFicha(new FichaHabilidad(24, "NEGOCIACIÓN INGENIOSA", "Una vez por turno: Influencia 3 (durante el Día), o Influencia 2 (durante la Noche).", norowas));
-        createFicha(new FichaHabilidad(25, "HOJAS EN EL VIENTO", "Una vez por Ronda: Voltea para ganar 1 cristal verde para tu inventario y 1 ficha de maná blanco.", norowas));
-        createFicha(new FichaHabilidad(26, "SUSURRO EN LOS ÁRBOLES", "Una vez por Ronda: Voltea para ganar 1 cristal blanco para tu inventario y 1 ficha de maná verde.", norowas));
-        createFicha(new FichaHabilidad(27, "LIDERAZGO", "Una vez por turno: Cuando actives una Unidad, añade +3 a su Bloqueo, o +2 a su Ataque, o +1 a su Ataque a Distancia (no de Asedio), sin importar su elemento.", norowas));
-        createFicha(new FichaHabilidad(28, "VÍNCULOS DE LEALTAD", "Cuando obtengas esta Habilidad, añade 2 Unidades Básicas a la oferta de Unidades. Coloca esta ficha de Habilidad en tu área de Unidades como si fuese una ficha de Mando. Reclutar 1 Unidad y colocarla debajo de esta ficha te cuesta 5 puntos de Influencia menos (mínimo 0). Esta Unidad se puede utilizar incluso cuando el uso de Unidades no esté permitido. No puedes disolverla.", norowas));
-        createFicha(new FichaHabilidad(29, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná blanco. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", norowas));
-        createFicha(new FichaHabilidad(30, "CALMANDO EL TIEMPO", "Una vez por Ronda: El coste de Movimiento de todos los terrenos se reduce en 2 (hasta un mínimo de 1) para ti en este turno. Coloca la ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para reducir el coste de Movimiento de todos los terrenos en 1 para él en este turno.", norowas));
+        createFicha(new FichaHabilidad(21, "¡MARCHA LIGERA!", "Una vez por turno: Gana Movimiento 1 por cada Unidad Preparada y no Herida que controles, hasta un máximo de Movimiento 3.",false, norowas));
+        createFicha(new FichaHabilidad(22, "PUNTERÍA DE DÍA", "Una vez por turno: Ataque a Distancia 2 (durante el Día), o Ataque a Distancia 1 (durante la Noche).",false, norowas));
+        createFicha(new FichaHabilidad(23, "INSPIRACIÓN", "Una vez por Ronda, excepto durante el combate: Voltea para Preparar o Curar 1 Unidad.",false, norowas));
+        createFicha(new FichaHabilidad(24, "NEGOCIACIÓN INGENIOSA", "Una vez por turno: Influencia 3 (durante el Día), o Influencia 2 (durante la Noche).",false, norowas));
+        createFicha(new FichaHabilidad(25, "HOJAS EN EL VIENTO", "Una vez por Ronda: Voltea para ganar 1 cristal verde para tu inventario y 1 ficha de maná blanco.",false, norowas));
+        createFicha(new FichaHabilidad(26, "SUSURRO EN LOS ÁRBOLES", "Una vez por Ronda: Voltea para ganar 1 cristal blanco para tu inventario y 1 ficha de maná verde.",false, norowas));
+        createFicha(new FichaHabilidad(27, "LIDERAZGO", "Una vez por turno: Cuando actives una Unidad, añade +3 a su Bloqueo, o +2 a su Ataque, o +1 a su Ataque a Distancia (no de Asedio), sin importar su elemento.",false, norowas));
+        createFicha(new FichaHabilidad(28, "VÍNCULOS DE LEALTAD", "Cuando obtengas esta Habilidad, añade 2 Unidades Básicas a la oferta de Unidades. Coloca esta ficha de Habilidad en tu área de Unidades como si fuese una ficha de Mando. Reclutar 1 Unidad y colocarla debajo de esta ficha te cuesta 5 puntos de Influencia menos (mínimo 0). Esta Unidad se puede utilizar incluso cuando el uso de Unidades no esté permitido. No puedes disolverla.",false, norowas));
+        createFicha(new FichaHabilidad(29, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná blanco. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, norowas));
+        createFicha(new FichaHabilidad(30, "CALMANDO EL TIEMPO", "Una vez por Ronda: El coste de Movimiento de todos los terrenos se reduce en 2 (hasta un mínimo de 1) para ti en este turno. Coloca la ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para reducir el coste de Movimiento de todos los terrenos en 1 para él en este turno.",false, norowas));
 
         // 10 Fichas de Habilidad de Goldyx
-        createFicha(new FichaHabilidad(31, "PODER DE CONGELACIÓN", "Una vez por turno: Ataque de Asedio 1 o Ataque de Asedio de Hielo 1.", goldyx));
-        createFicha(new FichaHabilidad(32, "ELABORACIÓN DE POCIONES", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 2.", goldyx));
-        createFicha(new FichaHabilidad(33, "ARTESANÍA DE CRISTAL BLANCO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná blanco.", goldyx));
-        createFicha(new FichaHabilidad(34, "ARTESANÍA DE CRISTAL VERDE", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y una ficha de maná verde.", goldyx));
-        createFicha(new FichaHabilidad(35, "ARTESANÍA DE CRISTAL ROJO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná rojo.", goldyx));
-        createFicha(new FichaHabilidad(36, "FORTUNA RELUCIENTE", "Una vez por turno, durante la interacción: Gana Influencia +1 por cada cristal de color diferente en tu inventario. Esta Influencia no puede ser utilizada fuera de una interacción.", goldyx));
-        createFicha(new FichaHabilidad(37, "VUELO", "Una vez por Ronda: Voltea para moverte a 1 espacio adyacente sin coste, o a 2 espacios por 2 puntos de Movimiento. Debes terminar este Movimiento en un espacio seguro. Este Movimiento no provoca a los enemigos acechantes.", goldyx));
-        createFicha(new FichaHabilidad(38, "PODER UNIVERSAL", "Una vez por turno: Puedes añadir maná a una carta girada. Si lo haces, la carta otorga +3 en vez de +1. Si es una Acción o un Hechizo del mismo color que el maná, otorga +4.", goldyx));
-        createFicha(new FichaHabilidad(39, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná verde. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", goldyx));
-        createFicha(new FichaHabilidad(40, "APERTURA DE LA FUENTE", "Una vez por Ronda: Coloca esta ficha de Habilidad en el centro. Puedes relanzar un dado de maná en la Fuente. Cualquier jugador puede elegir devolverte la ficha, boca abajo, para usar 1 dado de maná adicional de color básico de la Fuente y darte 1 cristal de ese color. Pueden decidir relanzar o no ese dado al final de su turno.", goldyx));
+        createFicha(new FichaHabilidad(31, "PODER DE CONGELACIÓN", "Una vez por turno: Ataque de Asedio 1 o Ataque de Asedio de Hielo 1.",false, goldyx));
+        createFicha(new FichaHabilidad(32, "ELABORACIÓN DE POCIONES", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 2.",false, goldyx));
+        createFicha(new FichaHabilidad(33, "ARTESANÍA DE CRISTAL BLANCO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná blanco.",false, goldyx));
+        createFicha(new FichaHabilidad(34, "ARTESANÍA DE CRISTAL VERDE", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y una ficha de maná verde.",false, goldyx));
+        createFicha(new FichaHabilidad(35, "ARTESANÍA DE CRISTAL ROJO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná rojo.",false, goldyx));
+        createFicha(new FichaHabilidad(36, "FORTUNA RELUCIENTE", "Una vez por turno, durante la interacción: Gana Influencia +1 por cada cristal de color diferente en tu inventario. Esta Influencia no puede ser utilizada fuera de una interacción.",false, goldyx));
+        createFicha(new FichaHabilidad(37, "VUELO", "Una vez por Ronda: Voltea para moverte a 1 espacio adyacente sin coste, o a 2 espacios por 2 puntos de Movimiento. Debes terminar este Movimiento en un espacio seguro. Este Movimiento no provoca a los enemigos acechantes.",false, goldyx));
+        createFicha(new FichaHabilidad(38, "PODER UNIVERSAL", "Una vez por turno: Puedes añadir maná a una carta girada. Si lo haces, la carta otorga +3 en vez de +1. Si es una Acción o un Hechizo del mismo color que el maná, otorga +4.",false, goldyx));
+        createFicha(new FichaHabilidad(39, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná verde. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, goldyx));
+        createFicha(new FichaHabilidad(40, "APERTURA DE LA FUENTE", "Una vez por Ronda: Coloca esta ficha de Habilidad en el centro. Puedes relanzar un dado de maná en la Fuente. Cualquier jugador puede elegir devolverte la ficha, boca abajo, para usar 1 dado de maná adicional de color básico de la Fuente y darte 1 cristal de ese color. Pueden decidir relanzar o no ese dado al final de su turno.",false, goldyx));
 
         // 10 Fichas de Habilidad de Wolfhawk
-        createFicha(new FichaHabilidad(41, "BAÑO REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal azul para tu Inventario.", wolfhawk));
-        createFicha(new FichaHabilidad(42, "BRISA REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal blanco para tu Inventario.", wolfhawk));
-        createFicha(new FichaHabilidad(43, "OJOS DE HALCÓN", "Una vez por turno: Movimiento 1. Además: durante la Noche, la exploración cuesta 1 Movimiento menos; durante el Día, puedes revelar defensores de lugares fortificados a una distancia de 2.", wolfhawk));
-        createFicha(new FichaHabilidad(44, "POR SU CUENTA", "Una vez por turno: Influencia 1. Influencia 3 si no reclutas ninguna Unidad usando Influencia en este turno.", wolfhawk));
-        createFicha(new FichaHabilidad(45, "PUNTERÍA MORTAL", "Una vez por turno: Añade +1 a una carta que otorgue cualquier tipo de Ataque en la fase de Ataque a Distancia y de Asedio, o añade +2 a una carta que otorgue cualquier tipo de Ataque (incluidas las cartas giradas) en la fase de Ataque.", wolfhawk));
-        createFicha(new FichaHabilidad(46, "CONOCE A TU PRESA", "Una vez por Ronda, durante el combate: Voltea para ignorar una aptitud ofensiva o defensiva de una ficha de enemigo, o eliminar un elemento de un ataque enemigo (Hielo y Fuego se convierten en Físico, Fuego Frío se convierte en Hielo o Fuego). No se puede utilizar contra enemigos con Inmunidad Arcana.", wolfhawk));
-        createFicha(new FichaHabilidad(47, "BURLA", "Una vez por turno, durante la fase de Bloqueo: Puedes o reducir un ataque de un enemigo en 1, o incrementar un ataque de un enemigo en 2 y reducir la Armadura del mismo enemigo en 2 (hasta un mínimo de 1). La reducción de la Armadura no sucede si como resultado el enemigo no puede atacar.", wolfhawk));
-        createFicha(new FichaHabilidad(48, "DUELO", "Una vez por turno, durante la fase de Bloqueo: Bloqueo 1. Ataque 1 contra el mismo enemigo en la fase de Ataque. Si no usas aptitudes de ninguna Unidad para bloquear, atacar, afectar a este enemigo ni asignas daño del enemigo a cualquier Unidad, ganas 1 más de Fama por derrotarlo. JcJ: Bloqueo 1 en la fase de Ataques Cuerpo a Cuerpo, Ataque 1 en tu próximo Ataque, Fama 1 si no has usado aptitudes de ninguna Unidad durante este Bloqueo y Ataque.", wolfhawk));
-        createFicha(new FichaHabilidad(49, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea la ficha para robar 2 cartas. Si eres quien menos Fama tiene (sin contar empates), gana también Fama 1. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", wolfhawk));
-        createFicha(new FichaHabilidad(50, "AULLIDO DE LA MANADA", "Una vez por Ronda, excepto durante la interacción: Una carta girada otorga +4 en vez de +1. Por cada una de tus fichas de Mando sin Unidades asignadas, gana otro +1. Coloca esta ficha de Habilidad en el centro. El primer jugador que entre en combate con enemigos te devuelve la Habilidad boca abajo, reduce la Armadura de un enemigo elegido en 1, y un ataque del mismo u otro enemigo en 1.", wolfhawk));
+        createFicha(new FichaHabilidad(41, "BAÑO REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal azul para tu Inventario.",false, wolfhawk));
+        createFicha(new FichaHabilidad(42, "BRISA REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal blanco para tu Inventario.",false, wolfhawk));
+        createFicha(new FichaHabilidad(43, "OJOS DE HALCÓN", "Una vez por turno: Movimiento 1. Además: durante la Noche, la exploración cuesta 1 Movimiento menos; durante el Día, puedes revelar defensores de lugares fortificados a una distancia de 2.",false, wolfhawk));
+        createFicha(new FichaHabilidad(44, "POR SU CUENTA", "Una vez por turno: Influencia 1. Influencia 3 si no reclutas ninguna Unidad usando Influencia en este turno.",false, wolfhawk));
+        createFicha(new FichaHabilidad(45, "PUNTERÍA MORTAL", "Una vez por turno: Añade +1 a una carta que otorgue cualquier tipo de Ataque en la fase de Ataque a Distancia y de Asedio, o añade +2 a una carta que otorgue cualquier tipo de Ataque (incluidas las cartas giradas) en la fase de Ataque.",false, wolfhawk));
+        createFicha(new FichaHabilidad(46, "CONOCE A TU PRESA", "Una vez por Ronda, durante el combate: Voltea para ignorar una aptitud ofensiva o defensiva de una ficha de enemigo, o eliminar un elemento de un ataque enemigo (Hielo y Fuego se convierten en Físico, Fuego Frío se convierte en Hielo o Fuego). No se puede utilizar contra enemigos con Inmunidad Arcana.",false, wolfhawk));
+        createFicha(new FichaHabilidad(47, "BURLA", "Una vez por turno, durante la fase de Bloqueo: Puedes o reducir un ataque de un enemigo en 1, o incrementar un ataque de un enemigo en 2 y reducir la Armadura del mismo enemigo en 2 (hasta un mínimo de 1). La reducción de la Armadura no sucede si como resultado el enemigo no puede atacar.",false, wolfhawk));
+        createFicha(new FichaHabilidad(48, "DUELO", "Una vez por turno, durante la fase de Bloqueo: Bloqueo 1. Ataque 1 contra el mismo enemigo en la fase de Ataque. Si no usas aptitudes de ninguna Unidad para bloquear, atacar, afectar a este enemigo ni asignas daño del enemigo a cualquier Unidad, ganas 1 más de Fama por derrotarlo. JcJ: Bloqueo 1 en la fase de Ataques Cuerpo a Cuerpo, Ataque 1 en tu próximo Ataque, Fama 1 si no has usado aptitudes de ninguna Unidad durante este Bloqueo y Ataque.",false, wolfhawk));
+        createFicha(new FichaHabilidad(49, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea la ficha para robar 2 cartas. Si eres quien menos Fama tiene (sin contar empates), gana también Fama 1. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, wolfhawk));
+        createFicha(new FichaHabilidad(50, "AULLIDO DE LA MANADA", "Una vez por Ronda, excepto durante la interacción: Una carta girada otorga +4 en vez de +1. Por cada una de tus fichas de Mando sin Unidades asignadas, gana otro +1. Coloca esta ficha de Habilidad en el centro. El primer jugador que entre en combate con enemigos te devuelve la Habilidad boca abajo, reduce la Armadura de un enemigo elegido en 1, y un ataque del mismo u otro enemigo en 1.",false, wolfhawk));
 
         // 10 Fichas de Habilidad de Krang
-        createFicha(new FichaHabilidad(51, "GUÍAS ESPIRITUALES", "Una vez por turno: Movimiento 1 y puedes añadir +1 a un Bloqueo de cualquier tipo en la fase de Bloqueo.", krang));
-        createFicha(new FichaHabilidad(52, "CURTIDO EN BATALLAS", "Una vez por turno: Ignora o los siguientes 2 puntos de daño asignados a tu Héroe de un Ataque Físico o 1 punto de daño de un Ataque no físico.", krang));
-        createFicha(new FichaHabilidad(53, "FRENESÍ DE LA BATALLA", "Una vez por turno: Ataque 2, o puedes voltear esta ficha para obtener Ataque 4 en este turno. Si usas tu turno para descansar, puedes voltear esta ficha de nuevo.", krang));
-        createFicha(new FichaHabilidad(54, "RITUAL DEL CHAMÁN", "Voltea para ganar una ficha de maná de cualquier color. Puedes voltearla de nuevo como tu acción en este turno.", krang));
-        createFicha(new FichaHabilidad(55, "REGENERAR", "Una vez por turno: Paga un maná de cualquier color y retira una Herida de tu mano. Si para hacerlo usaste maná rojo, o si eres quien menos Fama tiene (sin contar empates), roba también una carta.", krang));
-        createFicha(new FichaHabilidad(56, "DISFRAZ ARCANO", "Una vez por turno: Influencia 2, o puedes voltear esta ficha para ignorar todos los efectos de tu posición en el marcador de Reputación en este turno. Puedes voltearla de nuevo en cualquier turno pagando un maná verde.", krang));
-        createFicha(new FichaHabilidad(57, "MAESTRO DE MARIONETAS", "Una vez por turno: Puedes o quedarte 1 ficha de enemigo que hayas derrotado en este turno o descartar 1 ficha que te hayas quedado previamente. Si decides descartar, obtienes Ataque(s) igual a la mitad de su valor de Ataque o Bloqueo igual a la mitad de su valor de Armadura (todo redondeando hacia arriba). Si el Ataque de la ficha es de Hielo o Fuego, el Ataque que obtienes también lo será. Si la ficha tiene Resistencia al Hielo o Fuego, el Bloqueo que obtienes será del elemento opuesto.", krang));
-        createFicha(new FichaHabilidad(58, "MAESTRO DEL CAOS", "Cuando ganes esta Habilidad, lanza 1 dado de maná y márcalo con 1 ficha de Escudo encima del color lanzado. Una vez por turno puedes mover la ficha de Escudo al siguiente color en sentido horario para obtener, dependiendo del color: Azul: Bloqueo 3, Verde: Movimiento 1, Negro: Ataque a Distancia de Fuego Frío 1, Blanco: Influencia 2, Rojo: Ataque 2, Dorado: Tú eliges. Si no usas esta Habilidad durante tu turno, podrás mover la ficha de Escudo al siguiente color en sentido horario en cualquier momento antes de tu siguiente turno.", krang));
-        createFicha(new FichaHabilidad(59, "MALDICIÓN", "Una vez por turno: Puedes reducir un Ataque de un enemigo en 1 o reducir la Armadura de un enemigo en 1 (hasta un mínimo de 1). No puedes usar esta Habilidad contra un enemigo fortificado en las fases de Ataque a Distancia y de Asedio.", krang));
-        createFicha(new FichaHabilidad(60, "AUMENTO DE MANÁ", "Una vez por Ronda: Cuando gastes maná de un color básico, coloca esta ficha de Habilidad en el centro y márcala con 1 ficha de maná del mismo color. Gana 1 cristal de ese color. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolverte la ficha de Habilidad boca abajo, para usar la ficha de maná que está encima de ella.", krang));
+        createFicha(new FichaHabilidad(51, "GUÍAS ESPIRITUALES", "Una vez por turno: Movimiento 1 y puedes añadir +1 a un Bloqueo de cualquier tipo en la fase de Bloqueo.",false, krang));
+        createFicha(new FichaHabilidad(52, "CURTIDO EN BATALLAS", "Una vez por turno: Ignora o los siguientes 2 puntos de daño asignados a tu Héroe de un Ataque Físico o 1 punto de daño de un Ataque no físico.",false, krang));
+        createFicha(new FichaHabilidad(53, "FRENESÍ DE LA BATALLA", "Una vez por turno: Ataque 2, o puedes voltear esta ficha para obtener Ataque 4 en este turno. Si usas tu turno para descansar, puedes voltear esta ficha de nuevo.",false, krang));
+        createFicha(new FichaHabilidad(54, "RITUAL DEL CHAMÁN", "Voltea para ganar una ficha de maná de cualquier color. Puedes voltearla de nuevo como tu acción en este turno.",false, krang));
+        createFicha(new FichaHabilidad(55, "REGENERAR", "Una vez por turno: Paga un maná de cualquier color y retira una Herida de tu mano. Si para hacerlo usaste maná rojo, o si eres quien menos Fama tiene (sin contar empates), roba también una carta.",false, krang));
+        createFicha(new FichaHabilidad(56, "DISFRAZ ARCANO", "Una vez por turno: Influencia 2, o puedes voltear esta ficha para ignorar todos los efectos de tu posición en el marcador de Reputación en este turno. Puedes voltearla de nuevo en cualquier turno pagando un maná verde.",false, krang));
+        createFicha(new FichaHabilidad(57, "MAESTRO DE MARIONETAS", "Una vez por turno: Puedes o quedarte 1 ficha de enemigo que hayas derrotado en este turno o descartar 1 ficha que te hayas quedado previamente. Si decides descartar, obtienes Ataque(s) igual a la mitad de su valor de Ataque o Bloqueo igual a la mitad de su valor de Armadura (todo redondeando hacia arriba). Si el Ataque de la ficha es de Hielo o Fuego, el Ataque que obtienes también lo será. Si la ficha tiene Resistencia al Hielo o Fuego, el Bloqueo que obtienes será del elemento opuesto.",false, krang));
+        createFicha(new FichaHabilidad(58, "MAESTRO DEL CAOS", "Cuando ganes esta Habilidad, lanza 1 dado de maná y márcalo con 1 ficha de Escudo encima del color lanzado. Una vez por turno puedes mover la ficha de Escudo al siguiente color en sentido horario para obtener, dependiendo del color: Azul: Bloqueo 3, Verde: Movimiento 1, Negro: Ataque a Distancia de Fuego Frío 1, Blanco: Influencia 2, Rojo: Ataque 2, Dorado: Tú eliges. Si no usas esta Habilidad durante tu turno, podrás mover la ficha de Escudo al siguiente color en sentido horario en cualquier momento antes de tu siguiente turno.",false, krang));
+        createFicha(new FichaHabilidad(59, "MALDICIÓN", "Una vez por turno: Puedes reducir un Ataque de un enemigo en 1 o reducir la Armadura de un enemigo en 1 (hasta un mínimo de 1). No puedes usar esta Habilidad contra un enemigo fortificado en las fases de Ataque a Distancia y de Asedio.",false, krang));
+        createFicha(new FichaHabilidad(60, "AUMENTO DE MANÁ", "Una vez por Ronda: Cuando gastes maná de un color básico, coloca esta ficha de Habilidad en el centro y márcala con 1 ficha de maná del mismo color. Gana 1 cristal de ese color. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolverte la ficha de Habilidad boca abajo, para usar la ficha de maná que está encima de ella.",false, krang));
 
         // 10 Fichas de Habilidad de Braevalar
-        createFicha(new FichaHabilidad(61, "RESISTENCIA ELEMENTAL", "Una vez por turno: Ignora los 2 próximos puntos de daño asignados a tu Héroe de un Ataque de Fuego o Hielo o bien 1 punto de daño de otro tipo de Ataque.", braevalar));
-        createFicha(new FichaHabilidad(62, "ALIADOS SALVAJES", "Explorar cuesta 1 menos de Movimiento. Una vez por turno: Ataque 1, o reduce un ataque de un enemigo en 1.", braevalar));
-        createFicha(new FichaHabilidad(63, "TEMPESTAD", "Una vez por Ronda: Voltea para ganar una ficha de maná verde o azul, y una ficha de maná verde o blanca.", braevalar));
-        createFicha(new FichaHabilidad(64, "TORMENTA ELÉCTRICA", "Una vez por Ronda: Voltea para ganar una ficha de maná azul o verde, y una ficha de maná azul o roja.", braevalar));
-        createFicha(new FichaHabilidad(65, "CAUTIVAR", "Una vez por turno: Influencia 3, Influencia 2 en un sitio fortificado, o Influencia 4 en un Claro Mágico.", braevalar));
-        createFicha(new FichaHabilidad(66, "RAYO BIFURCADO", "Una vez por turno: Ataque a Distancia de Fuego Frío 1 contra hasta 3 enemigos diferentes.", braevalar));
-        createFicha(new FichaHabilidad(67, "CAMBIAFORMAS", "Una vez por turno: Una carta de Acción Básica que otorgue un número concreto de Movimiento/Ataque/Bloqueo, en vez de su acción habitual puede ofrecer la misma cantidad de cualquiera de las otras dos en su lugar (los tipos de elementos se conservan en Ataques y Bloqueos).", braevalar));
-        createFicha(new FichaHabilidad(68, "CAMINOS SECRETOS", "Una vez por turno: Movimiento 1. Puedes entrar en montañas por un coste de Movimiento de 5 y se consideran un espacio seguro para ti. Si pagas 1 maná azul, puedes entrar en lagos por un coste de Movimiento de 2 en este turno y los lagos se consideran un espacio seguro para ti al final de este turno.", braevalar));
-        createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.", braevalar));
-        createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.", braevalar));*/
+        createFicha(new FichaHabilidad(61, "RESISTENCIA ELEMENTAL", "Una vez por turno: Ignora los 2 próximos puntos de daño asignados a tu Héroe de un Ataque de Fuego o Hielo o bien 1 punto de daño de otro tipo de Ataque.",false, braevalar));
+        createFicha(new FichaHabilidad(62, "ALIADOS SALVAJES", "Explorar cuesta 1 menos de Movimiento. Una vez por turno: Ataque 1, o reduce un ataque de un enemigo en 1.",false, braevalar));
+        createFicha(new FichaHabilidad(63, "TEMPESTAD", "Una vez por Ronda: Voltea para ganar una ficha de maná verde o azul, y una ficha de maná verde o blanca.",false, braevalar));
+        createFicha(new FichaHabilidad(64, "TORMENTA ELÉCTRICA", "Una vez por Ronda: Voltea para ganar una ficha de maná azul o verde, y una ficha de maná azul o roja.",false, braevalar));
+        createFicha(new FichaHabilidad(65, "CAUTIVAR", "Una vez por turno: Influencia 3, Influencia 2 en un sitio fortificado, o Influencia 4 en un Claro Mágico.",false, braevalar));
+        createFicha(new FichaHabilidad(66, "RAYO BIFURCADO", "Una vez por turno: Ataque a Distancia de Fuego Frío 1 contra hasta 3 enemigos diferentes.",false, braevalar));
+        createFicha(new FichaHabilidad(67, "CAMBIAFORMAS", "Una vez por turno: Una carta de Acción Básica que otorgue un número concreto de Movimiento/Ataque/Bloqueo, en vez de su acción habitual puede ofrecer la misma cantidad de cualquiera de las otras dos en su lugar (los tipos de elementos se conservan en Ataques y Bloqueos).",false, braevalar));
+        createFicha(new FichaHabilidad(68, "CAMINOS SECRETOS", "Una vez por turno: Movimiento 1. Puedes entrar en montañas por un coste de Movimiento de 5 y se consideran un espacio seguro para ti. Si pagas 1 maná azul, puedes entrar en lagos por un coste de Movimiento de 2 en este turno y los lagos se consideran un espacio seguro para ti al final de este turno.",false, braevalar));
+        createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.",false, braevalar));
+        createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.",false, braevalar));
+        */
     }
 
     public void insertAllDataPartOne(){
@@ -1280,88 +1409,88 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
         // Las 70 Fichas de Habilidad
         // 10 Fichas de Habilidad de Arythea
-        createFicha(new FichaHabilidad(1, "CAMINOS OSCUROS", "Una vez por turno: Movimiento 1 (durante el Día), o Movimiento 2 (durante la Noche).", arythea));
-        createFicha(new FichaHabilidad(2, "PODER ABRASADOR", "Una vez por turno: Ataque de Asedio 1, o Ataque de Asedio de Fuego 1.", arythea));
-        createFicha(new FichaHabilidad(3, "ESPADA ARDIENTE", "Una vez por turno: Ataque 2, o Ataque de Fuego 2.", arythea));
-        createFicha(new FichaHabilidad(4, "NEGOCIACIÓN TURBIA", "Una vez por turno: Influencia 2 (durante el Día) o Influencia 3 (durante la Noche).", arythea));
-        createFicha(new FichaHabilidad(5, "MAGIA OSCURA DE FUEGO", "Una vez por ronda: Voltea para ganar 1 cristal rojo para tu inventario y 1 ficha de maná rojo o negro.", arythea));
-        createFicha(new FichaHabilidad(6, "EL PODER DEL DOLOR", "Una vez por turno: Puedes jugar 1 Herida girada como si no fuese una carta de Herida. Otorga +2 en vez de +1. Al final de tu turno, coloca esa Herida en tu pila de descarte.", arythea));
-        createFicha(new FichaHabilidad(7, "INVOCACIÓN", "Una vez por turno: Descarta 1 carta de Herida para ganar 1 ficha de maná rojo o negro, o descarta 1 carta que no sea Herida para ganar 1 ficha de maná verde o blanco. El maná conseguido de esta manera debe ser usado inmediatamente, o no podrás usar esta Habilidad.", arythea));
-        createFicha(new FichaHabilidad(8, "POLARIZACIÓN", "Una vez por turno: Puedes usar 1 maná como maná del color opuesto (ver el diagrama). Durante el día, puedes usar maná negro como si fuera otro color (no puedes usarlo como maná negro para potenciar los Hechizos). Durante la noche, puedes usar maná dorado como si fuera maná negro y potenciar un Hechizo, pero no como cualquier otro color.", arythea));
-        createFicha(new FichaHabilidad(9, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná rojo. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", arythea));
-        createFicha(new FichaHabilidad(10, "RITUAL DEL DOLOR", "Una vez por ronda, excepto durante el combate: Retira hasta 2 cartas de Herida de tu mano. Coloca esta ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para jugar una carta de Herida girada como si no fuera una carta de Herida, y obtener +3 en vez de +1.", arythea));
+        createFicha(new FichaHabilidad(1, "CAMINOS OSCUROS", "Una vez por turno: Movimiento 1 (durante el Día), o Movimiento 2 (durante la Noche).",false, arythea));
+        createFicha(new FichaHabilidad(2, "PODER ABRASADOR", "Una vez por turno: Ataque de Asedio 1, o Ataque de Asedio de Fuego 1.",false, arythea));
+        createFicha(new FichaHabilidad(3, "ESPADA ARDIENTE", "Una vez por turno: Ataque 2, o Ataque de Fuego 2.",false, arythea));
+        createFicha(new FichaHabilidad(4, "NEGOCIACIÓN TURBIA", "Una vez por turno: Influencia 2 (durante el Día) o Influencia 3 (durante la Noche).",false, arythea));
+        createFicha(new FichaHabilidad(5, "MAGIA OSCURA DE FUEGO", "Una vez por ronda: Voltea para ganar 1 cristal rojo para tu inventario y 1 ficha de maná rojo o negro.",false, arythea));
+        createFicha(new FichaHabilidad(6, "EL PODER DEL DOLOR", "Una vez por turno: Puedes jugar 1 Herida girada como si no fuese una carta de Herida. Otorga +2 en vez de +1. Al final de tu turno, coloca esa Herida en tu pila de descarte.",false, arythea));
+        createFicha(new FichaHabilidad(7, "INVOCACIÓN", "Una vez por turno: Descarta 1 carta de Herida para ganar 1 ficha de maná rojo o negro, o descarta 1 carta que no sea Herida para ganar 1 ficha de maná verde o blanco. El maná conseguido de esta manera debe ser usado inmediatamente, o no podrás usar esta Habilidad.",false, arythea));
+        createFicha(new FichaHabilidad(8, "POLARIZACIÓN", "Una vez por turno: Puedes usar 1 maná como maná del color opuesto (ver el diagrama). Durante el día, puedes usar maná negro como si fuera otro color (no puedes usarlo como maná negro para potenciar los Hechizos). Durante la noche, puedes usar maná dorado como si fuera maná negro y potenciar un Hechizo, pero no como cualquier otro color.",false, arythea));
+        createFicha(new FichaHabilidad(9, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná rojo. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, arythea));
+        createFicha(new FichaHabilidad(10, "RITUAL DEL DOLOR", "Una vez por ronda, excepto durante el combate: Retira hasta 2 cartas de Herida de tu mano. Coloca esta ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para jugar una carta de Herida girada como si no fuera una carta de Herida, y obtener +3 en vez de +1.",false, arythea));
 
         // 10 Fichas de Habilidad de Tovak
-        createFicha(new FichaHabilidad(11, "DOBLE RITMO", "Una vez por turno: Movimiento 2 (durante el día), o Movimiento 1 (durante la Noche).", tovak));
-        createFicha(new FichaHabilidad(12, "PUNTERÍA DE NOCHE", "Una vez por turno: Ataque a Distancia 2 (durante la Noche), o Ataque a Distancia 1 (durante el Día).", tovak));
-        createFicha(new FichaHabilidad(13, "ESPADA GÉLIDA", "Una vez por turno: Ataque 2, o Ataque de Hielo 2.", tovak));
-        createFicha(new FichaHabilidad(14, "DOMINIO DEL ESCUDO", "Una vez por turno: Bloqueo 3, o Bloqueo de Hielo 2, o Bloqueo de Fuego 2.", tovak));
-        createFicha(new FichaHabilidad(15, "RESISTENCIA QUEBRADA", "Una vez por turno: Escoge 1 ficha de enemigo. Obtiene Armadura -1 por cada resistencia que tenga (hasta un mínimo de 1).", tovak));
-        createFicha(new FichaHabilidad(16, "NO SIENTO DOLOR…", "Una vez por turno, excepto durante el combate: Descarta 1 Herida de tu mano. Si lo haces, roba 1 carta.", tovak));
-        createFicha(new FichaHabilidad(17, "¡NO ME IMPORTA NADA!", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si es una Acción Avanzada, Hechizo o Artefacto, otorga +3.", tovak));
-        createFicha(new FichaHabilidad(18, "¿QUIÉN NECESITA MAGIA?", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si no usas ningún dado de maná de la Fuente en este turno, otorga +3.", tovak));
-        createFicha(new FichaHabilidad(19, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná azul. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", tovak));
-        createFicha(new FichaHabilidad(20, "SOBRECARGA DE MANÁ", "Una vez por Ronda: Elige un color que no sea dorado y gana 1 ficha de maná de ese color. Coloca esta ficha de Habilidad en el centro y márcala con una segunda ficha de maná de ese color. El primer jugador que utilice maná de ese color para potenciar una carta que otorgue Movimiento, Influencia, o cualquier tipo de Ataque o Bloqueo, obtiene +4 para esa carta y te devuelve la ficha de Habilidad, boca abajo.", tovak));
+        createFicha(new FichaHabilidad(11, "DOBLE RITMO", "Una vez por turno: Movimiento 2 (durante el día), o Movimiento 1 (durante la Noche).",false, tovak));
+        createFicha(new FichaHabilidad(12, "PUNTERÍA DE NOCHE", "Una vez por turno: Ataque a Distancia 2 (durante la Noche), o Ataque a Distancia 1 (durante el Día).",false, tovak));
+        createFicha(new FichaHabilidad(13, "ESPADA GÉLIDA", "Una vez por turno: Ataque 2, o Ataque de Hielo 2.",false, tovak));
+        createFicha(new FichaHabilidad(14, "DOMINIO DEL ESCUDO", "Una vez por turno: Bloqueo 3, o Bloqueo de Hielo 2, o Bloqueo de Fuego 2.",false, tovak));
+        createFicha(new FichaHabilidad(15, "RESISTENCIA QUEBRADA", "Una vez por turno: Escoge 1 ficha de enemigo. Obtiene Armadura -1 por cada resistencia que tenga (hasta un mínimo de 1).",false, tovak));
+        createFicha(new FichaHabilidad(16, "NO SIENTO DOLOR…", "Una vez por turno, excepto durante el combate: Descarta 1 Herida de tu mano. Si lo haces, roba 1 carta.",false, tovak));
+        createFicha(new FichaHabilidad(17, "¡NO ME IMPORTA NADA!", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si es una Acción Avanzada, Hechizo o Artefacto, otorga +3.",false, tovak));
+        createFicha(new FichaHabilidad(18, "¿QUIÉN NECESITA MAGIA?", "Una vez por turno: Una carta que juegues girada otorga +2 en vez de +1. Si no usas ningún dado de maná de la Fuente en este turno, otorga +3.",false, tovak));
+        createFicha(new FichaHabilidad(19, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná azul. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, tovak));
+        createFicha(new FichaHabilidad(20, "SOBRECARGA DE MANÁ", "Una vez por Ronda: Elige un color que no sea dorado y gana 1 ficha de maná de ese color. Coloca esta ficha de Habilidad en el centro y márcala con una segunda ficha de maná de ese color. El primer jugador que utilice maná de ese color para potenciar una carta que otorgue Movimiento, Influencia, o cualquier tipo de Ataque o Bloqueo, obtiene +4 para esa carta y te devuelve la ficha de Habilidad, boca abajo.",false, tovak));
 
         // 10 Fichas de Habilidad de Norowas
-        createFicha(new FichaHabilidad(21, "¡MARCHA LIGERA!", "Una vez por turno: Gana Movimiento 1 por cada Unidad Preparada y no Herida que controles, hasta un máximo de Movimiento 3.", norowas));
-        createFicha(new FichaHabilidad(22, "PUNTERÍA DE DÍA", "Una vez por turno: Ataque a Distancia 2 (durante el Día), o Ataque a Distancia 1 (durante la Noche).", norowas));
-        createFicha(new FichaHabilidad(23, "INSPIRACIÓN", "Una vez por Ronda, excepto durante el combate: Voltea para Preparar o Curar 1 Unidad.", norowas));
-        createFicha(new FichaHabilidad(24, "NEGOCIACIÓN INGENIOSA", "Una vez por turno: Influencia 3 (durante el Día), o Influencia 2 (durante la Noche).", norowas));
-        createFicha(new FichaHabilidad(25, "HOJAS EN EL VIENTO", "Una vez por Ronda: Voltea para ganar 1 cristal verde para tu inventario y 1 ficha de maná blanco.", norowas));
-        createFicha(new FichaHabilidad(26, "SUSURRO EN LOS ÁRBOLES", "Una vez por Ronda: Voltea para ganar 1 cristal blanco para tu inventario y 1 ficha de maná verde.", norowas));
-        createFicha(new FichaHabilidad(27, "LIDERAZGO", "Una vez por turno: Cuando actives una Unidad, añade +3 a su Bloqueo, o +2 a su Ataque, o +1 a su Ataque a Distancia (no de Asedio), sin importar su elemento.", norowas));
-        createFicha(new FichaHabilidad(28, "VÍNCULOS DE LEALTAD", "Cuando obtengas esta Habilidad, añade 2 Unidades Básicas a la oferta de Unidades. Coloca esta ficha de Habilidad en tu área de Unidades como si fuese una ficha de Mando. Reclutar 1 Unidad y colocarla debajo de esta ficha te cuesta 5 puntos de Influencia menos (mínimo 0). Esta Unidad se puede utilizar incluso cuando el uso de Unidades no esté permitido. No puedes disolverla.", norowas));
-        createFicha(new FichaHabilidad(29, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná blanco. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", norowas));
-        createFicha(new FichaHabilidad(30, "CALMANDO EL TIEMPO", "Una vez por Ronda: El coste de Movimiento de todos los terrenos se reduce en 2 (hasta un mínimo de 1) para ti en este turno. Coloca la ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para reducir el coste de Movimiento de todos los terrenos en 1 para él en este turno.", norowas));
+        createFicha(new FichaHabilidad(21, "¡MARCHA LIGERA!", "Una vez por turno: Gana Movimiento 1 por cada Unidad Preparada y no Herida que controles, hasta un máximo de Movimiento 3.",false, norowas));
+        createFicha(new FichaHabilidad(22, "PUNTERÍA DE DÍA", "Una vez por turno: Ataque a Distancia 2 (durante el Día), o Ataque a Distancia 1 (durante la Noche).",false, norowas));
+        createFicha(new FichaHabilidad(23, "INSPIRACIÓN", "Una vez por Ronda, excepto durante el combate: Voltea para Preparar o Curar 1 Unidad.",false, norowas));
+        createFicha(new FichaHabilidad(24, "NEGOCIACIÓN INGENIOSA", "Una vez por turno: Influencia 3 (durante el Día), o Influencia 2 (durante la Noche).",false, norowas));
+        createFicha(new FichaHabilidad(25, "HOJAS EN EL VIENTO", "Una vez por Ronda: Voltea para ganar 1 cristal verde para tu inventario y 1 ficha de maná blanco.",false, norowas));
+        createFicha(new FichaHabilidad(26, "SUSURRO EN LOS ÁRBOLES", "Una vez por Ronda: Voltea para ganar 1 cristal blanco para tu inventario y 1 ficha de maná verde.",false, norowas));
+        createFicha(new FichaHabilidad(27, "LIDERAZGO", "Una vez por turno: Cuando actives una Unidad, añade +3 a su Bloqueo, o +2 a su Ataque, o +1 a su Ataque a Distancia (no de Asedio), sin importar su elemento.",false, norowas));
+        createFicha(new FichaHabilidad(28, "VÍNCULOS DE LEALTAD", "Cuando obtengas esta Habilidad, añade 2 Unidades Básicas a la oferta de Unidades. Coloca esta ficha de Habilidad en tu área de Unidades como si fuese una ficha de Mando. Reclutar 1 Unidad y colocarla debajo de esta ficha te cuesta 5 puntos de Influencia menos (mínimo 0). Esta Unidad se puede utilizar incluso cuando el uso de Unidades no esté permitido. No puedes disolverla.",false, norowas));
+        createFicha(new FichaHabilidad(29, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná blanco. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, norowas));
+        createFicha(new FichaHabilidad(30, "CALMANDO EL TIEMPO", "Una vez por Ronda: El coste de Movimiento de todos los terrenos se reduce en 2 (hasta un mínimo de 1) para ti en este turno. Coloca la ficha de Habilidad en el centro. Cualquier jugador puede devolvértela, boca abajo, para reducir el coste de Movimiento de todos los terrenos en 1 para él en este turno.",false, norowas));
 
         // 10 Fichas de Habilidad de Goldyx
-        createFicha(new FichaHabilidad(31, "PODER DE CONGELACIÓN", "Una vez por turno: Ataque de Asedio 1 o Ataque de Asedio de Hielo 1.", goldyx));
-        createFicha(new FichaHabilidad(32, "ELABORACIÓN DE POCIONES", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 2.", goldyx));
-        createFicha(new FichaHabilidad(33, "ARTESANÍA DE CRISTAL BLANCO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná blanco.", goldyx));
-        createFicha(new FichaHabilidad(34, "ARTESANÍA DE CRISTAL VERDE", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y una ficha de maná verde.", goldyx));
-        createFicha(new FichaHabilidad(35, "ARTESANÍA DE CRISTAL ROJO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná rojo.", goldyx));
-        createFicha(new FichaHabilidad(36, "FORTUNA RELUCIENTE", "Una vez por turno, durante la interacción: Gana Influencia +1 por cada cristal de color diferente en tu inventario. Esta Influencia no puede ser utilizada fuera de una interacción.", goldyx));
-        createFicha(new FichaHabilidad(37, "VUELO", "Una vez por Ronda: Voltea para moverte a 1 espacio adyacente sin coste, o a 2 espacios por 2 puntos de Movimiento. Debes terminar este Movimiento en un espacio seguro. Este Movimiento no provoca a los enemigos acechantes.", goldyx));
-        createFicha(new FichaHabilidad(38, "PODER UNIVERSAL", "Una vez por turno: Puedes añadir maná a una carta girada. Si lo haces, la carta otorga +3 en vez de +1. Si es una Acción o un Hechizo del mismo color que el maná, otorga +4.", goldyx));
-        createFicha(new FichaHabilidad(39, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná verde. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", goldyx));
-        createFicha(new FichaHabilidad(40, "APERTURA DE LA FUENTE", "Una vez por Ronda: Coloca esta ficha de Habilidad en el centro. Puedes relanzar un dado de maná en la Fuente. Cualquier jugador puede elegir devolverte la ficha, boca abajo, para usar 1 dado de maná adicional de color básico de la Fuente y darte 1 cristal de ese color. Pueden decidir relanzar o no ese dado al final de su turno.", goldyx));
+        createFicha(new FichaHabilidad(31, "PODER DE CONGELACIÓN", "Una vez por turno: Ataque de Asedio 1 o Ataque de Asedio de Hielo 1.",false, goldyx));
+        createFicha(new FichaHabilidad(32, "ELABORACIÓN DE POCIONES", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 2.",false, goldyx));
+        createFicha(new FichaHabilidad(33, "ARTESANÍA DE CRISTAL BLANCO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná blanco.",false, goldyx));
+        createFicha(new FichaHabilidad(34, "ARTESANÍA DE CRISTAL VERDE", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y una ficha de maná verde.",false, goldyx));
+        createFicha(new FichaHabilidad(35, "ARTESANÍA DE CRISTAL ROJO", "Una vez por Ronda: Voltea para obtener 1 cristal azul para tu inventario y 1 ficha de maná rojo.",false, goldyx));
+        createFicha(new FichaHabilidad(36, "FORTUNA RELUCIENTE", "Una vez por turno, durante la interacción: Gana Influencia +1 por cada cristal de color diferente en tu inventario. Esta Influencia no puede ser utilizada fuera de una interacción.",false, goldyx));
+        createFicha(new FichaHabilidad(37, "VUELO", "Una vez por Ronda: Voltea para moverte a 1 espacio adyacente sin coste, o a 2 espacios por 2 puntos de Movimiento. Debes terminar este Movimiento en un espacio seguro. Este Movimiento no provoca a los enemigos acechantes.",false, goldyx));
+        createFicha(new FichaHabilidad(38, "PODER UNIVERSAL", "Una vez por turno: Puedes añadir maná a una carta girada. Si lo haces, la carta otorga +3 en vez de +1. Si es una Acción o un Hechizo del mismo color que el maná, otorga +4.",false, goldyx));
+        createFicha(new FichaHabilidad(39, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea para robar 2 cartas. Si eres quien menos Fama tiene (no cuenta el empate), gana también 1 ficha de maná verde. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, goldyx));
+        createFicha(new FichaHabilidad(40, "APERTURA DE LA FUENTE", "Una vez por Ronda: Coloca esta ficha de Habilidad en el centro. Puedes relanzar un dado de maná en la Fuente. Cualquier jugador puede elegir devolverte la ficha, boca abajo, para usar 1 dado de maná adicional de color básico de la Fuente y darte 1 cristal de ese color. Pueden decidir relanzar o no ese dado al final de su turno.",false, goldyx));
 
         // 10 Fichas de Habilidad de Wolfhawk
-        createFicha(new FichaHabilidad(41, "BAÑO REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal azul para tu Inventario.", wolfhawk));
-        createFicha(new FichaHabilidad(42, "BRISA REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal blanco para tu Inventario.", wolfhawk));
-        createFicha(new FichaHabilidad(43, "OJOS DE HALCÓN", "Una vez por turno: Movimiento 1. Además: durante la Noche, la exploración cuesta 1 Movimiento menos; durante el Día, puedes revelar defensores de lugares fortificados a una distancia de 2.", wolfhawk));
-        createFicha(new FichaHabilidad(44, "POR SU CUENTA", "Una vez por turno: Influencia 1. Influencia 3 si no reclutas ninguna Unidad usando Influencia en este turno.", wolfhawk));
-        createFicha(new FichaHabilidad(45, "PUNTERÍA MORTAL", "Una vez por turno: Añade +1 a una carta que otorgue cualquier tipo de Ataque en la fase de Ataque a Distancia y de Asedio, o añade +2 a una carta que otorgue cualquier tipo de Ataque (incluidas las cartas giradas) en la fase de Ataque.", wolfhawk));
-        createFicha(new FichaHabilidad(46, "CONOCE A TU PRESA", "Una vez por Ronda, durante el combate: Voltea para ignorar una aptitud ofensiva o defensiva de una ficha de enemigo, o eliminar un elemento de un ataque enemigo (Hielo y Fuego se convierten en Físico, Fuego Frío se convierte en Hielo o Fuego). No se puede utilizar contra enemigos con Inmunidad Arcana.", wolfhawk));
-        createFicha(new FichaHabilidad(47, "BURLA", "Una vez por turno, durante la fase de Bloqueo: Puedes o reducir un ataque de un enemigo en 1, o incrementar un ataque de un enemigo en 2 y reducir la Armadura del mismo enemigo en 2 (hasta un mínimo de 1). La reducción de la Armadura no sucede si como resultado el enemigo no puede atacar.", wolfhawk));
-        createFicha(new FichaHabilidad(48, "DUELO", "Una vez por turno, durante la fase de Bloqueo: Bloqueo 1. Ataque 1 contra el mismo enemigo en la fase de Ataque. Si no usas aptitudes de ninguna Unidad para bloquear, atacar, afectar a este enemigo ni asignas daño del enemigo a cualquier Unidad, ganas 1 más de Fama por derrotarlo. JcJ: Bloqueo 1 en la fase de Ataques Cuerpo a Cuerpo, Ataque 1 en tu próximo Ataque, Fama 1 si no has usado aptitudes de ninguna Unidad durante este Bloqueo y Ataque.", wolfhawk));
-        createFicha(new FichaHabilidad(49, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea la ficha para robar 2 cartas. Si eres quien menos Fama tiene (sin contar empates), gana también Fama 1. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.", wolfhawk));
-        createFicha(new FichaHabilidad(50, "AULLIDO DE LA MANADA", "Una vez por Ronda, excepto durante la interacción: Una carta girada otorga +4 en vez de +1. Por cada una de tus fichas de Mando sin Unidades asignadas, gana otro +1. Coloca esta ficha de Habilidad en el centro. El primer jugador que entre en combate con enemigos te devuelve la Habilidad boca abajo, reduce la Armadura de un enemigo elegido en 1, y un ataque del mismo u otro enemigo en 1.", wolfhawk));
+        createFicha(new FichaHabilidad(41, "BAÑO REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal azul para tu Inventario.",false, wolfhawk));
+        createFicha(new FichaHabilidad(42, "BRISA REFRESCANTE", "Una vez por Ronda, excepto durante el combate: Voltea para obtener Curación 1 y 1 cristal blanco para tu Inventario.",false, wolfhawk));
+        createFicha(new FichaHabilidad(43, "OJOS DE HALCÓN", "Una vez por turno: Movimiento 1. Además: durante la Noche, la exploración cuesta 1 Movimiento menos; durante el Día, puedes revelar defensores de lugares fortificados a una distancia de 2.",false, wolfhawk));
+        createFicha(new FichaHabilidad(44, "POR SU CUENTA", "Una vez por turno: Influencia 1. Influencia 3 si no reclutas ninguna Unidad usando Influencia en este turno.",false, wolfhawk));
+        createFicha(new FichaHabilidad(45, "PUNTERÍA MORTAL", "Una vez por turno: Añade +1 a una carta que otorgue cualquier tipo de Ataque en la fase de Ataque a Distancia y de Asedio, o añade +2 a una carta que otorgue cualquier tipo de Ataque (incluidas las cartas giradas) en la fase de Ataque.",false, wolfhawk));
+        createFicha(new FichaHabilidad(46, "CONOCE A TU PRESA", "Una vez por Ronda, durante el combate: Voltea para ignorar una aptitud ofensiva o defensiva de una ficha de enemigo, o eliminar un elemento de un ataque enemigo (Hielo y Fuego se convierten en Físico, Fuego Frío se convierte en Hielo o Fuego). No se puede utilizar contra enemigos con Inmunidad Arcana.",false, wolfhawk));
+        createFicha(new FichaHabilidad(47, "BURLA", "Una vez por turno, durante la fase de Bloqueo: Puedes o reducir un ataque de un enemigo en 1, o incrementar un ataque de un enemigo en 2 y reducir la Armadura del mismo enemigo en 2 (hasta un mínimo de 1). La reducción de la Armadura no sucede si como resultado el enemigo no puede atacar.",false, wolfhawk));
+        createFicha(new FichaHabilidad(48, "DUELO", "Una vez por turno, durante la fase de Bloqueo: Bloqueo 1. Ataque 1 contra el mismo enemigo en la fase de Ataque. Si no usas aptitudes de ninguna Unidad para bloquear, atacar, afectar a este enemigo ni asignas daño del enemigo a cualquier Unidad, ganas 1 más de Fama por derrotarlo. JcJ: Bloqueo 1 en la fase de Ataques Cuerpo a Cuerpo, Ataque 1 en tu próximo Ataque, Fama 1 si no has usado aptitudes de ninguna Unidad durante este Bloqueo y Ataque.",false, wolfhawk));
+        createFicha(new FichaHabilidad(49, "MOTIVACIÓN", "Una vez por Ronda, en el turno de cualquier jugador: Voltea la ficha para robar 2 cartas. Si eres quien menos Fama tiene (sin contar empates), gana también Fama 1. No puedes usar otra Habilidad de Motivación hasta el final de tu siguiente turno.",false, wolfhawk));
+        createFicha(new FichaHabilidad(50, "AULLIDO DE LA MANADA", "Una vez por Ronda, excepto durante la interacción: Una carta girada otorga +4 en vez de +1. Por cada una de tus fichas de Mando sin Unidades asignadas, gana otro +1. Coloca esta ficha de Habilidad en el centro. El primer jugador que entre en combate con enemigos te devuelve la Habilidad boca abajo, reduce la Armadura de un enemigo elegido en 1, y un ataque del mismo u otro enemigo en 1.",false, wolfhawk));
 
         // 10 Fichas de Habilidad de Krang
-        createFicha(new FichaHabilidad(51, "GUÍAS ESPIRITUALES", "Una vez por turno: Movimiento 1 y puedes añadir +1 a un Bloqueo de cualquier tipo en la fase de Bloqueo.", krang));
-        createFicha(new FichaHabilidad(52, "CURTIDO EN BATALLAS", "Una vez por turno: Ignora o los siguientes 2 puntos de daño asignados a tu Héroe de un Ataque Físico o 1 punto de daño de un Ataque no físico.", krang));
-        createFicha(new FichaHabilidad(53, "FRENESÍ DE LA BATALLA", "Una vez por turno: Ataque 2, o puedes voltear esta ficha para obtener Ataque 4 en este turno. Si usas tu turno para descansar, puedes voltear esta ficha de nuevo.", krang));
-        createFicha(new FichaHabilidad(54, "RITUAL DEL CHAMÁN", "Voltea para ganar una ficha de maná de cualquier color. Puedes voltearla de nuevo como tu acción en este turno.", krang));
-        createFicha(new FichaHabilidad(55, "REGENERAR", "Una vez por turno: Paga un maná de cualquier color y retira una Herida de tu mano. Si para hacerlo usaste maná rojo, o si eres quien menos Fama tiene (sin contar empates), roba también una carta.", krang));
-        createFicha(new FichaHabilidad(56, "DISFRAZ ARCANO", "Una vez por turno: Influencia 2, o puedes voltear esta ficha para ignorar todos los efectos de tu posición en el marcador de Reputación en este turno. Puedes voltearla de nuevo en cualquier turno pagando un maná verde.", krang));
-        createFicha(new FichaHabilidad(57, "MAESTRO DE MARIONETAS", "Una vez por turno: Puedes o quedarte 1 ficha de enemigo que hayas derrotado en este turno o descartar 1 ficha que te hayas quedado previamente. Si decides descartar, obtienes Ataque(s) igual a la mitad de su valor de Ataque o Bloqueo igual a la mitad de su valor de Armadura (todo redondeando hacia arriba). Si el Ataque de la ficha es de Hielo o Fuego, el Ataque que obtienes también lo será. Si la ficha tiene Resistencia al Hielo o Fuego, el Bloqueo que obtienes será del elemento opuesto.", krang));
-        createFicha(new FichaHabilidad(58, "MAESTRO DEL CAOS", "Cuando ganes esta Habilidad, lanza 1 dado de maná y márcalo con 1 ficha de Escudo encima del color lanzado. Una vez por turno puedes mover la ficha de Escudo al siguiente color en sentido horario para obtener, dependiendo del color: Azul: Bloqueo 3, Verde: Movimiento 1, Negro: Ataque a Distancia de Fuego Frío 1, Blanco: Influencia 2, Rojo: Ataque 2, Dorado: Tú eliges. Si no usas esta Habilidad durante tu turno, podrás mover la ficha de Escudo al siguiente color en sentido horario en cualquier momento antes de tu siguiente turno.", krang));
-        createFicha(new FichaHabilidad(59, "MALDICIÓN", "Una vez por turno: Puedes reducir un Ataque de un enemigo en 1 o reducir la Armadura de un enemigo en 1 (hasta un mínimo de 1). No puedes usar esta Habilidad contra un enemigo fortificado en las fases de Ataque a Distancia y de Asedio.", krang));
-        createFicha(new FichaHabilidad(60, "AUMENTO DE MANÁ", "Una vez por Ronda: Cuando gastes maná de un color básico, coloca esta ficha de Habilidad en el centro y márcala con 1 ficha de maná del mismo color. Gana 1 cristal de ese color. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolverte la ficha de Habilidad boca abajo, para usar la ficha de maná que está encima de ella.", krang));
+        createFicha(new FichaHabilidad(51, "GUÍAS ESPIRITUALES", "Una vez por turno: Movimiento 1 y puedes añadir +1 a un Bloqueo de cualquier tipo en la fase de Bloqueo.",false, krang));
+        createFicha(new FichaHabilidad(52, "CURTIDO EN BATALLAS", "Una vez por turno: Ignora o los siguientes 2 puntos de daño asignados a tu Héroe de un Ataque Físico o 1 punto de daño de un Ataque no físico.",false, krang));
+        createFicha(new FichaHabilidad(53, "FRENESÍ DE LA BATALLA", "Una vez por turno: Ataque 2, o puedes voltear esta ficha para obtener Ataque 4 en este turno. Si usas tu turno para descansar, puedes voltear esta ficha de nuevo.",false, krang));
+        createFicha(new FichaHabilidad(54, "RITUAL DEL CHAMÁN", "Voltea para ganar una ficha de maná de cualquier color. Puedes voltearla de nuevo como tu acción en este turno.",false, krang));
+        createFicha(new FichaHabilidad(55, "REGENERAR", "Una vez por turno: Paga un maná de cualquier color y retira una Herida de tu mano. Si para hacerlo usaste maná rojo, o si eres quien menos Fama tiene (sin contar empates), roba también una carta.",false, krang));
+        createFicha(new FichaHabilidad(56, "DISFRAZ ARCANO", "Una vez por turno: Influencia 2, o puedes voltear esta ficha para ignorar todos los efectos de tu posición en el marcador de Reputación en este turno. Puedes voltearla de nuevo en cualquier turno pagando un maná verde.",false, krang));
+        createFicha(new FichaHabilidad(57, "MAESTRO DE MARIONETAS", "Una vez por turno: Puedes o quedarte 1 ficha de enemigo que hayas derrotado en este turno o descartar 1 ficha que te hayas quedado previamente. Si decides descartar, obtienes Ataque(s) igual a la mitad de su valor de Ataque o Bloqueo igual a la mitad de su valor de Armadura (todo redondeando hacia arriba). Si el Ataque de la ficha es de Hielo o Fuego, el Ataque que obtienes también lo será. Si la ficha tiene Resistencia al Hielo o Fuego, el Bloqueo que obtienes será del elemento opuesto.",false, krang));
+        createFicha(new FichaHabilidad(58, "MAESTRO DEL CAOS", "Cuando ganes esta Habilidad, lanza 1 dado de maná y márcalo con 1 ficha de Escudo encima del color lanzado. Una vez por turno puedes mover la ficha de Escudo al siguiente color en sentido horario para obtener, dependiendo del color: Azul: Bloqueo 3, Verde: Movimiento 1, Negro: Ataque a Distancia de Fuego Frío 1, Blanco: Influencia 2, Rojo: Ataque 2, Dorado: Tú eliges. Si no usas esta Habilidad durante tu turno, podrás mover la ficha de Escudo al siguiente color en sentido horario en cualquier momento antes de tu siguiente turno.",false, krang));
+        createFicha(new FichaHabilidad(59, "MALDICIÓN", "Una vez por turno: Puedes reducir un Ataque de un enemigo en 1 o reducir la Armadura de un enemigo en 1 (hasta un mínimo de 1). No puedes usar esta Habilidad contra un enemigo fortificado en las fases de Ataque a Distancia y de Asedio.",false, krang));
+        createFicha(new FichaHabilidad(60, "AUMENTO DE MANÁ", "Una vez por Ronda: Cuando gastes maná de un color básico, coloca esta ficha de Habilidad en el centro y márcala con 1 ficha de maná del mismo color. Gana 1 cristal de ese color. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolverte la ficha de Habilidad boca abajo, para usar la ficha de maná que está encima de ella.",false, krang));
 
         // 10 Fichas de Habilidad de Braevalar
-        createFicha(new FichaHabilidad(61, "RESISTENCIA ELEMENTAL", "Una vez por turno: Ignora los 2 próximos puntos de daño asignados a tu Héroe de un Ataque de Fuego o Hielo o bien 1 punto de daño de otro tipo de Ataque.", braevalar));
-        createFicha(new FichaHabilidad(62, "ALIADOS SALVAJES", "Explorar cuesta 1 menos de Movimiento. Una vez por turno: Ataque 1, o reduce un ataque de un enemigo en 1.", braevalar));
-        createFicha(new FichaHabilidad(63, "TEMPESTAD", "Una vez por Ronda: Voltea para ganar una ficha de maná verde o azul, y una ficha de maná verde o blanca.", braevalar));
-        createFicha(new FichaHabilidad(64, "TORMENTA ELÉCTRICA", "Una vez por Ronda: Voltea para ganar una ficha de maná azul o verde, y una ficha de maná azul o roja.", braevalar));
-        createFicha(new FichaHabilidad(65, "CAUTIVAR", "Una vez por turno: Influencia 3, Influencia 2 en un sitio fortificado, o Influencia 4 en un Claro Mágico.", braevalar));
-        createFicha(new FichaHabilidad(66, "RAYO BIFURCADO", "Una vez por turno: Ataque a Distancia de Fuego Frío 1 contra hasta 3 enemigos diferentes.", braevalar));
-        createFicha(new FichaHabilidad(67, "CAMBIAFORMAS", "Una vez por turno: Una carta de Acción Básica que otorgue un número concreto de Movimiento/Ataque/Bloqueo, en vez de su acción habitual puede ofrecer la misma cantidad de cualquiera de las otras dos en su lugar (los tipos de elementos se conservan en Ataques y Bloqueos).", braevalar));
-        createFicha(new FichaHabilidad(68, "CAMINOS SECRETOS", "Una vez por turno: Movimiento 1. Puedes entrar en montañas por un coste de Movimiento de 5 y se consideran un espacio seguro para ti. Si pagas 1 maná azul, puedes entrar en lagos por un coste de Movimiento de 2 en este turno y los lagos se consideran un espacio seguro para ti al final de este turno.", braevalar));
-        createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.", braevalar));
-        createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.", braevalar));
+        createFicha(new FichaHabilidad(61, "RESISTENCIA ELEMENTAL", "Una vez por turno: Ignora los 2 próximos puntos de daño asignados a tu Héroe de un Ataque de Fuego o Hielo o bien 1 punto de daño de otro tipo de Ataque.",false, braevalar));
+        createFicha(new FichaHabilidad(62, "ALIADOS SALVAJES", "Explorar cuesta 1 menos de Movimiento. Una vez por turno: Ataque 1, o reduce un ataque de un enemigo en 1.",false, braevalar));
+        createFicha(new FichaHabilidad(63, "TEMPESTAD", "Una vez por Ronda: Voltea para ganar una ficha de maná verde o azul, y una ficha de maná verde o blanca.",false, braevalar));
+        createFicha(new FichaHabilidad(64, "TORMENTA ELÉCTRICA", "Una vez por Ronda: Voltea para ganar una ficha de maná azul o verde, y una ficha de maná azul o roja.",false, braevalar));
+        createFicha(new FichaHabilidad(65, "CAUTIVAR", "Una vez por turno: Influencia 3, Influencia 2 en un sitio fortificado, o Influencia 4 en un Claro Mágico.",false, braevalar));
+        createFicha(new FichaHabilidad(66, "RAYO BIFURCADO", "Una vez por turno: Ataque a Distancia de Fuego Frío 1 contra hasta 3 enemigos diferentes.",false, braevalar));
+        createFicha(new FichaHabilidad(67, "CAMBIAFORMAS", "Una vez por turno: Una carta de Acción Básica que otorgue un número concreto de Movimiento/Ataque/Bloqueo, en vez de su acción habitual puede ofrecer la misma cantidad de cualquiera de las otras dos en su lugar (los tipos de elementos se conservan en Ataques y Bloqueos).",false, braevalar));
+        createFicha(new FichaHabilidad(68, "CAMINOS SECRETOS", "Una vez por turno: Movimiento 1. Puedes entrar en montañas por un coste de Movimiento de 5 y se consideran un espacio seguro para ti. Si pagas 1 maná azul, puedes entrar en lagos por un coste de Movimiento de 2 en este turno y los lagos se consideran un espacio seguro para ti al final de este turno.",false, braevalar));
+        createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.",false, braevalar));
+        createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.",false, braevalar));
     }
 
     public void insertAllDataPartTwo(){

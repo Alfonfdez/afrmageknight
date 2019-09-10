@@ -232,7 +232,7 @@ public class GameServicesImpl implements GameServices {
     @Override
     public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer) {
 
-        FichaHabilidad fichaHabilidad = new FichaHabilidad(idFicha, nombreFichaHabilidad, descripcionFichaHabilidad, randomHeroeDummyPlayer);
+        FichaHabilidad fichaHabilidad = new FichaHabilidad(idFicha, nombreFichaHabilidad, descripcionFichaHabilidad, false,randomHeroeDummyPlayer);
 
         return fichaHabilidad;
     }

@@ -39,11 +39,14 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     public static final String COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
     public static final String COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
     public static final String COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
 
     //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID";
+    public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID_FICHA";
     public static final String COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "NOMBRE";
     public static final String COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCRIPCION";
+    public static final String COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
 
 
     //Constructor
@@ -54,96 +57,10 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("DATABASE", "2º) - ONCREATE_GAME DATA");
-
-        //PARTIDA_MODO_TABLE
-        StringBuilder strSQLPartidaModoTable = new StringBuilder();
-
-        strSQLPartidaModoTable.append("CREATE TABLE ").append(PARTIDA_MODO_TABLE).append(" (")
-                .append(COL_1_PARTIDA_MODO_TABLE).append(" TEXT PRIMARY KEY")
-                .append(")");
-
-        Log.d("DATABASE", "PRIMERO - ONCREATE_GAME DATA - PARTIDA_MODO_TABLE");
-        Log.d("DATABASE", strSQLPartidaModoTable.toString());
-
-        db.execSQL(strSQLPartidaModoTable.toString());
-
-
-        //PARTIDA_HEROES_JUGADOR_TABLE
-        StringBuilder strSQLPartidaHeroesJugadorTable = new StringBuilder();
-
-        strSQLPartidaHeroesJugadorTable.append("CREATE TABLE ").append(PARTIDA_HEROES_JUGADOR_TABLE).append(" (")
-                .append(COL_1_PARTIDA_HEROES_JUGADOR_TABLE).append(" TEXT PRIMARY KEY")
-                .append(")");
-
-        Log.d("DATABASE", "SEGUNDO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
-        Log.d("DATABASE", strSQLPartidaHeroesJugadorTable.toString());
-
-        db.execSQL(strSQLPartidaHeroesJugadorTable.toString());
-
-
-        //PARTIDA_HEROE_DUMMY_TABLE
-        StringBuilder strSQLPartidaHeroeDummyTable = new StringBuilder();
-
-        strSQLPartidaHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_HEROE_DUMMY_TABLE).append(" (")
-                .append(COL_1_PARTIDA_HEROE_DUMMY_TABLE).append(" TEXT PRIMARY KEY")
-                .append(")");
-
-        Log.d("DATABASE", "TERCERO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
-        Log.d("DATABASE", strSQLPartidaHeroeDummyTable.toString());
-
-        db.execSQL(strSQLPartidaHeroeDummyTable.toString());
-
-
-        //PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE
-        StringBuilder strSQLPartidaCartasHeroeDummyTable = new StringBuilder();
-
-        strSQLPartidaCartasHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" (")
-                .append(COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY,")
-                .append(COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" BIT DEFAULT 0")
-                .append(")");
-
-        Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE");
-        Log.d("DATABASE", strSQLPartidaCartasHeroeDummyTable.toString());
-
-        db.execSQL(strSQLPartidaCartasHeroeDummyTable.toString());
-
-
-        //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
-        StringBuilder strSQLPartidaFichasHabilidadHeroeDummyTable = new StringBuilder();
-
-        strSQLPartidaFichasHabilidadHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" (")
-                .append(COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY")
-                .append(")");
-
-        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
-        Log.d("DATABASE", strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
-
-        db.execSQL(strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_MODO_TABLE);
-        onCreate(db);
-
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROES_JUGADOR_TABLE);
-        onCreate(db);
-
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROE_DUMMY_TABLE);
-        onCreate(db);
-
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE);
-        onCreate(db);
-
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE);
-        onCreate(db);
 
     }
 
@@ -192,7 +109,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public boolean insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer( int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica){
+    public boolean insertDataShuffledBasicCardHeroeSelectedByDummyPlayer( int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String heroNameDummy){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -205,6 +122,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         contentValues.put(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, descripcionBasicaCartaAccionBasica);
         contentValues.put(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, descripcionAvanzadaCartaAccionBasica);
         contentValues.put(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, isDescartadaCartaAccionBasica);
+        contentValues.put(COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, heroNameDummy);
 
         long resultado = db.insert(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, null, contentValues);
 
@@ -212,7 +130,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public boolean insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer( int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad){
+    public boolean insertDataShuffledSkillTokenHeroeSelectedByDummyPlayer( int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -222,6 +140,8 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         contentValues.put(COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, numeroFichaHabilidad);
         contentValues.put(COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, nombreFichaHabilidad);
         contentValues.put(COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, descripcionFichaHabilidad);
+        contentValues.put(COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, isDescartadaFichaHabilidad);
+        contentValues.put(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, heroNameDummy);
 
         long resultado = db.insert(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, null, contentValues);
 
@@ -244,13 +164,13 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return null;
     }
 
-    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica){
-        insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, colorCartaAccionBasica, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, isDescartadaCartaAccionBasica);
+    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String heroNameDummy){
+        insertDataShuffledBasicCardHeroeSelectedByDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, colorCartaAccionBasica, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, isDescartadaCartaAccionBasica, heroNameDummy);
         return null;
     }
 
-    public FichaHabilidad createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad){
-        insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad);
+    public FichaHabilidad createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy){
+        insertDataShuffledSkillTokenHeroeSelectedByDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, isDescartadaFichaHabilidad, heroNameDummy);
         return null;
     }
 
@@ -269,11 +189,11 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         createRandomHeroeDummyPlayer(randomHeroeDummyPlayer);
 
         for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
-            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), false);
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), cartaAccionBasica.isDescartada(), randomHeroeDummyPlayer.getNombre());
         }
 
         for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
-            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion());
+            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre());
         }
 
     }
