@@ -231,7 +231,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_1_CARTAS_TACTICAS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_CARTAS_TACTICAS_TABLE).append(" INTEGER NOT NULL,")
-                .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL")
+                .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT")
                 .append(")");
 
         Log.d("DATABASE", "DECIMO - ONCREATE_INITIAL DATA - CARTAS_TACTICAS_TABLE");
@@ -683,7 +683,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
     //Insertar datos de la Ficha de Habilidad en su correspondiente tabla
     public FichaHabilidad createFicha(FichaHabilidad fichaHabilidad){
-        insertDataFichaHabilidad(fichaHabilidad.getId(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.getHeroe());
+        insertDataFichaHabilidad(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.getHeroe());
 
         return null;
     }
@@ -1071,5 +1071,11 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.", braevalar));
         createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por Ronda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.", braevalar));
     }
+
+    @Override
+    public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer) {
+
+    }
+
 
 }

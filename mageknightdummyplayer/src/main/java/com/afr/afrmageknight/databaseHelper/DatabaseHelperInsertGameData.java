@@ -147,11 +147,6 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
     }
 
-    @Override
-    public void insertAllData() {
-
-    }
-
     public boolean insertDataGameMode(TipoPartida tipoPartida){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -233,8 +228,20 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
     }
+
+    public void createTipoPartida(TipoPartida tipoPartida){
+        insertDataGameMode(tipoPartida);
+    }
+
+    public void createHeroeSelectedByPlayer(Heroe heroSelectedByPlayer){
+        insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
+    }
+
+    public void createRandomHeroeDummyPlayer(Heroe randomHeroeDummyPlayer){
+        insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
+    }
     
-    public void insertAllBasicCardsFromDummyPlayer(List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer){
+    public void createAllBasicCardsFromDummyPlayer(List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer){
         int i = 0;
         while(i<cartasAccionBasicasBarajadasDummyPlayer.size()){
             int numeroCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getNumero();
@@ -243,20 +250,42 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
             String descripcionBasicaCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getDescripcionBasica();
             String descripcionAvanzadaCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).getDescripcionAvanzada();
             boolean isDescartadaCartaAccionBasica = cartasAccionBasicasBarajadasDummyPlayer.get(i).isDescartada();
+
             insertDataShuffledBasicCardsHeroeSelectedByDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, colorCartaAccionBasica, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, isDescartadaCartaAccionBasica);
             ++i;
         }
     }
 
-    public void insertAllSkillTokensFromDummyPlayer(List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer){
+    public void createAllSkillTokensFromDummyPlayer(List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer){
         int i = 0;
         while(i<fichaHabilidadesBarajadasDummyPlayer.size()){
-            int numeroFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getId();
+            int numeroFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getIdFicha();
             String nombreFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getNombre();
             String descripcionFichaHabilidad = fichaHabilidadesBarajadasDummyPlayer.get(i).getDescripcion();
+
             insertDataShuffledSkillTokensHeroeSelectedByDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad);
             ++i;
         }
+    }
+
+    @Override
+    public void insertAllData() {
+
+    }
+
+    @Override
+    public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer) {
+
+        createTipoPartida(tipoPartida);
+
+        createHeroeSelectedByPlayer(heroeSelectedByPlayer);
+
+        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer);
+
+        createAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
+
+        createAllSkillTokensFromDummyPlayer(fichaHabilidadesBarajadasDummyPlayer);
+
     }
 
 

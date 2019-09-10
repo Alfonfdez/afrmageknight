@@ -6,7 +6,6 @@ import android.database.Cursor;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
 import com.afr.afrmageknight.model.Carta;
-import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
@@ -22,8 +21,9 @@ public class GameServicesImpl implements GameServices {
     // DatabaseHelper no entrega a través de sus métodos ni Heroes no Cartas ni Cristales. Sólo cursores
 
     //I - Declarar las variables
-    private DatabaseHelper databaseHelper = null;
+    private DatabaseHelper databaseHelper;
     private DatabaseHelperInsertInitialData myInitialDB;
+
     private Cursor heroesCursor;
     private Cursor heroesCristalesCursor;
     private Cursor cartasCursor;
@@ -37,14 +37,13 @@ public class GameServicesImpl implements GameServices {
 
     public GameServicesImpl (Context context){
         this.databaseHelper = new DatabaseHelperInsertInitialData(context);
+        this.myInitialDB = new DatabaseHelperInsertInitialData(context);
     }
 
     // Implementar los métodos de la interfaz 'GameServices'
     @Override
     public Heroe getAHeroeSelectedByPlayer(String heroeName) {
-
         Heroe heroe = new Heroe(heroeName, getCristalesFromAHeroe(heroeName));
-
         return heroe;
     }
 

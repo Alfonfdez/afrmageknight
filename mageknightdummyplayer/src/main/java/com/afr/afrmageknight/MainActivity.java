@@ -1,12 +1,10 @@
 package com.afr.afrmageknight;
 
-import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -16,21 +14,20 @@ import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertGameData;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
 import com.afr.afrmageknight.model.CartaAccionBasica;
-import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
 import com.afr.afrmageknight.servicios.GameServices;
 import com.afr.afrmageknight.servicios.GameServicesImpl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    private DatabaseHelper myInitialDB;
+    //private DatabaseHelper myInitialDB;
+    //private DatabaseHelper myGameDB;
+    private DatabaseHelperInsertInitialData myInitialDB;
     private DatabaseHelperInsertGameData myGameDB;
 
     private GameServices gameServices;
@@ -82,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Log.d("DATABASE","INSERT ALL DATA ON DATABASE");
-
                 myInitialDB.insertAllData();
             }
         });
@@ -102,23 +98,24 @@ public class MainActivity extends AppCompatActivity {
                     if(radioGroupHeroes.getCheckedRadioButtonId() == -1){
                         Toast.makeText(MainActivity.this, "Se debe seleccionar 1 héroe", Toast.LENGTH_SHORT).show();
                     } else {
-                        myGameDB.insertDataGameMode(TipoPartida.SOLITARIO);
 
                         switch(radioGroupHeroes.getCheckedRadioButtonId()){
 
                             case R.id.idRadioButtonArythea:
 
                                 Heroe heroeSelectedByPlayer = gameServices.getAHeroeSelectedByPlayer("Arythea");
-                                myGameDB.insertDataHeroeSelectedByPlayer(heroeSelectedByPlayer);
+                                //myGameDB.insertDataHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
                                 Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
-                                myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
+                                //myGameDB.insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
 
                                 List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServices.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-                                myGameDB.insertAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
+                                //myGameDB.createAllBasicCardsFromDummyPlayer(cartasAccionBasicasBarajadasDummyPlayer);
 
                                 List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServices.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-                                myGameDB.insertAllSkillTokensFromDummyPlayer(fichaHabilidadesBarajadasDummyPlayer);
+                                //myGameDB.createAllSkillTokensFromDummyPlayer(fichaHabilidadesBarajadasDummyPlayer);
+
+                                myGameDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer);
 
                                 break;
 

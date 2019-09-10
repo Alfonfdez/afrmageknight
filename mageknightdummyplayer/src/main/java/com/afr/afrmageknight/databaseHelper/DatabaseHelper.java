@@ -43,8 +43,9 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public abstract void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
 
-
     //Métodos
     public abstract void insertAllData();
+
+    public abstract void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer);
 
 }
