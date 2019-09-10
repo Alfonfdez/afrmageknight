@@ -1,28 +1,17 @@
 package com.afr.afrmageknight.databaseHelper;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.afr.afrmageknight.model.Carta;
-import com.afr.afrmageknight.model.CartaAccion;
-import com.afr.afrmageknight.model.CartaAccionAvanzada;
 import com.afr.afrmageknight.model.CartaAccionBasica;
-import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
-import com.afr.afrmageknight.model.CartaTactica;
-import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
-import com.afr.afrmageknight.model.Hechizo;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
-import com.afr.afrmageknight.model.TipoTactica;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
 
 public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -43,12 +32,10 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public abstract void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
 
-    //Métodos
+    //Métodos a implementar
     public abstract void insertAllData();
 
     public abstract void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer);
 
-    public abstract void insertAllDataPartOne();
 
-    public abstract void insertAllDataPartTwo();
 }

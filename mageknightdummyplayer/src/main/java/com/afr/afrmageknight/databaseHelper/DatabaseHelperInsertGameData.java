@@ -64,6 +64,11 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
     }
 
+    @Override
+    public void insertAllData() {
+
+    }
+
     public boolean insertDataGameMode(TipoPartida tipoPartida){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -174,12 +179,6 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return null;
     }
 
-    @Override
-    public void insertAllData() {
-
-    }
-
-    @Override
     public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer) {
 
         createTipoPartida(tipoPartida);
@@ -197,16 +196,5 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         }
 
     }
-
-    @Override
-    public void insertAllDataPartOne() {
-
-    }
-
-    @Override
-    public void insertAllDataPartTwo() {
-
-    }
-
 
 }
