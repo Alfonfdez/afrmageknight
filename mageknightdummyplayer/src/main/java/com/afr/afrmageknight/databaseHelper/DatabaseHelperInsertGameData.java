@@ -69,14 +69,14 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
     }
 
-    public boolean insertDataGameMode(TipoPartida tipoPartida){
+    public boolean insertDataGameMode(String tipoPartida){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
         //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COL_1_PARTIDA_MODO_TABLE, tipoPartida.toString());
+        contentValues.put(COL_1_PARTIDA_MODO_TABLE, tipoPartida);
 
         long resultado = db.insert(PARTIDA_MODO_TABLE, null, contentValues);
 
@@ -84,14 +84,14 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public boolean insertDataHeroeSelectedByPlayer(Heroe heroe){
+    public boolean insertDataHeroeSelectedByPlayer(String heroeNameSelectedByPlayer){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
         //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COL_1_PARTIDA_HEROES_JUGADOR_TABLE, heroe.getNombre());
+        contentValues.put(COL_1_PARTIDA_HEROES_JUGADOR_TABLE, heroeNameSelectedByPlayer);
 
         long resultado = db.insert(PARTIDA_HEROES_JUGADOR_TABLE, null, contentValues);
 
@@ -99,14 +99,14 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public boolean insertDataHeroeSelectedByDummyPlayer(Heroe randomHeroeDummyPlayer){
+    public boolean insertDataHeroeSelectedByDummyPlayer(String randomHeroeDummyPlayer){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
         //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COL_1_PARTIDA_HEROE_DUMMY_TABLE, randomHeroeDummyPlayer.getNombre());
+        contentValues.put(COL_1_PARTIDA_HEROE_DUMMY_TABLE, randomHeroeDummyPlayer);
 
         long resultado = db.insert(PARTIDA_HEROE_DUMMY_TABLE, null, contentValues);
 
@@ -114,7 +114,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public boolean insertDataShuffledBasicCardHeroeSelectedByDummyPlayer( int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String heroNameDummy){
+    public boolean insertDataShuffledBasicCardHeroeSelectedByDummyPlayer( int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String heroNameDummyPlayer){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -127,7 +127,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         contentValues.put(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, descripcionBasicaCartaAccionBasica);
         contentValues.put(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, descripcionAvanzadaCartaAccionBasica);
         contentValues.put(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, isDescartadaCartaAccionBasica);
-        contentValues.put(COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, heroNameDummy);
+        contentValues.put(COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, heroNameDummyPlayer);
 
         long resultado = db.insert(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE, null, contentValues);
 
@@ -135,7 +135,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public boolean insertDataShuffledSkillTokenHeroeSelectedByDummyPlayer( int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy){
+    public boolean insertDataShuffledSkillTokenHeroeSelectedByDummyPlayer( int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummyPlayer){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -146,7 +146,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         contentValues.put(COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, nombreFichaHabilidad);
         contentValues.put(COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, descripcionFichaHabilidad);
         contentValues.put(COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, isDescartadaFichaHabilidad);
-        contentValues.put(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, heroNameDummy);
+        contentValues.put(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, heroNameDummyPlayer);
 
         long resultado = db.insert(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, null, contentValues);
 
@@ -154,17 +154,17 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
-    public TipoPartida createTipoPartida(TipoPartida tipoPartida){
+    public TipoPartida createTipoPartida(String tipoPartida){
         insertDataGameMode(tipoPartida);
         return null;
     }
 
-    public Heroe createHeroeSelectedByPlayer(Heroe heroSelectedByPlayer){
+    public Heroe createHeroeSelectedByPlayer(String heroSelectedByPlayer){
         insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
         return null;
     }
 
-    public Heroe createRandomHeroeDummyPlayer(Heroe randomHeroeDummyPlayer){
+    public Heroe createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
         insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
         return null;
     }
@@ -181,17 +181,19 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
     public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer) {
 
-        createTipoPartida(tipoPartida);
+        createTipoPartida(tipoPartida.toString());
 
-        createHeroeSelectedByPlayer(heroeSelectedByPlayer);
+        createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
 
-        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer);
+        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
 
         for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
             createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), cartaAccionBasica.isDescartada(), randomHeroeDummyPlayer.getNombre());
         }
 
         for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM SKILL TOKENS -> Numero: "+fichaHabilidad.getIdFicha()+" - Nombre: "+fichaHabilidad.getNombre());
             createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre());
         }
 

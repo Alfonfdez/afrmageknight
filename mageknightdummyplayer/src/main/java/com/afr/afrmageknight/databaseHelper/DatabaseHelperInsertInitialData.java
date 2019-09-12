@@ -86,6 +86,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     public static final String COL_2_CARTAS_TACTICAS_TABLE = "TIPO_TACTICA";
     public static final String COL_3_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
     public static final String COL_4_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
+    public static final String COL_5_CARTAS_TACTICAS_TABLE = "DESCARTADA";
 
     // FICHAS_HABILIDAD_TABLE
     public static final String COL_1_FICHAS_HABILIDAD_TABLE = "ID_FICHA";
@@ -263,7 +264,8 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_1_CARTAS_TACTICAS_TABLE).append(" INTEGER PRIMARY KEY,")
                 .append(COL_2_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_CARTAS_TACTICAS_TABLE).append(" INTEGER NOT NULL,")
-                .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT")
+                .append(COL_4_CARTAS_TACTICAS_TABLE).append(" TEXT,")
+                .append(COL_5_CARTAS_TACTICAS_TABLE).append(" BIT NOT NULL")
                 .append(")");
 
         Log.d("DATABASE", "DECIMO - ONCREATE_INITIAL DATA - CARTAS_TACTICAS_TABLE");
@@ -493,7 +495,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaAccion(int numero, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean isDescartada){
+    public boolean insertDataCartaAccion(int numero, String color, String descripcionBasica, String descripcionAvanzada, boolean isDescartada){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -502,7 +504,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_1_CARTAS_ACCIONES_TABLE, numero);
-        contentValues.put(COL_2_CARTAS_ACCIONES_TABLE, color.toString());
+        contentValues.put(COL_2_CARTAS_ACCIONES_TABLE, color);
         contentValues.put(COL_3_CARTAS_ACCIONES_TABLE, descripcionBasica);
         contentValues.put(COL_4_CARTAS_ACCIONES_TABLE, descripcionAvanzada);
         contentValues.put(COL_5_CARTAS_ACCIONES_TABLE, isDescartada);
@@ -515,7 +517,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaAccionBasica(int numero, Heroe heroe){
+    public boolean insertDataCartaAccionBasica(int numero, String heroeName){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -524,7 +526,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_1_CARTAS_ACCIONES_BASICAS_TABLE, numero);
-        contentValues.put(COL_2_CARTAS_ACCIONES_BASICAS_TABLE, heroe.getNombre());
+        contentValues.put(COL_2_CARTAS_ACCIONES_BASICAS_TABLE, heroeName);
 
         long resultado = db.insert(CARTAS_ACCIONES_BASICAS_TABLE, null, contentValues);
 
@@ -552,7 +554,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaAccionAvanzadaEspecial(int numero, Cristal cristalSecundario){
+    public boolean insertDataCartaAccionAvanzadaEspecial(int numero, String colorSecundario){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -561,7 +563,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE, numero);
-        contentValues.put(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE, cristalSecundario.toString());
+        contentValues.put(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE, colorSecundario);
 
         long resultado = db.insert(CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE, null, contentValues);
 
@@ -570,7 +572,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaHechizo(int numero, String nombreSecundario){
+    public boolean insertDataCartaHechizo(int numero, String colorSecundario){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -579,7 +581,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_1_CARTAS_HECHIZOS_TABLE, numero);
-        contentValues.put(COL_2_CARTAS_HECHIZOS_TABLE, nombreSecundario);
+        contentValues.put(COL_2_CARTAS_HECHIZOS_TABLE, colorSecundario);
 
         long resultado = db.insert(CARTAS_HECHIZOS_TABLE, null, contentValues);
 
@@ -588,7 +590,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCartaTactica(int numero, TipoTactica tipoTactica, int numeroOrden, String descripcion){
+    public boolean insertDataCartaTactica(int numero, String tipoTactica, int numeroOrden, String descripcion, boolean isDescartada){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -597,9 +599,10 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_1_CARTAS_TACTICAS_TABLE, numero);
-        contentValues.put(COL_2_CARTAS_TACTICAS_TABLE, tipoTactica.toString());
+        contentValues.put(COL_2_CARTAS_TACTICAS_TABLE, tipoTactica);
         contentValues.put(COL_3_CARTAS_TACTICAS_TABLE, numeroOrden);
         contentValues.put(COL_4_CARTAS_TACTICAS_TABLE, descripcion);
+        contentValues.put(COL_5_CARTAS_TACTICAS_TABLE, isDescartada);
 
         long resultado = db.insert(CARTAS_TACTICAS_TABLE, null, contentValues);
 
@@ -608,7 +611,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataFichaHabilidad(int idFicha, String nombre, String descripcion, boolean isDescartada, Heroe heroe){
+    public boolean insertDataFichaHabilidad(int idFicha, String nombre, String descripcion, boolean isDescartada, String heroeName){
 
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -620,10 +623,11 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         contentValues.put(COL_2_FICHAS_HABILIDAD_TABLE, nombre);
         contentValues.put(COL_3_FICHAS_HABILIDAD_TABLE, descripcion);
         contentValues.put(COL_4_FICHAS_HABILIDAD_TABLE, isDescartada);
-        contentValues.put(COL_5_FICHAS_HABILIDAD_TABLE, heroe.getNombre());
+        contentValues.put(COL_5_FICHAS_HABILIDAD_TABLE, heroeName);
 
         long resultado = db.insert(FICHAS_HABILIDAD_TABLE, null, contentValues);
 
+        //Log.d("DATABASE","INSERT FICHA HABILIDAD -> ID FICHA:"+idFicha+" - Nombre: "+nombre+" - Resultado: "+resultado);
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
     }
@@ -676,9 +680,6 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
         Cursor cursor = db.rawQuery("SELECT * FROM "+ CARTAS_TABLE, null);
 
-        //Ejemplo
-        // SELECT * FROM AMIGOS WHERE nombre=? AND apellido LIKE '?%';
-        // String[] = {"Adolfo","D"};
         return cursor;
     }
 
@@ -782,7 +783,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         // 2.- Si la carta es de tipo TACTICA, insertamos en su tabla CARTAS_TACTICAS todo los datos y salimos del método
         if(carta.getClass() == CartaTactica.class){
             CartaTactica cartaTactica = (CartaTactica) carta;
-            insertDataCartaTactica(carta.getNumero(), cartaTactica.getTipoTactica(), cartaTactica.getNumeroOrden(), cartaTactica.getDescripcion());
+            insertDataCartaTactica(carta.getNumero(), cartaTactica.getTipoTactica().toString(), cartaTactica.getNumeroOrden(), cartaTactica.getDescripcion(), cartaTactica.isDescartada());
 
             return null;
         }
@@ -790,17 +791,17 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         // 3.- Si la carta NO es de tipo TACTICA, sólo puede ser de tipo ACCION. Insertaremos los datos en su tabla CARTAS_ACCIONES
         CartaAccion cartaAccion = (CartaAccion) carta;
 
-        insertDataCartaAccion(carta.getNumero(), cartaAccion.getColor(), cartaAccion.getDescripcionBasica(), cartaAccion.getDescripcionAvanzada(), cartaAccion.isDescartada());
+        insertDataCartaAccion(carta.getNumero(), cartaAccion.getColor().toString(), cartaAccion.getDescripcionBasica(), cartaAccion.getDescripcionAvanzada(), cartaAccion.isDescartada());
 
         // 4.- Según el tipo específico de carta de ACCIÓN, insertaremos los datos extra de las cartas (AccionBasica, AccionAvanzada, AccionAvanzadaEspecial, Hechizo)
         if (carta.getClass() == CartaAccionBasica.class){
             CartaAccionBasica cartaAccionBasica = (CartaAccionBasica) cartaAccion;
-            insertDataCartaAccionBasica(carta.getNumero(),cartaAccionBasica.getHeroe());
+            insertDataCartaAccionBasica(carta.getNumero(),cartaAccionBasica.getHeroe().getNombre());
         } else if(carta.getClass() == CartaAccionAvanzada.class){
             insertDataCartaAccionAvanzada(carta.getNumero());
         } else if(carta.getClass() == CartaAccionAvanzadaEspecial.class) {
             CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = (CartaAccionAvanzadaEspecial) cartaAccion;
-            insertDataCartaAccionAvanzadaEspecial(carta.getNumero(), cartaAccionAvanzadaEspecial.getColorSecundario());
+            insertDataCartaAccionAvanzadaEspecial(carta.getNumero(), cartaAccionAvanzadaEspecial.getColorSecundario().toString());
         } else {  //(carta.getClass() == Hechizo.class)
             Hechizo hechizo = (Hechizo) cartaAccion;
             insertDataCartaHechizo(carta.getNumero(), hechizo.getNombreSecundario());
@@ -811,7 +812,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
     //Insertar datos de la Ficha de Habilidad en su correspondiente tabla
     public FichaHabilidad createFicha(FichaHabilidad fichaHabilidad){
-        insertDataFichaHabilidad(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(),  fichaHabilidad.isDescartada(), fichaHabilidad.getHeroe());
+        insertDataFichaHabilidad(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(),  fichaHabilidad.isDescartada(), fichaHabilidad.getHeroe().getNombre());
 
         return null;
     }
@@ -1019,18 +1020,18 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         createCarta(new Hechizo(108, "Meditación", Cristal.VERDE, "Toma 2 cartas al azar de tu pila de descarte y colócalas en la parte inferior o superior de tu mazo de Gesta. Tu límite de mano aumenta en 2 la próxima vez que robes cartas.", "Igual que el efecto básico, excepto que eliges las cartas en vez de tomarlas al azar.", false, "Trance"));
 
         // 12 cartas de Táctica
-        createCarta(new CartaTactica(129, "Madrugador", TipoTactica.DIA, 1, ""));
-        createCarta(new CartaTactica(130, "Rectificar", TipoTactica.DIA, 2, "Cuando elijas esta Táctica, descarta hasta 3 cartas (incluyendo Heridas) de tu mano, luego roba la misma cantidad de cartas. Baraja tu pila de descarte junto con tu mazo de Gesta."));
-        createCarta(new CartaTactica(131, "Robar Maná", TipoTactica.DIA, 3, "Cuando elijas esta Táctica, toma 1 dado de maná de color básico de la Fuente y colócalo sobre esta carta. Puedes usar este maná en uno de tus turnos durante este Día. Si lo haces, relánzalo al final de ese turno y devuélvelo a la Fuente."));
-        createCarta(new CartaTactica(132, "Planificar", TipoTactica.DIA, 4, "Al final de cada turno, si tienes al menos 2 cartas en tu mano antes de robar, roba 1 carta más que tu límite de mano."));
-        createCarta(new CartaTactica(133, "Buen Comienzo", TipoTactica.DIA, 5, "Cuando elijas esta Táctica, roba inmediatamente 2 cartas."));
-        createCarta(new CartaTactica(134, "El Momento Adecuado", TipoTactica.DIA, 6, "Una vez durante este Día, en tu turno, puedes anunciar que realizarás otro turno inmediatamente después de este. Si lo haces, voltea esta carta boca abajo."));
-        createCarta(new CartaTactica(135, "Desde la Oscuridad", TipoTactica.NOCHE, 1, ""));
-        createCarta(new CartaTactica(136, "Larga Noche", TipoTactica.NOCHE, 2, "Una vez durante esta Noche, si tu mazo de Gesta está vacío, puedes barajar tu pila de descarte y colocar 3 cartas al azar de vuelta en el mazo de Gesta. Luego, voltea esta carta boca abajo."));
-        createCarta(new CartaTactica(137, "Búsqueda de Maná", TipoTactica.NOCHE, 3, "Una vez por turno, antes de usar maná de la Fuente, puedes relanzar hasta 2 dados de maná de la Fuente. Cuando escojas los dados para relanzar, debes elegir primero los dados dorados (inactivos) si hay alguno."));
-        createCarta(new CartaTactica(138, "Meditación a Medianoche", TipoTactica.NOCHE, 4, "Una vez durante esta Noche, antes de empezar uno de tus turnos, puedes barajar hasta 5 cartas de tu mano (incluyendo Heridas) junto con tu mazo de Gesta, y luego robar la misma cantidad de cartas. Después, voltea esta carta boca abajo."));
-        createCarta(new CartaTactica(139, "Preparación", TipoTactica.NOCHE, 5, "Cuando elijas esta Táctica, busca en tu mazo de Gesta 1 carta que quieras y colócala en tu mano. Luego, baraja el mazo."));
-        createCarta(new CartaTactica(140, "Reservar Poder", TipoTactica.NOCHE, 6, "Antes del inicio de cada uno de tus turnos, elige una opción: Coloca la carta de la parte superior de tu mazo de Gesta boca abajo, debajo de esta carta de Táctica, o voltea esta carta de Táctica boca abajo y coloca en tu mano todas las cartas de Gesta que estuvieran debajo."));
+        createCarta(new CartaTactica(129, "Madrugador", TipoTactica.DIA, 1, "", false));
+        createCarta(new CartaTactica(130, "Rectificar", TipoTactica.DIA, 2, "Cuando elijas esta Táctica, descarta hasta 3 cartas (incluyendo Heridas) de tu mano, luego roba la misma cantidad de cartas. Baraja tu pila de descarte junto con tu mazo de Gesta.", false));
+        createCarta(new CartaTactica(131, "Robar Maná", TipoTactica.DIA, 3, "Cuando elijas esta Táctica, toma 1 dado de maná de color básico de la Fuente y colócalo sobre esta carta. Puedes usar este maná en uno de tus turnos durante este Día. Si lo haces, relánzalo al final de ese turno y devuélvelo a la Fuente.", false));
+        createCarta(new CartaTactica(132, "Planificar", TipoTactica.DIA, 4, "Al final de cada turno, si tienes al menos 2 cartas en tu mano antes de robar, roba 1 carta más que tu límite de mano.", false));
+        createCarta(new CartaTactica(133, "Buen Comienzo", TipoTactica.DIA, 5, "Cuando elijas esta Táctica, roba inmediatamente 2 cartas.", false));
+        createCarta(new CartaTactica(134, "El Momento Adecuado", TipoTactica.DIA, 6, "Una vez durante este Día, en tu turno, puedes anunciar que realizarás otro turno inmediatamente después de este. Si lo haces, voltea esta carta boca abajo.", false));
+        createCarta(new CartaTactica(135, "Desde la Oscuridad", TipoTactica.NOCHE, 1, "", false));
+        createCarta(new CartaTactica(136, "Larga Noche", TipoTactica.NOCHE, 2, "Una vez durante esta Noche, si tu mazo de Gesta está vacío, puedes barajar tu pila de descarte y colocar 3 cartas al azar de vuelta en el mazo de Gesta. Luego, voltea esta carta boca abajo.", false));
+        createCarta(new CartaTactica(137, "Búsqueda de Maná", TipoTactica.NOCHE, 3, "Una vez por turno, antes de usar maná de la Fuente, puedes relanzar hasta 2 dados de maná de la Fuente. Cuando escojas los dados para relanzar, debes elegir primero los dados dorados (inactivos) si hay alguno.", false));
+        createCarta(new CartaTactica(138, "Meditación a Medianoche", TipoTactica.NOCHE, 4, "Una vez durante esta Noche, antes de empezar uno de tus turnos, puedes barajar hasta 5 cartas de tu mano (incluyendo Heridas) junto con tu mazo de Gesta, y luego robar la misma cantidad de cartas. Después, voltea esta carta boca abajo.", false));
+        createCarta(new CartaTactica(139, "Preparación", TipoTactica.NOCHE, 5, "Cuando elijas esta Táctica, busca en tu mazo de Gesta 1 carta que quieras y colócala en tu mano. Luego, baraja el mazo.", false));
+        createCarta(new CartaTactica(140, "Reservar Poder", TipoTactica.NOCHE, 6, "Antes del inicio de cada uno de tus turnos, elige una opción: Coloca la carta de la parte superior de tu mazo de Gesta boca abajo, debajo de esta carta de Táctica, o voltea esta carta de Táctica boca abajo y coloca en tu mano todas las cartas de Gesta que estuvieran debajo.", false));
 
         // 4 cartas de Acción Avanzada Especiales(Ultimate Edition) (2 colores)
         createCarta(new CartaAccionAvanzadaEspecial(266, "Poder de los Cristales", Cristal.VERDE,  "Gana 1 cristal para tu Inventario de un color básico que aún no tengas.", "Movimiento 4, o Curación 2, o roba dos cartas. Por cada conjunto de 4 cristales de diferentes colores en tu Inventario: Movimiento 2, o Curación 1, o roba una carta.", false, Cristal.AZUL));

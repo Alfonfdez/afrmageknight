@@ -33,8 +33,7 @@ public abstract class CartaAccion extends Carta{
         return descripcionBasica;
     }
 
-    public void setDescripcionBasica(String descripcionBasica) {
-        this.descripcionBasica = descripcionBasica;
+    public void setDescripcionBasica(String descripcionBasica) {this.descripcionBasica = descripcionBasica;
     }
 
     public String getDescripcionAvanzada() {
