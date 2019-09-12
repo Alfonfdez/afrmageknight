@@ -227,7 +227,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
 
         createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
 
-        int i = 100;
+        int i = 0;
         for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
             Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
             createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), cartaAccionBasica.isDescartada(), randomHeroeDummyPlayer.getNombre(), i);
