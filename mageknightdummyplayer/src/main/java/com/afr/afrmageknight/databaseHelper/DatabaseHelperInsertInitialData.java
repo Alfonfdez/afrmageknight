@@ -41,8 +41,9 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     public static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
     public static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
     public static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
-    public static final String PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_BASICAS_HEROE_DUMMY";
+    public static final String PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_HEROE_DUMMY";
     public static final String PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY";
+    public static final String PARTIDA_CRISTALES_HEROE_DUMMY_TABLE = "PARTIDA_CRISTALES_HEROE_DUMMY";
 
     // Nombre de las columnas
     // HEROES_TABLE
@@ -105,13 +106,15 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     public static final String COL_1_PARTIDA_HEROE_DUMMY_TABLE = "NOMBRE";
 
     // PARTIDA_CARTAS_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "NUMERO";
-    public static final String COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "NOMBRE";
-    public static final String COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "CRISTAL";
-    public static final String COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
-    public static final String COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
-    public static final String COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "DESCARTADA";
-    public static final String COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
+    public static final String COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NUMERO";
+    public static final String COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NOMBRE";
+    public static final String COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR";
+    public static final String COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR_SECUNDARIO";
+    public static final String COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
+    public static final String COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
+    public static final String COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
+    public static final String COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "INDICE";
 
     //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
     public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID_FICHA";
@@ -119,6 +122,11 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     public static final String COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCRIPCION";
     public static final String COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCARTADA";
     public static final String COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
+    public static final String COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "INDICE";
+
+    // PARTIDA_CRISTALES_HEROE_DUMMY_TABLE
+    public static final String COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE = "CRISTAL";
+
 
     //Constructor
     public DatabaseHelperInsertInitialData(Context context) {
@@ -336,14 +344,16 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         //PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE
         StringBuilder strSQLPartidaCartasHeroeDummyTable = new StringBuilder();
 
-        strSQLPartidaCartasHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" (")
-                .append(COL_1_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY,")
-                .append(COL_2_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_3_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_4_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_5_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_6_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" BIT NOT NULL,")
-                .append(COL_7_PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
+        strSQLPartidaCartasHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" (")
+                .append(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER PRIMARY KEY,")
+                .append(COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT,")
+                .append(COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" BIT NOT NULL,")
+                .append(COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT,")
+                .append(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
         Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE");
@@ -360,13 +370,27 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" BIT NOT NULL,")
-                .append(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
+                .append(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
         Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
+
+
+        //PARTIDA_CRISTALES_HEROE_DUMMY_TABLE
+        StringBuilder strSQLPartidaCristalesHeroeDummyTable = new StringBuilder();
+
+        strSQLPartidaCristalesHeroeDummyTable.append("CREATE TABLE ").append(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE).append(" (")
+                .append(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", strSQLPartidaCristalesHeroeDummyTable.toString());
+
+        db.execSQL(strSQLPartidaCristalesHeroeDummyTable.toString());
 
     }
 
@@ -416,10 +440,13 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROE_DUMMY_TABLE);
         onCreate(db);
 
-        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_BASICAS_HEROE_DUMMY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_HEROE_DUMMY_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CRISTALES_HEROE_DUMMY_TABLE);
         onCreate(db);
 
     }
@@ -760,7 +787,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         return cursor;
     }
 
-    //Insertar datos de la carta en su correspondiente tabla
+    //Insertar datos en su correspondiente tabla
     public Heroe createHeroe(Heroe heroe){
         insertDataHeroe(heroe.getNombre());
         return null;
@@ -1201,7 +1228,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
     }
 
     @Override
-    public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer) {
+    public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
 
     }
 

@@ -14,6 +14,7 @@ import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertGameData;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
 import com.afr.afrmageknight.model.CartaAccionBasica;
+import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
@@ -112,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServices.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                myGameDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer);
+                                List<Cristal> cristalesDummyPlayer = gameServices.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+
+                                myGameDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
 
                                 break;
 

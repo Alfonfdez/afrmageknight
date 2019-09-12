@@ -44,7 +44,6 @@ public interface GameServices {
 
 
 
-
     //Método para seleccionar aleatoriamente el héroe que controlará el Jugador Virtual a partir de los héroes no seleccionados por los jugadores
     public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer);
 

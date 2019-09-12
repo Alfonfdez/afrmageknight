@@ -7,7 +7,6 @@ import android.util.Log;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
 import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
 import com.afr.afrmageknight.model.Carta;
-import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
@@ -20,7 +19,54 @@ import java.util.List;
 
 public class GameServicesImpl implements GameServices {
 
-    // DatabaseHelper no entrega a través de sus métodos ni Heroes no Cartas ni Cristales. Sólo cursores
+    // Nombre de las columnas
+    // HEROES_TABLE
+    public static final String COL_1_HEROES_TABLE = "NOMBRE";
+
+    // HEROES_CRISTALES_TABLE
+    public static final String COL_1_HEROES_CRISTALES_TABLE = "NOMBRE";
+    public static final String COL_2_HEROES_CRISTALES_TABLE = "CRISTAL";
+
+    // CARTAS_TABLE
+    public static final String COL_1_CARTAS_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_TABLE = "NOMBRE";
+
+    // CARTAS_ACCIONES_TABLE
+    public static final String COL_1_CARTAS_ACCIONES_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_ACCIONES_TABLE = "COLOR";
+    public static final String COL_3_CARTAS_ACCIONES_TABLE = "DESCRIPCION_BASICA";
+    public static final String COL_4_CARTAS_ACCIONES_TABLE = "DESCRIPCION_AVANZADA";
+
+    // CARTAS_ACCIONES_BASICAS_TABLE
+    public static final String COL_1_CARTAS_ACCIONES_BASICAS_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_ACCIONES_BASICAS_TABLE = "HEROE";
+
+    // CARTAS_ACCIONES_AVANZADAS_TABLE
+    public static final String COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE = "NUMERO";
+
+    // CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE
+    public static final String COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE = "COLOR_SECUNDARIO";
+
+    // CARTAS_HECHIZOS_TABLE
+    public static final String COL_1_CARTAS_HECHIZOS_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_HECHIZOS_TABLE = "NOMBRE_SECUNDARIO";
+
+    // CARTAS_TACTICAS_TABLE
+    public static final String COL_1_CARTAS_TACTICAS_TABLE = "NUMERO";
+    public static final String COL_2_CARTAS_TACTICAS_TABLE = "TIPO_TACTICA";
+    public static final String COL_3_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
+    public static final String COL_4_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
+    public static final String COL_5_CARTAS_TACTICAS_TABLE = "DESCARTADA";
+
+    // FICHAS_HABILIDAD_TABLE
+    public static final String COL_1_FICHAS_HABILIDAD_TABLE = "ID_FICHA";
+    public static final String COL_2_FICHAS_HABILIDAD_TABLE = "NOMBRE";
+    public static final String COL_3_FICHAS_HABILIDAD_TABLE = "DESCRIPCION";
+    public static final String COL_5_FICHAS_HABILIDAD_TABLE = "HEROE";
+
+
+    // DatabaseHelper no entrega a través de sus métodos ni Heroes ni Cartas ni Cristales. Sólo cursores
 
     //I - Declarar las variables
     private DatabaseHelper databaseHelper;
@@ -36,6 +82,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor cartasHechizosCursor;
     private Cursor cartasTacticasCursor;
     private Cursor fichasHabilidadesCursor;
+
 
     public GameServicesImpl (Context context){
         this.databaseHelper = new DatabaseHelperInsertInitialData(context);
@@ -54,19 +101,18 @@ public class GameServicesImpl implements GameServices {
 
         heroesCristalesCursor = myInitialDB.getAllHeroesCristales();
 
-        ArrayList<Cristal> cristales = new ArrayList<Cristal>();
+        ArrayList<Cristal> cristalesHeroe = new ArrayList<Cristal>();
 
         if (heroesCristalesCursor.moveToFirst()){
             int i = 0;
             do{
-                String heroeNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("NOMBRE"));
+                String heroeNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex(COL_1_HEROES_CRISTALES_TABLE));
 
                 if(heroeNameTable.equals(heroeName)){
-                    String cristalNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex("CRISTAL"));
-                    cristales.add(Cristal.valueOf(cristalNameTable));
+                    String cristalNameTable = heroesCristalesCursor.getString(heroesCristalesCursor.getColumnIndex(COL_2_HEROES_CRISTALES_TABLE));
+                    cristalesHeroe.add(Cristal.valueOf(cristalNameTable));
 
                     Log.d("DATABASE","Heroe: "+heroeNameTable+" - Cristal: "+String.valueOf(cristalNameTable));
-
                     ++i;
                 }
 
@@ -74,7 +120,7 @@ public class GameServicesImpl implements GameServices {
         }
         heroesCristalesCursor.close();
 
-        return cristales;
+        return cristalesHeroe;
     }
 
     @Override
@@ -85,7 +131,7 @@ public class GameServicesImpl implements GameServices {
 
         if(heroesCursor.moveToFirst()){
             do{
-                String heroNameTable = heroesCursor.getString(heroesCursor.getColumnIndex("NOMBRE"));
+                String heroNameTable = heroesCursor.getString(heroesCursor.getColumnIndex(COL_1_HEROES_TABLE));
                 heroeNames.add(heroNameTable);
             }while(heroesCursor.moveToNext());
         }
@@ -126,10 +172,10 @@ public class GameServicesImpl implements GameServices {
         if (cartasAccionesBasicasCursor.moveToFirst()){
             int i = 0;
             do{
-                String heroeNameTable = cartasAccionesBasicasCursor.getString(cartasAccionesBasicasCursor.getColumnIndex("HEROE"));
+                String heroeNameTable = cartasAccionesBasicasCursor.getString(cartasAccionesBasicasCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_BASICAS_TABLE));
 
                 if(heroeNameTable.equals(randomHeroeDummyPlayer.getNombre())){
-                    int numeroCartaBasica = cartasAccionesBasicasCursor.getInt(cartasAccionesBasicasCursor.getColumnIndex("NUMERO"));
+                    int numeroCartaBasica = cartasAccionesBasicasCursor.getInt(cartasAccionesBasicasCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_BASICAS_TABLE));
                     cartaAccionBasicas.add(getBasicActionCard(numeroCartaBasica, randomHeroeDummyPlayer));
                     ++i;
                 }
@@ -154,10 +200,10 @@ public class GameServicesImpl implements GameServices {
         if (cartasCursor.moveToFirst()){
             int i = 0;
             do{
-                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex("NUMERO"));
+                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE));
 
                 if(numeroCartaTable==basicActionCardNumber){
-                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex("NOMBRE"));
+                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
                     ++i;
                 }
             }while(cartasCursor.moveToNext() && i < 1);
@@ -167,12 +213,12 @@ public class GameServicesImpl implements GameServices {
         if (cartasAccionesCursor.moveToFirst()){
             int i = 0;
             do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex("NUMERO"));
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_TABLE));
 
                 if(numeroCartaTable==basicActionCardNumber){
-                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("COLOR"));
-                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_BASICA"));
-                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex("DESCRIPCION_AVANZADA"));
+                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_TABLE));
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_3_CARTAS_ACCIONES_TABLE));
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_4_CARTAS_ACCIONES_TABLE));
                     ++i;
                 }
             }while(cartasAccionesCursor.moveToNext() && i < 1);
@@ -210,12 +256,12 @@ public class GameServicesImpl implements GameServices {
         if (fichasHabilidadesCursor.moveToFirst()){
             int i = 0;
             do{
-                String heroeNameTable = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("HEROE"));
+                String heroeNameTable = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex(COL_5_FICHAS_HABILIDAD_TABLE));
 
                 if(heroeNameTable.equals(randomHeroeDummyPlayer.getNombre())){
-                    int numeroFichaHabilidad = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex("ID_FICHA"));
-                    String nombreFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("NOMBRE"));
-                    String descripcionFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex("DESCRIPCION"));
+                    int numeroFichaHabilidad = fichasHabilidadesCursor.getInt(fichasHabilidadesCursor.getColumnIndex(COL_1_FICHAS_HABILIDAD_TABLE));
+                    String nombreFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex(COL_2_FICHAS_HABILIDAD_TABLE));
+                    String descripcionFichaHabilidad = fichasHabilidadesCursor.getString(fichasHabilidadesCursor.getColumnIndex(COL_3_FICHAS_HABILIDAD_TABLE));
 
                     Log.d("DATABASE","Ficha habilidad número: "+numeroFichaHabilidad +" - Nombre: "+nombreFichaHabilidad+" - Descripción: "+descripcionFichaHabilidad+" - Heroe: "+heroeNameTable);
 
