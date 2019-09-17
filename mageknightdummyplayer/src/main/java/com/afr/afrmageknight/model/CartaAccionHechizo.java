@@ -1,16 +1,16 @@
 package com.afr.afrmageknight.model;
 
-public class Hechizo extends CartaAccion {
+public class CartaAccionHechizo extends CartaAccion {
 
     //Atributos
     private String nombreSecundario;
 
     //Constructores
-    public Hechizo() {
+    public CartaAccionHechizo() {
     }
 
-    public Hechizo(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada, String nombreSecundario) {
-        super(numero, nombre, color, descripcionBasica, descripcionAvanzada, descartada);
+    public CartaAccionHechizo(int numero, String nombre, boolean descartada, Cristal color, String descripcionBasica, String descripcionAvanzada, String nombreSecundario) {
+        super(numero, nombre, descartada, color, descripcionBasica, descripcionAvanzada);
         this.nombreSecundario = nombreSecundario;
     }
 

@@ -37,13 +37,14 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     // PARTIDA_CARTAS_HEROE_DUMMY_TABLE
     public static final String COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NUMERO";
     public static final String COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NOMBRE";
-    public static final String COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR";
-    public static final String COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR_SECUNDARIO";
-    public static final String COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
-    public static final String COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
-    public static final String COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCARTADA";
+    public static final String COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR";
+    public static final String COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR_SECUNDARIO";
+    public static final String COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
+    public static final String COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
     public static final String COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
     public static final String COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "INDICE";
+
 
     //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
     public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID_FICHA";
@@ -126,20 +127,20 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataShuffledBasicCardDummyPlayer( int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String heroNameDummyPlayer, int numeroIndice){
+    public boolean insertDataCardDummyPlayer( int numeroCartaAccion, String nombreCartaAccion, boolean isDescartadaCartaAccion, String colorCartaAccion, String colorCartaAccionAvanzadaEspecial, String descripcionBasicaCartaAccion, String descripcionAvanzadaCartaAccion, String heroNameDummyPlayer, int numeroIndice){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
         //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, numeroCartaAccionBasica);
-        contentValues.put(COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, nombreCartaAccionBasica);
-        contentValues.put(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, colorCartaAccionBasica);
-        //contentValues.put(COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, colorSecundarioCartaAccionAvanzadaEspecial);
-        contentValues.put(COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, descripcionBasicaCartaAccionBasica);
-        contentValues.put(COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, descripcionAvanzadaCartaAccionBasica);
-        contentValues.put(COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, isDescartadaCartaAccionBasica);
+        contentValues.put(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, numeroCartaAccion);
+        contentValues.put(COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, nombreCartaAccion);
+        contentValues.put(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, isDescartadaCartaAccion);
+        contentValues.put(COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, colorCartaAccion);
+        contentValues.put(COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, colorCartaAccionAvanzadaEspecial);
+        contentValues.put(COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, descripcionBasicaCartaAccion);
+        contentValues.put(COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, descripcionAvanzadaCartaAccion);
         contentValues.put(COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, heroNameDummyPlayer);
         contentValues.put(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, numeroIndice);
 
@@ -203,8 +204,8 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return null;
     }
 
-    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
-        insertDataShuffledBasicCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, colorCartaAccionBasica, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, isDescartadaCartaAccionBasica, heroNameDummy, numeroIndice);
+    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
+        insertDataCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, isDescartadaCartaAccionBasica, colorCartaAccionBasica, null, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, heroNameDummy, numeroIndice);
         return null;
     }
 
@@ -230,7 +231,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         int i = 0;
         for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
             Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
-            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), cartaAccionBasica.isDescartada(), randomHeroeDummyPlayer.getNombre(), i);
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
             ++i;
         }
 

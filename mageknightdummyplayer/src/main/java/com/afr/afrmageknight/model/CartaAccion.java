@@ -6,18 +6,16 @@ public abstract class CartaAccion extends Carta{
     private Cristal color;
     private String descripcionBasica;
     private String descripcionAvanzada;
-    private boolean descartada;
 
     //Constructores
     public CartaAccion() {
     }
 
-    public CartaAccion(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada) {
-        super(numero, nombre);
+    public CartaAccion(int numero, String nombre, boolean descartada, Cristal color, String descripcionBasica, String descripcionAvanzada) {
+        super(numero, nombre, descartada);
         this.color = color;
         this.descripcionBasica = descripcionBasica;
         this.descripcionAvanzada = descripcionAvanzada;
-        this.descartada = descartada;
     }
 
     //Getters y setters
@@ -33,7 +31,8 @@ public abstract class CartaAccion extends Carta{
         return descripcionBasica;
     }
 
-    public void setDescripcionBasica(String descripcionBasica) {this.descripcionBasica = descripcionBasica;
+    public void setDescripcionBasica(String descripcionBasica) {
+        this.descripcionBasica = descripcionBasica;
     }
 
     public String getDescripcionAvanzada() {
@@ -44,13 +43,6 @@ public abstract class CartaAccion extends Carta{
         this.descripcionAvanzada = descripcionAvanzada;
     }
 
-    public boolean isDescartada() {
-        return descartada;
-    }
-
-    public void setDescartada(boolean descartada) {
-        this.descartada = descartada;
-    }
 
     //Métodos
 

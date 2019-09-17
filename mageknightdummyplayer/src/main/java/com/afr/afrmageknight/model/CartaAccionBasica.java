@@ -9,8 +9,8 @@ public class CartaAccionBasica extends CartaAccion {
     public CartaAccionBasica() {
     }
 
-    public CartaAccionBasica(int numero, String nombre, Cristal color, String descripcionBasica, String descripcionAvanzada, boolean descartada, Heroe heroe) {
-        super(numero, nombre, color, descripcionBasica, descripcionAvanzada, descartada);
+    public CartaAccionBasica(int numero, String nombre, boolean descartada, Cristal color, String descripcionBasica, String descripcionAvanzada,  Heroe heroe) {
+        super(numero, nombre, descartada, color, descripcionBasica, descripcionAvanzada);
         this.heroe = heroe;
     }
 

@@ -30,6 +30,7 @@ public class GameServicesImpl implements GameServices {
     // CARTAS_TABLE
     public static final String COL_1_CARTAS_TABLE = "NUMERO";
     public static final String COL_2_CARTAS_TABLE = "NOMBRE";
+    public static final String COL_3_CARTAS_TABLE = "DESCARTADA";
 
     // CARTAS_ACCIONES_TABLE
     public static final String COL_1_CARTAS_ACCIONES_TABLE = "NUMERO";
@@ -57,7 +58,6 @@ public class GameServicesImpl implements GameServices {
     public static final String COL_2_CARTAS_TACTICAS_TABLE = "TIPO_TACTICA";
     public static final String COL_3_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
     public static final String COL_4_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
-    public static final String COL_5_CARTAS_TACTICAS_TABLE = "DESCARTADA";
 
     // FICHAS_HABILIDAD_TABLE
     public static final String COL_1_FICHAS_HABILIDAD_TABLE = "ID_FICHA";
@@ -227,7 +227,7 @@ public class GameServicesImpl implements GameServices {
 
         Log.d("DATABASE","Número carta Acción Básica: "+basicActionCardNumber+" - Nombre: "+nombreCarta+" - Color: "+Cristal.valueOf(cristalColor)+ " - Descripción básica: "+descripcionBasica+ " - Descripción avanzada: "+descripcionAvanzada+" - Heroe: "+randomHeroeDummyPlayer.getNombre());
 
-        CartaAccionBasica cartaAccionBasica = new CartaAccionBasica(basicActionCardNumber, nombreCarta, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, false, randomHeroeDummyPlayer);
+        CartaAccionBasica cartaAccionBasica = new CartaAccionBasica(basicActionCardNumber, nombreCarta, false, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, randomHeroeDummyPlayer);
 
         return cartaAccionBasica;
     }
