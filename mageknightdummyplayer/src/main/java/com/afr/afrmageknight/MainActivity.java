@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("DATABASE","DELETE ALL GAME DATA ON DATABASE");
 
-                //myGameDB.deleteAllData();
+                myGameDB.deleteGameData();
             }
         });
 

@@ -38,5 +38,7 @@ public abstract class DatabaseHelper extends SQLiteOpenHelper {
 
     public abstract void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer);
 
+    public abstract void deleteGameData();
+
 
 }

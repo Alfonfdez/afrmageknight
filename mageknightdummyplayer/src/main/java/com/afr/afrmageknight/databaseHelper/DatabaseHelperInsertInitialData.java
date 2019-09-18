@@ -350,7 +350,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
                 .append(COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT,")
                 .append(COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
-                .append(COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" TEXT,")
                 .append(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
@@ -391,6 +391,7 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
         db.execSQL(strSQLPartidaCristalesHeroeDummyTable.toString());
 
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -1226,6 +1227,11 @@ public class DatabaseHelperInsertInitialData extends DatabaseHelper{
 
     @Override
     public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+
+    }
+
+    @Override
+    public void deleteGameData() {
 
     }
 

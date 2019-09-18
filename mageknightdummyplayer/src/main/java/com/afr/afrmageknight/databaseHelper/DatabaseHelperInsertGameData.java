@@ -187,6 +187,20 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
         return resultado == -1 ? false : true;
     }
 
+    public void deleteGameData(){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        db.delete(PARTIDA_MODO_TABLE,null, null);
+        db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
+        db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);
+        db.delete(PARTIDA_CARTAS_HEROE_DUMMY_TABLE,null, null);
+        db.delete(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE,null, null);
+        db.delete(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE,null, null);
+    }
+
+
+
 
     //Insertar datos en su correspondiente tabla
     public TipoPartida createTipoPartida(String tipoPartida){
