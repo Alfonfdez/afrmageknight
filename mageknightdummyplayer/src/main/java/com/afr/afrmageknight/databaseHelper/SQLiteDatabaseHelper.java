@@ -11,71 +11,56 @@ import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHelperInsertGameData extends DatabaseHelper{
-
-    //Nombre de las tablas
-    public static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
-    public static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
-    public static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
-    public static final String PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_HEROE_DUMMY";
-    public static final String PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY";
-    public static final String PARTIDA_CRISTALES_HEROE_DUMMY_TABLE = "PARTIDA_CRISTALES_HEROE_DUMMY";
-
-    //Nombre de las columnas
-    //PARTIDA_MODO_TABLE
-    public static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
-
-    // PARTIDA_HEROES_JUGADOR_TABLE
-    public static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
-
-    // PARTIDA_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_HEROE_DUMMY_TABLE = "NOMBRE";
-
-    // PARTIDA_CARTAS_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NUMERO";
-    public static final String COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NOMBRE";
-    public static final String COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCARTADA";
-    public static final String COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR";
-    public static final String COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR_SECUNDARIO";
-    public static final String COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
-    public static final String COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
-    public static final String COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
-    public static final String COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "INDICE";
-
-
-    //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID_FICHA";
-    public static final String COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "NOMBRE";
-    public static final String COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCRIPCION";
-    public static final String COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCARTADA";
-    public static final String COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
-    public static final String COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "INDICE";
-
-    // PARTIDA_CRISTALES_HEROE_DUMMY_TABLE
-    public static final String COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE = "CRISTAL";
-
+public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     //Constructor
-    public DatabaseHelperInsertGameData(Context context) {
+    public SQLiteDatabaseHelper(Context context) {
         super(context);
+        //getWritableDatabase();
     }
 
+    //Métodos a sobreescribir de la superclase
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        super.onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        super.onUpgrade(db, oldVersion, newVersion);
     }
 
-    @Override
-    public void insertAllData() {
+    //Insertar datos en su correspondiente tabla
+    public TipoPartida createTipoPartida(String tipoPartida){
+        insertDataGameMode(tipoPartida);
+        return null;
+    }
 
+    public Heroe createHeroeSelectedByPlayer(String heroSelectedByPlayer){
+        insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
+        return null;
+    }
+
+    public Heroe createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
+        insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
+        return null;
+    }
+
+    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
+        insertDataCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, isDescartadaCartaAccionBasica, colorCartaAccionBasica, null, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, heroNameDummy, numeroIndice);
+        return null;
+    }
+
+    public FichaHabilidad createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy, int numeroIndice){
+        insertDataShuffledSkillTokenDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, isDescartadaFichaHabilidad, heroNameDummy, numeroIndice);
+        return null;
+    }
+
+    public Cristal createCristal(String cristal){
+        insertDataCristalesDummyPlayer(cristal);
+        return null;
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
@@ -200,40 +185,7 @@ public class DatabaseHelperInsertGameData extends DatabaseHelper{
     }
 
 
-
-
-    //Insertar datos en su correspondiente tabla
-    public TipoPartida createTipoPartida(String tipoPartida){
-        insertDataGameMode(tipoPartida);
-        return null;
-    }
-
-    public Heroe createHeroeSelectedByPlayer(String heroSelectedByPlayer){
-        insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
-        return null;
-    }
-
-    public Heroe createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
-        insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
-        return null;
-    }
-
-    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
-        insertDataCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, isDescartadaCartaAccionBasica, colorCartaAccionBasica, null, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, heroNameDummy, numeroIndice);
-        return null;
-    }
-
-    public FichaHabilidad createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy, int numeroIndice){
-        insertDataShuffledSkillTokenDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, isDescartadaFichaHabilidad, heroNameDummy, numeroIndice);
-        return null;
-    }
-
-    public Cristal createCristal(String cristal){
-        insertDataCristalesDummyPlayer(cristal);
-        return null;
-    }
-
-    //Métodos
+    //Métodos públicos
     public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
 
         createTipoPartida(tipoPartida.toString());

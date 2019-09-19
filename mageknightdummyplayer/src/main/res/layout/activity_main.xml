@@ -7,16 +7,6 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/idButtonInsertAllData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Insert all data"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
         android:id="@+id/idButtonInsertAllGameData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +85,7 @@
         android:id="@+id/idSwitchTipoPartida"
         android:layout_width="383dp"
         android:layout_height="26dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="40dp"
         android:checked="false"
         android:text="Modo de juego: Solitario / Cooperativo"
         android:textOff="Solitario"
@@ -103,20 +93,8 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Insertar todos los datos del juego"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -127,7 +105,7 @@
         app:layout_constraintBottom_toTopOf="@+id/idSwitchTipoPartida"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
@@ -141,18 +119,11 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="111dp" />
-
-    <android.support.constraint.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="212dp" />
+        app:layout_constraintGuide_begin="157dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"

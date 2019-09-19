@@ -1,9 +1,6 @@
 package com.afr.afrmageknight.servicios;
 
-import android.database.Cursor;
-
 import com.afr.afrmageknight.model.Carta;
-import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;

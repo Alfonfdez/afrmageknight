@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
-import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
+import com.afr.afrmageknight.MainActivity;
+import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
@@ -66,27 +66,22 @@ public class GameServicesImpl implements GameServices {
     public static final String COL_5_FICHAS_HABILIDAD_TABLE = "HEROE";
 
 
-    // DatabaseHelper no entrega a través de sus métodos ni Heroes ni Cartas ni Cristales. Sólo cursores
+    // DatabaseHel no entrega a través de sus métodos ni Heroes ni Cartas ni Cristales. Sólo cursores
 
     //I - Declarar las variables
-    private DatabaseHelper databaseHelper;
-    private DatabaseHelperInsertInitialData myInitialDB;
+    private SQLiteDatabaseHelper myDB;
 
     private Cursor heroesCursor;
     private Cursor heroesCristalesCursor;
     private Cursor cartasCursor;
     private Cursor cartasAccionesCursor;
     private Cursor cartasAccionesBasicasCursor;
-    private Cursor cartasAccionesAvanzadasCursor;
-    private Cursor cartasAccionesAvanzadasEspecialesCursor;
-    private Cursor cartasHechizosCursor;
-    private Cursor cartasTacticasCursor;
     private Cursor fichasHabilidadesCursor;
 
 
     public GameServicesImpl (Context context){
-        this.databaseHelper = new DatabaseHelperInsertInitialData(context);
-        this.myInitialDB = new DatabaseHelperInsertInitialData(context);
+        //this.myDB = new SQLiteDatabaseHelper(context);
+        //this.myDB = MainActivity.myDB;
     }
 
     // Implementar los métodos de la interfaz 'GameServices'
@@ -99,7 +94,7 @@ public class GameServicesImpl implements GameServices {
     @Override
     public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName) {
 
-        heroesCristalesCursor = myInitialDB.getAllHeroesCristales();
+        heroesCristalesCursor = myDB.getAllHeroesCristales();
 
         ArrayList<Cristal> cristalesHeroe = new ArrayList<Cristal>();
 
@@ -127,7 +122,7 @@ public class GameServicesImpl implements GameServices {
     public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe heroeSelectedByPlayer) {
 
         List<String> heroeNames = new ArrayList<>();
-        heroesCursor = myInitialDB.getAllHeroes();
+        heroesCursor = myDB.getAllHeroes();
 
         if(heroesCursor.moveToFirst()){
             do{
@@ -167,7 +162,7 @@ public class GameServicesImpl implements GameServices {
     public ArrayList<CartaAccionBasica> getBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
         ArrayList<CartaAccionBasica> cartaAccionBasicas = new ArrayList<CartaAccionBasica>();
-        cartasAccionesBasicasCursor = myInitialDB.getAllCartasAccionesBasicas();
+        cartasAccionesBasicasCursor = myDB.getAllCartasAccionesBasicas();
 
         if (cartasAccionesBasicasCursor.moveToFirst()){
             int i = 0;
@@ -189,8 +184,8 @@ public class GameServicesImpl implements GameServices {
     @Override
     public CartaAccionBasica getBasicActionCard(int basicActionCardNumber, Heroe randomHeroeDummyPlayer) {
 
-        cartasCursor = myInitialDB.getAllCartas();
-        cartasAccionesCursor = myInitialDB.getAllCartasAcciones();
+        cartasCursor = myDB.getAllCartas();
+        cartasAccionesCursor = myDB.getAllCartasAcciones();
 
         String nombreCarta = "";
         String cristalColor = "";
@@ -251,7 +246,7 @@ public class GameServicesImpl implements GameServices {
     public List<FichaHabilidad> getSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
         ArrayList<FichaHabilidad> fichasHabilidades = new ArrayList<FichaHabilidad>();
-        fichasHabilidadesCursor = myInitialDB.getAllFichasHabilidad();
+        fichasHabilidadesCursor = myDB.getAllFichasHabilidad();
 
         if (fichasHabilidadesCursor.moveToFirst()){
             int i = 0;

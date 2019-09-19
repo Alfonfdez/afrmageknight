@@ -5,46 +5,32 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.afr.afrmageknight.databaseHelper.DatabaseHelper;
-import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertGameData;
-import com.afr.afrmageknight.databaseHelper.DatabaseHelperInsertInitialData;
+import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
+
+import com.afr.afrmageknight.servicios.GameServices;
+import com.afr.afrmageknight.servicios.GameServicesImpl;
+
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
-import com.afr.afrmageknight.servicios.GameServices;
-import com.afr.afrmageknight.servicios.GameServicesImpl;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    private DatabaseHelper myInitialDB;
-    private DatabaseHelper myGameDB;
-    //private DatabaseHelperInsertInitialData myInitialDB;
-    //private DatabaseHelperInsertGameData myGameDB;
-
-    private GameServices gameServices;
+    private SQLiteDatabaseHelper myDB;
+    //private GameServices gameServices;
 
     private Switch switchModoJuego;
-
     private RadioGroup radioGroupHeroes;
-    private RadioButton radioButtonArythea;
-    private RadioButton radioButtonTovak;
-    private RadioButton radioButtonNorowas;
-    private RadioButton radioButtonGoldyx;
-    private RadioButton radioButtonWolfhawk;
-    private RadioButton radioButtonKrang;
-    private RadioButton radioButtonBraevalar;
 
-    private Button buttonInsertAllData;
     private Button buttonInsertGameData;
     private Button buttonDeleteGameData;
 
@@ -53,35 +39,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myInitialDB = new DatabaseHelperInsertInitialData(this);
-        myGameDB = new DatabaseHelperInsertGameData(this);
-
-        gameServices = new GameServicesImpl(this);
+        myDB = new SQLiteDatabaseHelper(this);
+        //gameServices = new GameServicesImpl(this);
 
         switchModoJuego = (Switch) findViewById(R.id.idSwitchTipoPartida);
 
         radioGroupHeroes = (RadioGroup) findViewById(R.id.idRadioGroup);
-        radioButtonArythea = (RadioButton) findViewById(R.id.idRadioButtonArythea);
-        radioButtonTovak = (RadioButton) findViewById(R.id.idRadioButtonTovak);
-        radioButtonNorowas = (RadioButton) findViewById(R.id.idRadioButtonNorowas);
-        radioButtonGoldyx = (RadioButton) findViewById(R.id.idRadioButtonGoldyx);
-        radioButtonWolfhawk = (RadioButton) findViewById(R.id.idRadioButtonWolfhawk);
-        radioButtonKrang = (RadioButton) findViewById(R.id.idRadioButtonKrang);
-        radioButtonBraevalar = (RadioButton) findViewById(R.id.idRadioButtonBraevalar);
 
-        buttonInsertAllData = (Button) findViewById(R.id.idButtonInsertAllData);
         buttonInsertGameData = (Button) findViewById(R.id.idButtonInsertAllGameData);
         buttonDeleteGameData = (Button) findViewById(R.id.idButtonDeleteAllGameData);
-
-        // Botón para insertar toda la información en la base de datos
-        buttonInsertAllData.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d("DATABASE","INSERT ALL DATA ON DATABASE");
-                myInitialDB.insertAllData();
-            }
-        });
 
         // Botón para insertar toda la información de la partida:
         // 1) Modo de juego (Solitario/Cooperativo)
@@ -92,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
                 Log.d("DATABASE","INSERT ALL GAME DATA ON DATABASE");
 
                 //Modo solitario
@@ -100,12 +65,10 @@ public class MainActivity extends AppCompatActivity {
                     if(radioGroupHeroes.getCheckedRadioButtonId() == -1){
                         Toast.makeText(MainActivity.this, "Se debe seleccionar 1 héroe", Toast.LENGTH_SHORT).show();
                     } else {
-
                         switch(radioGroupHeroes.getCheckedRadioButtonId()){
-
                             case R.id.idRadioButtonArythea:
 
-                                Heroe heroeSelectedByPlayer = gameServices.getAHeroeSelectedByPlayer("Arythea");
+                                /*Heroe heroeSelectedByPlayer = gameServices.getAHeroeSelectedByPlayer("Arythea");
 
                                 Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
@@ -115,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 List<Cristal> cristalesDummyPlayer = gameServices.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                myGameDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
-
+                                myDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                */
                                 break;
 
                             case R.id.idRadioButtonTovak:
@@ -162,10 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
                 Log.d("DATABASE","DELETE ALL GAME DATA ON DATABASE");
-
-                myGameDB.deleteGameData();
+                myDB.deleteGameData();
             }
         });
 
