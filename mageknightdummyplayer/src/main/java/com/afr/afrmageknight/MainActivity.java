@@ -11,12 +11,20 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
+import com.afr.afrmageknight.model.CartaAccionBasica;
+import com.afr.afrmageknight.model.Cristal;
+import com.afr.afrmageknight.model.FichaHabilidad;
+import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.servicios.GameServicesImpl;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    private SQLiteDatabaseHelper myDB;
-    //private GameServices gameServices;
+    public static SQLiteDatabaseHelper myDB;
+    private GameServicesImpl gameServicesImpl;
 
     private Switch switchModoJuego;
     private RadioGroup radioGroupHeroes;
@@ -30,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         myDB = new SQLiteDatabaseHelper(this);
-        //gameServices = new GameServicesImpl(this);
-
-        Cursor cursor = myDB.getAllCartas(); // La 1ª vez que "utilizamos" la DB
+        gameServicesImpl = new GameServicesImpl(this);
 
         switchModoJuego = (Switch) findViewById(R.id.idSwitchTipoPartida);
 
@@ -60,18 +66,18 @@ public class MainActivity extends AppCompatActivity {
                         switch(radioGroupHeroes.getCheckedRadioButtonId()){
                             case R.id.idRadioButtonArythea:
 
-                                /*Heroe heroeSelectedByPlayer = gameServices.getAHeroeSelectedByPlayer("Arythea");
+                                Heroe heroeSelectedByPlayer = gameServicesImpl.getAHeroeSelectedByPlayer("Arythea");
 
-                                Heroe randomHeroeDummyPlayer = gameServices.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
+                                Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
-                                List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServices.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServices.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                List<Cristal> cristalesDummyPlayer = gameServices.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+                                List<Cristal> cristalesDummyPlayer = gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
                                 myDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
-                                */
+
                                 break;
 
                             case R.id.idRadioButtonTovak:
@@ -118,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("DATABASE","DELETE ALL GAME DATA ON DATABASE");
-                // TODO ojO!
-               // myDB.deleteGameData();
+                myDB.deleteGameData();
             }
         });
 

@@ -59,7 +59,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataGameMode(String tipoPartida){
+    private boolean insertDataGameMode(String tipoPartida){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -75,7 +75,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataHeroeSelectedByPlayer(String heroeNameSelectedByPlayer){
+    private boolean insertDataHeroeSelectedByPlayer(String heroeNameSelectedByPlayer){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -91,7 +91,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataHeroeSelectedByDummyPlayer(String randomHeroeDummyPlayer){
+    private boolean insertDataHeroeSelectedByDummyPlayer(String randomHeroeDummyPlayer){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -107,7 +107,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCardDummyPlayer( int numeroCartaAccion, String nombreCartaAccion, boolean isDescartadaCartaAccion, String colorCartaAccion, String colorCartaAccionAvanzadaEspecial, String descripcionBasicaCartaAccion, String descripcionAvanzadaCartaAccion, String heroNameDummyPlayer, int numeroIndice){
+    private boolean insertDataCardDummyPlayer( int numeroCartaAccion, String nombreCartaAccion, boolean isDescartadaCartaAccion, String colorCartaAccion, String colorCartaAccionAvanzadaEspecial, String descripcionBasicaCartaAccion, String descripcionAvanzadaCartaAccion, String heroNameDummyPlayer, int numeroIndice){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -131,7 +131,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataShuffledSkillTokenDummyPlayer( int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummyPlayer, int numeroIndice){
+    private boolean insertDataShuffledSkillTokenDummyPlayer( int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummyPlayer, int numeroIndice){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -152,7 +152,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    public boolean insertDataCristalesDummyPlayer( String cristal){
+    private boolean insertDataCristalesDummyPlayer( String cristal){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -167,26 +167,10 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         return resultado == -1 ? false : true;
     }
 
-    public void deleteGameData(){
-        //Necesito una referencia a la base de datos como tal
-        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
-
-        db.delete(PARTIDA_MODO_TABLE,null, null);
-        db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
-        db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);
-        db.delete(PARTIDA_CARTAS_HEROE_DUMMY_TABLE,null, null);
-        db.delete(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE,null, null);
-        db.delete(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE,null, null);
-    }
-
-
     //Métodos públicos
     public void insertAllGameData(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-
         createTipoPartida(tipoPartida.toString());
-
         createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
-
         createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
 
         int i = 0;
@@ -206,7 +190,18 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         for(Cristal cristal: cristalesDummyPlayer){
             createCristal(cristal.toString());
         }
+    }
 
+    public void deleteGameData(){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        db.delete(PARTIDA_MODO_TABLE,null, null);
+        db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
+        db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);
+        db.delete(PARTIDA_CARTAS_HEROE_DUMMY_TABLE,null, null);
+        db.delete(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE,null, null);
+        db.delete(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE,null, null);
     }
 
 }

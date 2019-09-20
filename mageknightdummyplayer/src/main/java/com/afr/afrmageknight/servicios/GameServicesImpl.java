@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.afr.afrmageknight.MainActivity;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -79,8 +80,7 @@ public class GameServicesImpl implements GameServices {
 
 
     public GameServicesImpl (Context context){
-        //this.myDB = new SQLiteDatabaseHelper(context);
-        //this.myDB = MainActivity.myDB;
+        myDB = MainActivity.myDB;
     }
 
     // Implementar los métodos de la interfaz 'GameServices'
@@ -92,7 +92,6 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName) {
-
         heroesCristalesCursor = myDB.getAllHeroesCristales();
 
         ArrayList<Cristal> cristalesHeroe = new ArrayList<Cristal>();
