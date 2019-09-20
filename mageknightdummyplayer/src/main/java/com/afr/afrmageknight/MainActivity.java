@@ -1,5 +1,6 @@
 package com.afr.afrmageknight;
 
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,17 +11,6 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
-
-import com.afr.afrmageknight.servicios.GameServices;
-import com.afr.afrmageknight.servicios.GameServicesImpl;
-
-import com.afr.afrmageknight.model.CartaAccionBasica;
-import com.afr.afrmageknight.model.Cristal;
-import com.afr.afrmageknight.model.FichaHabilidad;
-import com.afr.afrmageknight.model.Heroe;
-import com.afr.afrmageknight.model.TipoPartida;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         myDB = new SQLiteDatabaseHelper(this);
         //gameServices = new GameServicesImpl(this);
+
+        Cursor cursor = myDB.getAllCartas(); // La 1ª vez que "utilizamos" la DB
 
         switchModoJuego = (Switch) findViewById(R.id.idSwitchTipoPartida);
 
@@ -126,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("DATABASE","DELETE ALL GAME DATA ON DATABASE");
-                myDB.deleteGameData();
+                // TODO ojO!
+               // myDB.deleteGameData();
             }
         });
 

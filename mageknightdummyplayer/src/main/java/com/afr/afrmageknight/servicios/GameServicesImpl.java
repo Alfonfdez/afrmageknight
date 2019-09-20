@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.afr.afrmageknight.MainActivity;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;

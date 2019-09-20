@@ -32,35 +32,30 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         super.onUpgrade(db, oldVersion, newVersion);
     }
 
+
     //Insertar datos en su correspondiente tabla
-    public TipoPartida createTipoPartida(String tipoPartida){
+    private void createTipoPartida(String tipoPartida){
         insertDataGameMode(tipoPartida);
-        return null;
     }
 
-    public Heroe createHeroeSelectedByPlayer(String heroSelectedByPlayer){
+    private void createHeroeSelectedByPlayer(String heroSelectedByPlayer){
         insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
-        return null;
     }
 
-    public Heroe createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
+    private void createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
         insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
-        return null;
     }
 
-    public CartaAccionBasica createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
+    private void createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
         insertDataCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, isDescartadaCartaAccionBasica, colorCartaAccionBasica, null, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, heroNameDummy, numeroIndice);
-        return null;
     }
 
-    public FichaHabilidad createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy, int numeroIndice){
+    private void createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy, int numeroIndice){
         insertDataShuffledSkillTokenDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, isDescartadaFichaHabilidad, heroNameDummy, numeroIndice);
-        return null;
     }
 
-    public Cristal createCristal(String cristal){
+    private void createCristal(String cristal){
         insertDataCristalesDummyPlayer(cristal);
-        return null;
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
