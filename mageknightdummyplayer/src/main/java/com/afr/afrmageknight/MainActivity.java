@@ -1,6 +1,7 @@
 package com.afr.afrmageknight;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
@@ -18,6 +20,8 @@ import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
 import com.afr.afrmageknight.servicios.GameServicesImpl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +30,17 @@ public class MainActivity extends AppCompatActivity {
     public static SQLiteDatabaseHelper myDB;
     private GameServicesImpl gameServicesImpl;
 
-    private Switch switchModoJuego;
-    private RadioGroup radioGroupHeroes;
+    private TextView arythea;
+    private TextView tovak;
+    private TextView norowas;
+    private TextView goldyx;
+    private TextView wolfhawk;
+    private TextView krang;
+    private TextView braevalar;
 
+    private Switch switchTipoPartida;
     private Button buttonInsertGameData;
-    private Button buttonDeleteGameData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +50,23 @@ public class MainActivity extends AppCompatActivity {
         myDB = new SQLiteDatabaseHelper(this);
         gameServicesImpl = new GameServicesImpl(this);
 
-        switchModoJuego = (Switch) findViewById(R.id.idSwitchTipoPartida);
+        arythea = (TextView) findViewById(R.id.idTVArythea);
+        tovak = (TextView) findViewById(R.id.idTVTovak);
+        norowas = (TextView) findViewById(R.id.idTVNorowas);
+        goldyx = (TextView) findViewById(R.id.idTVGoldyx);
+        wolfhawk = (TextView) findViewById(R.id.idTVWolfhawk);
+        krang = (TextView) findViewById(R.id.idTVKrang);
+        braevalar = (TextView) findViewById(R.id.idTVBraevalar);
 
-        radioGroupHeroes = (RadioGroup) findViewById(R.id.idRadioGroup);
-
+        switchTipoPartida = (Switch) findViewById(R.id.idSwitchTipoPartida);
         buttonInsertGameData = (Button) findViewById(R.id.idButtonInsertAllGameData);
-        buttonDeleteGameData = (Button) findViewById(R.id.idButtonDeleteAllGameData);
+
+        final List<TextView> heroesTextViews = new ArrayList<TextView>();
+        Collections.addAll(heroesTextViews, arythea, tovak, norowas, goldyx, wolfhawk, krang, braevalar);
+
 
         // Botón para insertar toda la información de la partida:
-        // 1) Modo de juego (Solitario/Cooperativo)
+        // 1) Tipo de Partida (Solitario/Cooperativo)
         // 2) Héroes seleccionados por el jugador/los jugadores
         // 3) Héroe aleatorio del Jugador Virtual (Dummy player)
         // 4) Barajar aleatoriamente el mazo del héroe del Jugador Virtual
@@ -56,77 +74,156 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Log.d("DATABASE","INSERT ALL GAME DATA ON DATABASE");
+                buttonInsertGameData.setOnClickListener(new View.OnClickListener() {
 
-                //Modo solitario
-                if(!switchModoJuego.isChecked()){
-                    if(radioGroupHeroes.getCheckedRadioButtonId() == -1){
-                        Toast.makeText(MainActivity.this, "Se debe seleccionar 1 héroe", Toast.LENGTH_SHORT).show();
-                    } else {
-                        switch(radioGroupHeroes.getCheckedRadioButtonId()){
-                            case R.id.idRadioButtonArythea:
+                    @Override
+                    public void onClick(View v) {
+                        int heroesSeleccionados = 0;
 
-                                Heroe heroeSelectedByPlayer = gameServicesImpl.getAHeroeSelectedByPlayer("Arythea");
+                        if(!switchTipoPartida.isChecked()){ //MODO SOLITARIO
+                            for(TextView textView : heroesTextViews){
+                                if(textView.isActivated()){
+                                    ++heroesSeleccionados;
+                                }
+                            }
 
-                                Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
+                            if(heroesSeleccionados==1){
 
-                                List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                Log.d("DATABASE","INSERT ALL GAME DATA ON DATABASE - SOLITAIRE MODE");
 
-                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                for(TextView textView : heroesTextViews){
+                                    if(textView.isActivated()){
+                                        String heroeName = textView.getText().toString();
 
-                                List<Cristal> cristalesDummyPlayer = gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+                                        Toast.makeText(MainActivity.this, "¡TODO OK! Partida en SOLITARIO y 1 único héroe ("+heroeName+") seleccionado", Toast.LENGTH_LONG).show();
 
-                                myDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                        Heroe heroeSelectedByPlayer = gameServicesImpl.getAHeroeSelectedByPlayer(heroeName);
 
-                                break;
+                                        Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
-                            case R.id.idRadioButtonTovak:
+                                        List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                break;
+                                        List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                            case R.id.idRadioButtonNorowas:
+                                        List<Cristal> cristalesDummyPlayer = gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                break;
+                                        myDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(MainActivity.this, "Debes seleccionar 1 único héroe para una partida en SOLITARIO", Toast.LENGTH_LONG).show();
+                            }
 
-                            case R.id.idRadioButtonGoldyx:
+                        } else { // MODO COOPERATIVO
+                            for(TextView textView : heroesTextViews){
+                                if(textView.isActivated()){
+                                    ++heroesSeleccionados;
+                                }
+                            }
 
-                                break;
-
-                            case R.id.idRadioButtonWolfhawk:
-
-                                break;
-
-                            case R.id.idRadioButtonKrang:
-
-                                break;
-
-                            case R.id.idRadioButtonBraevalar:
-
-                                break;
+                            if(heroesSeleccionados==2 || heroesSeleccionados==3){
+                                Log.d("DATABASE","INSERT ALL GAME DATA ON DATABASE - COOPERATIVE MODE");
+                                Toast.makeText(MainActivity.this, "¡TODO OK! Partida en COOPERATIVO y "+heroesSeleccionados+" héroes seleccionados", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Debes seleccionar 2 o 3 héroes para una partida en COOPERATIVO", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
-
-                } else{ //Modo cooperativo
-                    if(radioGroupHeroes.getCheckedRadioButtonId() == -1){
-                        Toast.makeText(MainActivity.this, "Se debe seleccionar 2 o 3 héroes", Toast.LENGTH_SHORT).show();
-                    } else {
-
-                    }
-                }
-
-
-                //myGameDB.insertAllData();
+                });
             }
         });
 
-        buttonDeleteGameData.setOnClickListener(new View.OnClickListener() {
-
+        arythea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("DATABASE","DELETE ALL GAME DATA ON DATABASE");
-                myDB.deleteGameData();
+                if(!arythea.isActivated()){
+                    arythea.setActivated(true);
+                    arythea.setTextColor(Color.RED);
+                } else{
+                    arythea.setActivated(false);
+                    arythea.setTextColor(Color.BLACK);
+                }
             }
         });
+
+        tovak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!tovak.isActivated()){
+                    tovak.setActivated(true);
+                    tovak.setTextColor(Color.RED);
+                } else{
+                    tovak.setActivated(false);
+                    tovak.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        norowas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!norowas.isActivated()){
+                    norowas.setActivated(true);
+                    norowas.setTextColor(Color.RED);
+                } else{
+                    norowas.setActivated(false);
+                    norowas.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        goldyx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!goldyx.isActivated()){
+                    goldyx.setActivated(true);
+                    goldyx.setTextColor(Color.RED);
+                } else{
+                    goldyx.setActivated(false);
+                    goldyx.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        wolfhawk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!wolfhawk.isActivated()){
+                    wolfhawk.setActivated(true);
+                    wolfhawk.setTextColor(Color.RED);
+                } else{
+                    wolfhawk.setActivated(false);
+                    wolfhawk.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        krang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!krang.isActivated()){
+                    krang.setActivated(true);
+                    krang.setTextColor(Color.RED);
+                } else{
+                    krang.setActivated(false);
+                    krang.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
+        braevalar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!braevalar.isActivated()){
+                    braevalar.setActivated(true);
+                    braevalar.setTextColor(Color.RED);
+                } else{
+                    braevalar.setActivated(false);
+                    braevalar.setTextColor(Color.BLACK);
+                }
+            }
+        });
+
 
     }
 }
