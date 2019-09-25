@@ -1,13 +1,11 @@
 package com.afr.afrmageknight;
 
-import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +22,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class GameOptionsActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    public static SQLiteDatabaseHelper myDB;
-    private GameServicesImpl gameServicesImpl;
-
     private TextView arythea;
     private TextView tovak;
     private TextView norowas;
@@ -45,10 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        myDB = new SQLiteDatabaseHelper(this);
-        gameServicesImpl = new GameServicesImpl(this);
+        setContentView(R.layout.activity_gameoptions);
 
         arythea = (TextView) findViewById(R.id.idTVArythea);
         tovak = (TextView) findViewById(R.id.idTVTovak);
@@ -89,29 +81,29 @@ public class MainActivity extends AppCompatActivity {
 
                             if(heroesSeleccionados==1){
 
-                                Log.d("DATABASE","INSERT ALL GAME DATA ON DATABASE - SOLITAIRE MODE");
+                                Log.d("DATABASE","SECOND: INSERT ALL GAME DATA ON DATABASE - SOLITAIRE MODE");
 
                                 for(TextView textView : heroesTextViews){
                                     if(textView.isActivated()){
                                         String heroeName = textView.getText().toString();
 
-                                        Toast.makeText(MainActivity.this, "¡TODO OK! Partida en SOLITARIO y 1 único héroe ("+heroeName+") seleccionado", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(GameOptionsActivity.this, "¡TODO OK! Partida en SOLITARIO y 1 único héroe ("+heroeName+") seleccionado", Toast.LENGTH_LONG).show();
 
-                                        Heroe heroeSelectedByPlayer = gameServicesImpl.getAHeroeSelectedByPlayer(heroeName);
+                                        Heroe heroeSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getAHeroeSelectedByPlayer(heroeName);
 
-                                        Heroe randomHeroeDummyPlayer = gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
+                                        Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
 
-                                        List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                        List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                        List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+                                        List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                        List<Cristal> cristalesDummyPlayer = gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+                                        List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                        myDB.insertAllGameData(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                        InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
                                     }
                                 }
                             } else {
-                                Toast.makeText(MainActivity.this, "Debes seleccionar 1 único héroe para una partida en SOLITARIO", Toast.LENGTH_LONG).show();
+                                Toast.makeText(GameOptionsActivity.this, "Debes seleccionar 1 único héroe para una partida en SOLITARIO", Toast.LENGTH_LONG).show();
                             }
 
                         } else { // MODO COOPERATIVO
@@ -122,10 +114,32 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             if(heroesSeleccionados==2 || heroesSeleccionados==3){
-                                Log.d("DATABASE","INSERT ALL GAME DATA ON DATABASE - COOPERATIVE MODE");
-                                Toast.makeText(MainActivity.this, "¡TODO OK! Partida en COOPERATIVO y "+heroesSeleccionados+" héroes seleccionados", Toast.LENGTH_LONG).show();
+
+                                Log.d("DATABASE","SECOND: INSERT ALL GAME DATA ON DATABASE - COOPERATIVE MODE");
+
+                                List<String> heroeNames = new ArrayList<String>();
+
+                                for(TextView textView : heroesTextViews){
+                                    if(textView.isActivated()){
+                                        String heroeName = textView.getText().toString();
+                                        heroeNames.add(heroeName);
+                                    }
+                                }
+
+                                List<Heroe> heroesSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getHeroesSelectedByPlayer(heroeNames);
+
+                                Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromHeroesSelectedByPlayer(heroesSelectedByPlayer);
+
+                                List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+
+                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+
+                                List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+
+                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoPartida.COOPERATIVO, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+
                             } else {
-                                Toast.makeText(MainActivity.this, "Debes seleccionar 2 o 3 héroes para una partida en COOPERATIVO", Toast.LENGTH_LONG).show();
+                                Toast.makeText(GameOptionsActivity.this, "Debes seleccionar 2 o 3 héroes para una partida en COOPERATIVO", Toast.LENGTH_LONG).show();
                             }
                         }
                     }

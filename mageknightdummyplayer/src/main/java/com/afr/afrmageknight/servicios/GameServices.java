@@ -15,11 +15,19 @@ public interface GameServices {
     // Método que devuelve 1 héroe concreto seleccionado por el jugador
     public Heroe getAHeroeSelectedByPlayer(String heroeName);
 
+    // Método que devuelve 2 o 3 héroes concretos seleccionados por el jugador
+    public List<Heroe> getHeroesSelectedByPlayer(List<String> heroeNames);
+
     //Método para recoger todos los cristales iniciales de un héroe en concreto
     public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName);
 
     //Método para obtener aleatoriamente un héroe a partir de la selección de un único héroe por parte del jugador
     public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe heroeSelectedByPlayer);
+
+    //Método para obtener aleatoriamente un héroe a partir de la selección de 2 o 3 héroes por parte del jugador
+    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> heroesSelectedByPlayer);
+
+
 
     //Método para obtener todas las cartas de Acción Básica del Jugador Virtual ya barajadas
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
@@ -40,9 +48,6 @@ public interface GameServices {
     public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer);
 
 
-
-    //Método para seleccionar aleatoriamente el héroe que controlará el Jugador Virtual a partir de los héroes no seleccionados por los jugadores
-    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer);
 
     // Método que devuelve todos los héroes del juego
     public List<Heroe> getAllHeroes();

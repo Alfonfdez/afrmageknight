@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.afr.afrmageknight.MainActivity;
+import com.afr.afrmageknight.GameOptionsActivity;
+import com.afr.afrmageknight.InitialMenuActivity;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -80,7 +81,7 @@ public class GameServicesImpl implements GameServices {
 
 
     public GameServicesImpl (Context context){
-        myDB = MainActivity.myDB;
+        myDB = InitialMenuActivity.myDB;
     }
 
     // Implementar los métodos de la interfaz 'GameServices'
@@ -88,6 +89,19 @@ public class GameServicesImpl implements GameServices {
     public Heroe getAHeroeSelectedByPlayer(String heroeName) {
         Heroe heroe = new Heroe(heroeName, getCristalesFromAHeroe(heroeName));
         return heroe;
+    }
+
+    @Override
+    public List<Heroe> getHeroesSelectedByPlayer(List<String> heroeNames) {
+
+        List<Heroe> heroes = new ArrayList<Heroe>();
+
+        for(String heroeName : heroeNames){
+            Heroe heroe = new Heroe(heroeName, getCristalesFromAHeroe(heroeName));
+            heroes.add(heroe);
+        }
+
+        return heroes;
     }
 
     @Override
@@ -133,6 +147,34 @@ public class GameServicesImpl implements GameServices {
         heroeNames.remove(heroeSelectedByPlayer.getNombre());
 
         //Selecciona un número aleatorio entre 0 y 5, ambos incluidos (heroeNames.size()=6)
+        int randomNumber = (int)(Math.random() * heroeNames.size());
+        String randomHeroeNameSelected = heroeNames.get(randomNumber);
+
+        Heroe heroeDummyPlayer = new Heroe(randomHeroeNameSelected, getCristalesFromAHeroe(randomHeroeNameSelected));
+
+        return heroeDummyPlayer;
+    }
+
+    @Override
+    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> heroesSelectedByPlayer) {
+
+        List<String> heroeNames = new ArrayList<>();
+        heroesCursor = myDB.getAllHeroes();
+
+        if(heroesCursor.moveToFirst()){
+            do{
+                String heroNameTable = heroesCursor.getString(heroesCursor.getColumnIndex(COL_1_HEROES_TABLE));
+                heroeNames.add(heroNameTable);
+            }while(heroesCursor.moveToNext());
+        }
+        heroesCursor.close();
+
+        for(Heroe heroe : heroesSelectedByPlayer){
+            heroeNames.remove(heroe.getNombre());
+        }
+
+        //Selecciona un número aleatorio entre: 0 y 4, ambos incluidos, para 2 héroes seleccionados por el jugador (heroeNames.size()=5)
+        //Selecciona un número aleatorio entre: 0 y 3, ambos incluidos, para 3 héroes seleccionados por el jugador (heroeNames.size()=4)
         int randomNumber = (int)(Math.random() * heroeNames.size());
         String randomHeroeNameSelected = heroeNames.get(randomNumber);
 
@@ -275,10 +317,7 @@ public class GameServicesImpl implements GameServices {
     }
 
 
-    @Override
-    public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> selectedByPlayer) {
-        return null;
-    }
+
 
     @Override
     public List<Heroe> getAllHeroes() {
