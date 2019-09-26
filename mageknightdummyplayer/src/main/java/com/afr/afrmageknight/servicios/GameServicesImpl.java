@@ -92,7 +92,7 @@ public class GameServicesImpl implements GameServices {
     public String getGameStatus() {
         partidaEstadoCursor = myDB.getGameStatus();
 
-        String estadoPartida = null;
+        String estadoPartida = "";
 
         if (partidaEstadoCursor.moveToFirst()){
             estadoPartida = partidaEstadoCursor.getString(partidaEstadoCursor.getColumnIndex(COL_1_PARTIDA_DATOS_TABLE));

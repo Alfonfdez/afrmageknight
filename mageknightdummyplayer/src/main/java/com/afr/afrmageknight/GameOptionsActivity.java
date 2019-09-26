@@ -1,5 +1,6 @@
 package com.afr.afrmageknight;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoEstado;
 import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.model.TipoRonda;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +56,9 @@ public class GameOptionsActivity extends AppCompatActivity {
 
         final List<TextView> heroesTextViews = new ArrayList<TextView>();
         Collections.addAll(heroesTextViews, arythea, tovak, norowas, goldyx, wolfhawk, krang, braevalar);
+
+        // 1) Vamos a instanciar un 'intent'
+        final Intent intent = new Intent(this, GameActivity.class);
 
 
         // Botón para insertar toda la información de la partida:
@@ -97,7 +103,11 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                                         List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                        InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                        InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+
+                                        // 2) Vamos a cambiar de 'activity'
+                                        startActivity(intent);
+                                        finish();
                                     }
                                 }
                             } else {
@@ -132,8 +142,10 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                                 List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoPartida.COOPERATIVO, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
+                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA,TipoPartida.COOPERATIVO, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
 
+                                // 2) Vamos a cambiar de 'activity'
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(GameOptionsActivity.this, "Debes seleccionar 2 o 3 héroes para una partida en COOPERATIVO", Toast.LENGTH_LONG).show();
                             }

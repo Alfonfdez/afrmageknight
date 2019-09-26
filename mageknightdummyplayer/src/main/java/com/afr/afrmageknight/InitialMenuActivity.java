@@ -31,17 +31,15 @@ public class InitialMenuActivity extends AppCompatActivity {
         buttonResumeGame = (Button) findViewById(R.id.idButtonContinuarPartida);
 
 
-        if(myDB.getGameStatus().equals(TipoEstado.INICIADA.toString())){
+        if(gameServicesImpl.getGameStatus().equals(TipoEstado.INICIADA.toString())){
             buttonResumeGame.setEnabled(true);
         } else{
             buttonResumeGame.setEnabled(false);
         }
 
-
     }
 
     public void newGame(View view){
-
 
         myDB.deleteGameData();
         Log.d("DATABASE","FIRST: DELETE ALL GAME DATA ON DATABASE");
@@ -51,16 +49,18 @@ public class InitialMenuActivity extends AppCompatActivity {
 
         // 2) Vamos a cambiar de 'activity'
         startActivity(intent);
+        finish();
 
     }
 
     public void resumeGame(View view){
 
         // 1) Vamos a instanciar un 'intent'
-        //Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, GameActivity.class);
 
         // 2) Vamos a cambiar de 'activity'
-        //startActivity(intent);
+        startActivity(intent);
+        finish();
 
     }
 

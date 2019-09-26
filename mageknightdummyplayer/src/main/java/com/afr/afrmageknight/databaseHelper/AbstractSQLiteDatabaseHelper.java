@@ -150,6 +150,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         createBoxTables(db);
         createGameTables(db);
         insertBoxData(db);
+        insertGameStatus(db);
     }
 
     @Override
@@ -187,6 +188,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + FICHAS_HABILIDAD_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_DATOS_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_MODO_TABLE);
@@ -834,6 +838,10 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         createFicha(new FichaHabilidad(69, "REGENERAR", "Una vez por turno: Paga 1 maná de cualquier color y retira una carta de Herida de tu mano. Si usas maná verde, o si eres quien menos Fama tiene (sin contar empates), roba también 1 carta.",false, braevalar), db);
         createFicha(new FichaHabilidad(70, "APOYO DE LA NATURALEZA", "Una vez por TipoRonda: Reduce un ataque de un enemigo en 1, ese enemigo gana la aptitud de \"Pesado\" en este turno. Coloca esta ficha de Habilidad en el centro. Hasta el comienzo de tu siguiente turno, cualquier jugador puede devolvértela boca abajo, para reducir un ataque de un enemigo en 1 y darle a esa ficha de enemigo la aptitud de \"Pesado\" en este turno.",false, braevalar), db);
 
+
+    }
+
+    private void insertGameStatus(SQLiteDatabase db){
         //Estado de la Partida
         insertEstadoPartida(TipoEstado.EN_PREPARACION.toString(), null, db);
     }
@@ -914,6 +922,24 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     //Insertar datos de la Ficha de Habilidad en su correspondiente tabla
     private void createFicha(FichaHabilidad fichaHabilidad, SQLiteDatabase db){
         insertDataFichaHabilidad(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(),  fichaHabilidad.isDescartada(), fichaHabilidad.getHeroe().getNombre(), db);
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    private boolean insertEstadoPartida(String estadoPartida, String rondaPartida, SQLiteDatabase db){
+
+        //Necesito una referencia a la base de datos como tal
+        //SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
+        contentValues.put(COL_2_PARTIDA_DATOS_TABLE, rondaPartida);
+
+        long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
@@ -1114,24 +1140,6 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         long resultado = db.insert(FICHAS_HABILIDAD_TABLE, null, contentValues);
 
         //Log.d("DATABASE","INSERT FICHA HABILIDAD -> ID FICHA:"+idFicha+" - Nombre: "+nombre+" - Resultado: "+resultado);
-        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
-        return resultado == -1 ? false : true;
-    }
-
-    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    private boolean insertEstadoPartida(String estadoPartida, String rondaPartida, SQLiteDatabase db){
-
-        //Necesito una referencia a la base de datos como tal
-        //SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
-
-        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
-        contentValues.put(COL_2_PARTIDA_DATOS_TABLE, rondaPartida);
-
-        long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
-
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
     }

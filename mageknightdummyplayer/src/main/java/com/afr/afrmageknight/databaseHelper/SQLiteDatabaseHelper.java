@@ -9,7 +9,9 @@ import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoEstado;
 import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.model.TipoRonda;
 
 import java.util.List;
 
@@ -18,7 +20,6 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     //Constructor
     public SQLiteDatabaseHelper(Context context) {
         super(context);
-        //getWritableDatabase();
     }
 
     //Métodos a sobreescribir de la superclase
@@ -34,6 +35,10 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
 
     //Insertar datos en su correspondiente tabla
+    private void createEstadoPartida(String estadoPartida, String rondaPartida){
+        insertDataGameStatus(estadoPartida, rondaPartida);
+    }
+
     private void createTipoPartida(String tipoPartida){
         insertDataGameMode(tipoPartida);
     }
@@ -56,6 +61,23 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     private void createCristal(String cristal){
         insertDataCristalesDummyPlayer(cristal);
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    private boolean insertDataGameStatus(String estadoPartida, String rondaPartida){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
+        contentValues.put(COL_2_PARTIDA_DATOS_TABLE, rondaPartida);
+
+        long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
@@ -168,7 +190,8 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos públicos
-    public void insertAllGameDataSolitaire(TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString());
         createTipoPartida(tipoPartida.toString());
         createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
         createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
@@ -192,7 +215,8 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         }
     }
 
-    public void insertAllGameDataCooperative(TipoPartida tipoPartida, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString());
         createTipoPartida(tipoPartida.toString());
 
         for(Heroe heroe: heroesSelectedByPlayer){
@@ -217,6 +241,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
+        db.delete(PARTIDA_DATOS_TABLE,null, null);
         db.delete(PARTIDA_MODO_TABLE,null, null);
         db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
         db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);
