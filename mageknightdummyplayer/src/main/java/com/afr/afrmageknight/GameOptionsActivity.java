@@ -10,13 +10,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoPartida;
-import com.afr.afrmageknight.servicios.GameServicesImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,11 +130,9 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                                 List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
 
-                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-
                                 List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoPartida.COOPERATIVO, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoPartida.COOPERATIVO, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
 
                             } else {
                                 Toast.makeText(GameOptionsActivity.this, "Debes seleccionar 2 o 3 héroes para una partida en COOPERATIVO", Toast.LENGTH_LONG).show();

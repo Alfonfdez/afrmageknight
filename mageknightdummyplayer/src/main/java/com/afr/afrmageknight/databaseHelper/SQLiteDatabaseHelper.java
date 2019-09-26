@@ -192,7 +192,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         }
     }
 
-    public void insertAllGameDataCooperative(TipoPartida tipoPartida, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+    public void insertAllGameDataCooperative(TipoPartida tipoPartida, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
         createTipoPartida(tipoPartida.toString());
 
         for(Heroe heroe: heroesSelectedByPlayer){
@@ -206,13 +206,6 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
             Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
             createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
             ++i;
-        }
-
-        int j = 0;
-        for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM SKILL TOKENS -> Numero: "+fichaHabilidad.getIdFicha()+" - Nombre: "+fichaHabilidad.getNombre());
-            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre(), j);
-            ++j;
         }
 
         for(Cristal cristal: cristalesDummyPlayer){

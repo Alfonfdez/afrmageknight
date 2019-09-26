@@ -66,12 +66,16 @@ public class GameServicesImpl implements GameServices {
     public static final String COL_3_FICHAS_HABILIDAD_TABLE = "DESCRIPCION";
     public static final String COL_5_FICHAS_HABILIDAD_TABLE = "HEROE";
 
+    //PARTIDA_DATOS_TABLE
+    protected static final String COL_1_PARTIDA_DATOS_TABLE = "ESTADO";
+
 
     // DatabaseHel no entrega a través de sus métodos ni Heroes ni Cartas ni Cristales. Sólo cursores
 
     //I - Declarar las variables
     private SQLiteDatabaseHelper myDB;
 
+    private Cursor partidaEstadoCursor;
     private Cursor heroesCursor;
     private Cursor heroesCristalesCursor;
     private Cursor cartasCursor;
@@ -82,6 +86,20 @@ public class GameServicesImpl implements GameServices {
 
     public GameServicesImpl (Context context){
         myDB = InitialMenuActivity.myDB;
+    }
+
+    @Override
+    public String getGameStatus() {
+        partidaEstadoCursor = myDB.getGameStatus();
+
+        String estadoPartida = null;
+
+        if (partidaEstadoCursor.moveToFirst()){
+            estadoPartida = partidaEstadoCursor.getString(partidaEstadoCursor.getColumnIndex(COL_1_PARTIDA_DATOS_TABLE));
+        }
+        partidaEstadoCursor.close();
+
+        return estadoPartida;
     }
 
     // Implementar los métodos de la interfaz 'GameServices'

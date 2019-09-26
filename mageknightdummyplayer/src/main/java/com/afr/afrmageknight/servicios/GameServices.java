@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface GameServices {
 
+    // Método para saber el Estado de la partida
+    public String getGameStatus();
+
     // Método que devuelve 1 héroe concreto seleccionado por el jugador
     public Heroe getAHeroeSelectedByPlayer(String heroeName);
 
@@ -70,13 +73,13 @@ public interface GameServices {
     public List<CartaTactica> getUpdatedTacticCards(List<CartaTactica> tacticsCards);
 
     // Método para actualizar el mazo de cartas del Jugador Virtual.
-    // Al final de la Ronda se eliminarán 3 cartas y si el color de la última carta coincide con algún cristal del Inventario del Jugador Virtual,
+    // Al final de la TipoRonda se eliminarán 3 cartas y si el color de la última carta coincide con algún cristal del Inventario del Jugador Virtual,
     // se eliminarán tantas cartas más como cristales tenga de ese color.
     public List<Carta> getUpdatedDummyPlayerCards(List<Carta> dummyPlayerCards);
 
-    // Método para comprobar que el color de la última carta eliminada por el Jugador Virtual (de las 3 eliminadas al final de la Ronda) coincide con algún cristal de su Inventario
+    // Método para comprobar que el color de la última carta eliminada por el Jugador Virtual (de las 3 eliminadas al final de la TipoRonda) coincide con algún cristal de su Inventario
     public boolean isLastCardColorAlikeInventoryManaCrystalsColor(Carta lastDummyPlayerCard, ArrayList<Cristal> dummyPlayerManaCrystals);
 
-    // Método para añadir al final de la Ronda un cristal del color de la carta Inferior de la Oferta de Hechizos al Inventario del Jugador Virtual
+    // Método para añadir al final de la TipoRonda un cristal del color de la carta Inferior de la Oferta de Hechizos al Inventario del Jugador Virtual
     public ArrayList<Cristal> getUpdatedDummyPlayerManaCrystals(ArrayList<Cristal> dummyPlayerManaCrystals);
 }

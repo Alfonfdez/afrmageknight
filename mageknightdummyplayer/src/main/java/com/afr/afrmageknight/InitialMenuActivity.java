@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
+import com.afr.afrmageknight.model.TipoEstado;
 import com.afr.afrmageknight.servicios.GameServicesImpl;
 
 public class InitialMenuActivity extends AppCompatActivity {
@@ -28,6 +29,15 @@ public class InitialMenuActivity extends AppCompatActivity {
         gameServicesImpl = new GameServicesImpl(this);
 
         buttonResumeGame = (Button) findViewById(R.id.idButtonContinuarPartida);
+
+
+        if(myDB.getGameStatus().equals(TipoEstado.INICIADA.toString())){
+            buttonResumeGame.setEnabled(true);
+        } else{
+            buttonResumeGame.setEnabled(false);
+        }
+
+
     }
 
     public void newGame(View view){
