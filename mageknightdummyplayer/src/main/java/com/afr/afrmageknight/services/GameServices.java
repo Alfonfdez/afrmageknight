@@ -1,4 +1,4 @@
-package com.afr.afrmageknight.servicios;
+package com.afr.afrmageknight.services;
 
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -15,6 +15,11 @@ public interface GameServices {
     // Método para saber el Estado de la partida
     public String getGameStatus();
 
+    // Método para saber el Modo de juego de la partida (Solitario/Cooperativo)
+    public String getGameType();
+
+    // ********************************************
+
     // Método que devuelve 1 héroe concreto seleccionado por el jugador
     public Heroe getAHeroeSelectedByPlayer(String heroeName);
 
@@ -30,7 +35,7 @@ public interface GameServices {
     //Método para obtener aleatoriamente un héroe a partir de la selección de 2 o 3 héroes por parte del jugador
     public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> heroesSelectedByPlayer);
 
-
+    // ********************************************
 
     //Método para obtener todas las cartas de Acción Básica del Jugador Virtual ya barajadas
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
@@ -49,6 +54,16 @@ public interface GameServices {
 
     //Método para obtener una ficha de Habilidad
     public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer);
+
+    // ********************************************
+
+    //Método para saber si la Partida se encuentra 'INICIADA' o no
+    public boolean isGameStatusInitiated();
+
+    //Método para saber si el modo de la Partida es en 'SOLITARIO' o no
+    public boolean isGameTypeSolitaire();
+
+
 
 
 

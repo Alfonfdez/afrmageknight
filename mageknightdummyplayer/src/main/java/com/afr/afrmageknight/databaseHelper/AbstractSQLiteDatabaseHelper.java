@@ -1159,6 +1159,16 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor getGameType(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_MODO_TABLE, null);
+
+        return cursor;
+    }
+
     public Cursor getAllHeroes(){
         SQLiteDatabase db = getWritableDatabase();
 

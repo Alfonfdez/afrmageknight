@@ -1,11 +1,10 @@
-package com.afr.afrmageknight.servicios;
+package com.afr.afrmageknight.services;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.afr.afrmageknight.GameOptionsActivity;
-import com.afr.afrmageknight.InitialMenuActivity;
+import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -13,6 +12,8 @@ import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
+import com.afr.afrmageknight.model.TipoEstado;
+import com.afr.afrmageknight.model.TipoPartida;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,6 +70,9 @@ public class GameServicesImpl implements GameServices {
     //PARTIDA_DATOS_TABLE
     protected static final String COL_1_PARTIDA_DATOS_TABLE = "ESTADO";
 
+    //PARTIDA_MODO_TABLE
+    protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
+
 
     // DatabaseHel no entrega a través de sus métodos ni Heroes ni Cartas ni Cristales. Sólo cursores
 
@@ -76,6 +80,7 @@ public class GameServicesImpl implements GameServices {
     private SQLiteDatabaseHelper myDB;
 
     private Cursor partidaEstadoCursor;
+    private Cursor partidaModoCursor;
     private Cursor heroesCursor;
     private Cursor heroesCristalesCursor;
     private Cursor cartasCursor;
@@ -101,6 +106,22 @@ public class GameServicesImpl implements GameServices {
 
         return estadoPartida;
     }
+
+    @Override
+    public String getGameType() {
+        partidaModoCursor = myDB.getGameType();
+
+        String modoPartida = "";
+
+        if (partidaModoCursor.moveToFirst()){
+            modoPartida = partidaModoCursor.getString(partidaModoCursor.getColumnIndex(COL_1_PARTIDA_MODO_TABLE));
+        }
+        partidaModoCursor.close();
+
+        return modoPartida;
+    }
+
+    // ********************************************
 
     // Implementar los métodos de la interfaz 'GameServices'
     @Override
@@ -200,6 +221,8 @@ public class GameServicesImpl implements GameServices {
 
         return heroeDummyPlayer;
     }
+
+    // ********************************************
 
     @Override
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
@@ -334,8 +357,23 @@ public class GameServicesImpl implements GameServices {
         return fichaHabilidad;
     }
 
+    // ********************************************
 
+    @Override
+    public boolean isGameStatusInitiated() {
+        if(getGameStatus().equals(TipoEstado.INICIADA.toString())){
+            return true;
+        }
+        return false;
+    }
 
+    @Override
+    public boolean isGameTypeSolitaire() {
+        if(getGameType().equals(TipoPartida.SOLITARIO.toString())){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public List<Heroe> getAllHeroes() {

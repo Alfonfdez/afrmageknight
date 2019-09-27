@@ -1,4 +1,4 @@
-package com.afr.afrmageknight;
+package com.afr.afrmageknight.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.TipoEstado;
-import com.afr.afrmageknight.servicios.GameServicesImpl;
+import com.afr.afrmageknight.services.GameServicesImpl;
 
 public class InitialMenuActivity extends AppCompatActivity {
 
@@ -31,7 +32,7 @@ public class InitialMenuActivity extends AppCompatActivity {
         buttonResumeGame = (Button) findViewById(R.id.idButtonContinuarPartida);
 
 
-        if(gameServicesImpl.getGameStatus().equals(TipoEstado.INICIADA.toString())){
+        if(gameServicesImpl.isGameStatusInitiated()){
             buttonResumeGame.setEnabled(true);
         } else{
             buttonResumeGame.setEnabled(false);
