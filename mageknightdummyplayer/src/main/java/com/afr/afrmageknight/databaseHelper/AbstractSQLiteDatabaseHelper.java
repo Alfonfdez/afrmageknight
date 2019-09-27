@@ -43,6 +43,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     protected static final String PARTIDA_DATOS_TABLE = "PARTIDA_DATOS";
     protected static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
+    protected static final String PARTIDA_CARTAS_TACTICAS_TABLE = "PARTIDA_CARTAS_TACTICAS";
     protected static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
     protected static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
     protected static final String PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_HEROE_DUMMY";
@@ -105,9 +106,20 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     //PARTIDA_DATOS_TABLE
     protected static final String COL_1_PARTIDA_DATOS_TABLE = "ESTADO";
     protected static final String COL_2_PARTIDA_DATOS_TABLE = "RONDA";
+    protected static final String COL_3_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_INICIO";
+    protected static final String COL_4_PARTIDA_DATOS_TABLE = "TURNO";
+    protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO_ESTADO_FINALIZADO";
 
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
+
+    //PARTIDA_CARTAS_TACTICAS_TABLE
+    protected static final String COL_1_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO";
+    protected static final String COL_2_PARTIDA_CARTAS_TACTICAS_TABLE = "NOMBRE";
+    protected static final String COL_3_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCARTADA";
+    protected static final String COL_4_PARTIDA_CARTAS_TACTICAS_TABLE = "TIPO_TACTICA";
+    protected static final String COL_5_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
+    protected static final String COL_6_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
 
     // PARTIDA_HEROES_JUGADOR_TABLE
     protected static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
@@ -194,6 +206,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_MODO_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_TACTICAS_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROES_JUGADOR_TABLE);
@@ -384,7 +399,10 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         strSQLPartidaDatosTable.append("CREATE TABLE ").append(PARTIDA_DATOS_TABLE).append(" (")
                 .append(COL_1_PARTIDA_DATOS_TABLE).append(" TEXT PRIMARY KEY,")
-                .append(COL_2_PARTIDA_DATOS_TABLE).append(" TEXT")
+                .append(COL_2_PARTIDA_DATOS_TABLE).append(" TEXT,")
+                .append(COL_3_PARTIDA_DATOS_TABLE).append(" BIT,")
+                .append(COL_4_PARTIDA_DATOS_TABLE).append(" INTEGER,")
+                .append(COL_5_PARTIDA_DATOS_TABLE).append(" BIT")
                 .append(")");
 
         Log.d("DATABASE", "PRIMERO - ONCREATE_GAME DATA - PARTIDA_DATOS_TABLE");
@@ -404,6 +422,22 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(strSQLPartidaModoTable.toString());
 
+        //PARTIDA_CARTAS_TACTICAS_TABLE
+        StringBuilder strSQLPartidaCartasTacticaTable = new StringBuilder();
+
+        strSQLPartidaCartasTacticaTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_TACTICAS_TABLE).append(" (")
+                .append(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT PRIMARY KEY,")
+                .append(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE).append(" BIT NOT NULL,")
+                .append(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_5_PARTIDA_CARTAS_TACTICAS_TABLE).append(" INTEGER NOT NULL,")
+                .append(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE_GAME DATA - PARTIDA_CARTAS_TACTICAS_TABLE");
+        Log.d("DATABASE", strSQLPartidaCartasTacticaTable.toString());
+
+        db.execSQL(strSQLPartidaCartasTacticaTable.toString());
 
         //PARTIDA_HEROES_JUGADOR_TABLE
         StringBuilder strSQLPartidaHeroesJugadorTable = new StringBuilder();
@@ -412,7 +446,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_HEROES_JUGADOR_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "TERCERO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
+        Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
         Log.d("DATABASE", strSQLPartidaHeroesJugadorTable.toString());
 
         db.execSQL(strSQLPartidaHeroesJugadorTable.toString());
@@ -425,7 +459,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_HEROE_DUMMY_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaHeroeDummyTable.toString());
@@ -446,7 +480,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaCartasHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaCartasHeroeDummyTable.toString());
@@ -464,7 +498,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "SEPTIMO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
@@ -477,7 +511,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEPTIMO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "OCTAVO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaCristalesHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaCristalesHeroeDummyTable.toString());
@@ -843,8 +877,10 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     private void insertGameStatus(SQLiteDatabase db){
         //Estado de la Partida
-        insertEstadoPartida(TipoEstado.EN_PREPARACION.toString(), null, db);
+        insertEstadoPartida(TipoEstado.EN_PREPARACION.toString(), null, true, 1, false, db);
     }
+
+    // *******************************************************
 
     private Heroe getHeroeByName(String heroeName){
         Heroe heroe = new Heroe(heroeName, getHeroeCristalsByName(heroeName));
@@ -925,7 +961,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    private boolean insertEstadoPartida(String estadoPartida, String rondaPartida, SQLiteDatabase db){
+    private boolean insertEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, int turno, boolean esTurnoFinalizado, SQLiteDatabase db){
 
         //Necesito una referencia a la base de datos como tal
         //SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -935,6 +971,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
         contentValues.put(COL_2_PARTIDA_DATOS_TABLE, rondaPartida);
+        contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
+        contentValues.put(COL_4_PARTIDA_DATOS_TABLE, turno);
+        contentValues.put(COL_5_PARTIDA_DATOS_TABLE, esTurnoFinalizado);
 
         long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
 

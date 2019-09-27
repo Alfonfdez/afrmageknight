@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.model.CartaAccionBasica;
+import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
@@ -94,6 +95,8 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                                         Toast.makeText(GameOptionsActivity.this, "¡TODO OK! Partida en SOLITARIO y 1 único héroe ("+heroeName+") seleccionado", Toast.LENGTH_LONG).show();
 
+                                        List<CartaTactica> cartasTacticas = InitialMenuActivity.gameServicesImpl.getTacticCards();
+
                                         Heroe heroeSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getAHeroeSelectedByPlayer(heroeName);
 
                                         Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
@@ -104,7 +107,7 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                                         List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                        InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.SOLITARIO, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                        InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.SOLITARIO, cartasTacticas, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
 
                                         // 2) Vamos a cambiar de 'activity'
                                         startActivity(intent);
@@ -135,6 +138,8 @@ public class GameOptionsActivity extends AppCompatActivity {
                                     }
                                 }
 
+                                List<CartaTactica> cartasTacticas = InitialMenuActivity.gameServicesImpl.getTacticCards();
+
                                 List<Heroe> heroesSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getHeroesSelectedByPlayer(heroeNames);
 
                                 Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromHeroesSelectedByPlayer(heroesSelectedByPlayer);
@@ -143,7 +148,7 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                                 List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
 
-                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA,TipoPartida.COOPERATIVO, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
+                                InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA,TipoPartida.COOPERATIVO, cartasTacticas, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
 
                                 // 2) Vamos a cambiar de 'activity'
                                 startActivity(intent);

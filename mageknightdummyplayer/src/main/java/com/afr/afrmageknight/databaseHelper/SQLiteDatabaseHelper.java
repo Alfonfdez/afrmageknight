@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.afr.afrmageknight.model.CartaAccionBasica;
+import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
@@ -33,14 +34,74 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         super.onUpgrade(db, oldVersion, newVersion);
     }
 
+    //Métodos públicos
+    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, 1, false);
+        createTipoPartida(tipoPartida.toString());
+
+        for(CartaTactica cartaTactica: cartasTacticas){
+            createCartaTacticaPartida(cartaTactica);
+        }
+
+        createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
+        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
+
+        int i = 0;
+        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
+            ++i;
+        }
+
+        int j = 0;
+        for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM SKILL TOKENS -> Numero: "+fichaHabilidad.getIdFicha()+" - Nombre: "+fichaHabilidad.getNombre());
+            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre(), j);
+            ++j;
+        }
+
+        for(Cristal cristal: cristalesDummyPlayer){
+            createCristal(cristal.toString());
+        }
+    }
+
+    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, 1, false);
+        createTipoPartida(tipoPartida.toString());
+
+        for(CartaTactica cartaTactica: cartasTacticas){
+            createCartaTacticaPartida(cartaTactica);
+        }
+
+        for(Heroe heroe: heroesSelectedByPlayer){
+            createHeroeSelectedByPlayer(heroe.getNombre());
+        }
+
+        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
+
+        int i = 0;
+        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
+            ++i;
+        }
+
+        for(Cristal cristal: cristalesDummyPlayer){
+            createCristal(cristal.toString());
+        }
+    }
 
     //Insertar datos en su correspondiente tabla
-    private void createEstadoPartida(String estadoPartida, String rondaPartida){
-        insertDataGameStatus(estadoPartida, rondaPartida);
+    private void createEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, int turno, boolean esTurnoFinalizado){
+        insertDataGameStatus(estadoPartida, rondaPartida, esRondaInicio, turno, esTurnoFinalizado);
     }
 
     private void createTipoPartida(String tipoPartida){
         insertDataGameMode(tipoPartida);
+    }
+
+    private void createCartaTacticaPartida(CartaTactica cartaTactica){
+        insertDataGameTacticCard(cartaTactica.getNumero(), cartaTactica.getNombre(),false, cartaTactica.getTipoTactica().toString(), cartaTactica.getNumeroOrden(),cartaTactica.getDescripcion());
     }
 
     private void createHeroeSelectedByPlayer(String heroSelectedByPlayer){
@@ -64,7 +125,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    private boolean insertDataGameStatus(String estadoPartida, String rondaPartida){
+    private boolean insertDataGameStatus(String estadoPartida, String rondaPartida, boolean esRondaInicio, int turno, boolean esTurnoFinalizado){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -73,6 +134,9 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
         contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
         contentValues.put(COL_2_PARTIDA_DATOS_TABLE, rondaPartida);
+        contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
+        contentValues.put(COL_4_PARTIDA_DATOS_TABLE, turno);
+        contentValues.put(COL_5_PARTIDA_DATOS_TABLE, esTurnoFinalizado);
 
         long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
 
@@ -91,6 +155,28 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         contentValues.put(COL_1_PARTIDA_MODO_TABLE, tipoPartida);
 
         long resultado = db.insert(PARTIDA_MODO_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    private boolean insertDataGameTacticCard(int numero, String nombre, boolean isDescartadaCartaTactica, String tipoTactica, int numeroOrden, String descripcion){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE, numero);
+        contentValues.put(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE, nombre);
+        contentValues.put(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE, isDescartadaCartaTactica);
+        contentValues.put(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE, tipoTactica);
+        contentValues.put(COL_5_PARTIDA_CARTAS_TACTICAS_TABLE, numeroOrden);
+        contentValues.put(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE, descripcion);
+
+        long resultado = db.insert(PARTIDA_CARTAS_TACTICAS_TABLE, null, contentValues);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;
@@ -189,60 +275,13 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         return resultado == -1 ? false : true;
     }
 
-    //Métodos públicos
-    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString());
-        createTipoPartida(tipoPartida.toString());
-        createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
-        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
-
-        int i = 0;
-        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
-            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
-            ++i;
-        }
-
-        int j = 0;
-        for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM SKILL TOKENS -> Numero: "+fichaHabilidad.getIdFicha()+" - Nombre: "+fichaHabilidad.getNombre());
-            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre(), j);
-            ++j;
-        }
-
-        for(Cristal cristal: cristalesDummyPlayer){
-            createCristal(cristal.toString());
-        }
-    }
-
-    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString());
-        createTipoPartida(tipoPartida.toString());
-
-        for(Heroe heroe: heroesSelectedByPlayer){
-            createHeroeSelectedByPlayer(heroe.getNombre());
-        }
-
-        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
-
-        int i = 0;
-        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
-            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
-            ++i;
-        }
-
-        for(Cristal cristal: cristalesDummyPlayer){
-            createCristal(cristal.toString());
-        }
-    }
-
     public void deleteGameData(){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
         db.delete(PARTIDA_DATOS_TABLE,null, null);
         db.delete(PARTIDA_MODO_TABLE,null, null);
+        db.delete(PARTIDA_CARTAS_TACTICAS_TABLE,null, null);
         db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
         db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);
         db.delete(PARTIDA_CARTAS_HEROE_DUMMY_TABLE,null, null);

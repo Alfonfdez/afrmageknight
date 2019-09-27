@@ -14,6 +14,7 @@ import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoEstado;
 import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.model.TipoTactica;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +85,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor heroesCursor;
     private Cursor heroesCristalesCursor;
     private Cursor cartasCursor;
+    private Cursor cartasTacticasCursor;
     private Cursor cartasAccionesCursor;
     private Cursor cartasAccionesBasicasCursor;
     private Cursor fichasHabilidadesCursor;
@@ -223,6 +225,41 @@ public class GameServicesImpl implements GameServices {
     }
 
     // ********************************************
+
+    @Override
+    public List<CartaTactica> getTacticCards() {
+
+        List<CartaTactica> cartasTacticas = new ArrayList<CartaTactica>();
+        cartasCursor = myDB.getAllCartas();
+        cartasTacticasCursor = myDB.getAllCartasTacticas();
+
+        if(cartasTacticasCursor.moveToFirst()){
+            String nombreCartaTactica = "";
+            do{
+                int numeroCartaTactica = cartasTacticasCursor.getInt(cartasTacticasCursor.getColumnIndex(COL_1_CARTAS_TACTICAS_TABLE));
+
+                if(cartasCursor.moveToFirst()){
+                    int i = 0;
+                    do{
+                        if(numeroCartaTactica==cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE))){
+                            nombreCartaTactica = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
+                            ++i;
+                        }
+                    }while(cartasCursor.moveToNext() && i < 1);
+                }
+
+                String tipoCartaTactica = cartasTacticasCursor.getString(cartasTacticasCursor.getColumnIndex(COL_2_CARTAS_TACTICAS_TABLE));
+                int numeroOrdenCartaTactica = cartasTacticasCursor.getInt(cartasTacticasCursor.getColumnIndex(COL_3_CARTAS_TACTICAS_TABLE));
+                String descripcionCartaTactica = cartasTacticasCursor.getString(cartasTacticasCursor.getColumnIndex(COL_4_CARTAS_TACTICAS_TABLE));
+
+                CartaTactica cartaTactica = new CartaTactica(numeroCartaTactica, nombreCartaTactica, false, TipoTactica.valueOf(tipoCartaTactica),numeroOrdenCartaTactica,descripcionCartaTactica);
+                cartasTacticas.add(cartaTactica);
+            }while(cartasTacticasCursor.moveToNext());
+        }
+        cartasTacticasCursor.close();
+
+        return cartasTacticas;
+    }
 
     @Override
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {

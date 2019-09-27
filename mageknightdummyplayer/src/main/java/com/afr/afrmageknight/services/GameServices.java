@@ -37,6 +37,9 @@ public interface GameServices {
 
     // ********************************************
 
+    // Método para obtener todas las cartas Tácticas
+    public List<CartaTactica> getTacticCards();
+
     //Método para obtener todas las cartas de Acción Básica del Jugador Virtual ya barajadas
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
 
