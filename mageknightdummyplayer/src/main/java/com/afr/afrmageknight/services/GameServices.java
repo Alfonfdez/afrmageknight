@@ -12,10 +12,10 @@ import java.util.List;
 
 public interface GameServices {
 
-    // Método para saber el Estado de la partida
+    // Método para saber el Estado de la partida (EN_PREPARACION, INICIADA, FINALIZADA)
     public String getGameStatus();
 
-    // Método para saber el Modo de juego de la partida (Solitario/Cooperativo)
+    // Método para saber el Modo de juego de la partida (SOLITARIO, COOPERATIVO)
     public String getGameType();
 
     // ********************************************
@@ -60,11 +60,17 @@ public interface GameServices {
 
     // ********************************************
 
-    //Método para saber si la Partida se encuentra 'INICIADA' o no
+    //Método para saber si la Partida se encuentra 'INICIADA' o no ('EN_PREPARACION' / 'FINALIZADA')
     public boolean isGameStatusInitiated();
 
-    //Método para saber si el modo de la Partida es en 'SOLITARIO' o no
+    //Método para saber si el modo de la Partida es en 'SOLITARIO' o no ('COOPERATIVO')
     public boolean isGameTypeSolitaire();
+
+    //Método para saber si estamos al comienzo de la Ronda o no
+    public boolean isRoundBeginning();
+
+    //Método para saber si estamos al comienzo de la Ronda o no
+    public boolean isTurnEnding();
 
 
 
