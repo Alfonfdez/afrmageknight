@@ -104,11 +104,11 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     // *** PARTIDA ***
 
     //PARTIDA_DATOS_TABLE
-    protected static final String COL_1_PARTIDA_DATOS_TABLE = "ESTADO";
+    protected static final String COL_1_PARTIDA_DATOS_TABLE = "PARTIDA_ESTADO";
     protected static final String COL_2_PARTIDA_DATOS_TABLE = "RONDA";
     protected static final String COL_3_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_INICIO";
-    protected static final String COL_4_PARTIDA_DATOS_TABLE = "TURNO";
-    protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO_ESTADO_FINALIZADO";
+    protected static final String COL_4_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_FINALIZADO";
+    protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO";
 
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
@@ -400,9 +400,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         strSQLPartidaDatosTable.append("CREATE TABLE ").append(PARTIDA_DATOS_TABLE).append(" (")
                 .append(COL_1_PARTIDA_DATOS_TABLE).append(" TEXT PRIMARY KEY,")
                 .append(COL_2_PARTIDA_DATOS_TABLE).append(" TEXT,")
-                .append(COL_3_PARTIDA_DATOS_TABLE).append(" BIT,")
-                .append(COL_4_PARTIDA_DATOS_TABLE).append(" INTEGER,")
-                .append(COL_5_PARTIDA_DATOS_TABLE).append(" BIT")
+                .append(COL_3_PARTIDA_DATOS_TABLE).append(" BIT NOT NULL,")
+                .append(COL_4_PARTIDA_DATOS_TABLE).append(" BIT NOT NULL,")
+                .append(COL_5_PARTIDA_DATOS_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
         Log.d("DATABASE", "PRIMERO - ONCREATE_GAME DATA - PARTIDA_DATOS_TABLE");

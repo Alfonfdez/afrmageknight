@@ -70,7 +70,7 @@ public interface GameServices {
     public boolean isRoundBeginning();
 
     //Método para saber si estamos al comienzo de la Ronda o no
-    public boolean isTurnEnding();
+    public boolean isRoundEnding();
 
 
 

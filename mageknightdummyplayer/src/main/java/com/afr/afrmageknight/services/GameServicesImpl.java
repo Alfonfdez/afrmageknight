@@ -69,11 +69,11 @@ public class GameServicesImpl implements GameServices {
     public static final String COL_5_FICHAS_HABILIDAD_TABLE = "HEROE";
 
     //PARTIDA_DATOS_TABLE
-    protected static final String COL_1_PARTIDA_DATOS_TABLE = "ESTADO";
+    protected static final String COL_1_PARTIDA_DATOS_TABLE = "PARTIDA_ESTADO";
     protected static final String COL_2_PARTIDA_DATOS_TABLE = "RONDA";
     protected static final String COL_3_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_INICIO";
-    protected static final String COL_4_PARTIDA_DATOS_TABLE = "TURNO";
-    protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO_ESTADO_FINALIZADO";
+    protected static final String COL_4_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_FINALIZADO";
+    protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO";
 
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
@@ -431,13 +431,13 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public boolean isTurnEnding() {
+    public boolean isRoundEnding() {
         partidaEstadoCursor = myDB.getGameStatus();
 
         boolean esFinalTurno = false;
 
         if (partidaEstadoCursor.moveToFirst()){
-            esFinalTurno = partidaEstadoCursor.getInt(partidaEstadoCursor.getColumnIndex(COL_5_PARTIDA_DATOS_TABLE)) > 0;
+            esFinalTurno = partidaEstadoCursor.getInt(partidaEstadoCursor.getColumnIndex(COL_4_PARTIDA_DATOS_TABLE)) > 0;
         }
         partidaEstadoCursor.close();
 
