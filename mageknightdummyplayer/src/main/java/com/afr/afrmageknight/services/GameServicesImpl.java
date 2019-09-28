@@ -68,6 +68,8 @@ public class GameServicesImpl implements GameServices {
     public static final String COL_3_FICHAS_HABILIDAD_TABLE = "DESCRIPCION";
     public static final String COL_5_FICHAS_HABILIDAD_TABLE = "HEROE";
 
+    // *** PARTIDA ***
+
     //PARTIDA_DATOS_TABLE
     protected static final String COL_1_PARTIDA_DATOS_TABLE = "PARTIDA_ESTADO";
     protected static final String COL_2_PARTIDA_DATOS_TABLE = "RONDA";
@@ -78,14 +80,48 @@ public class GameServicesImpl implements GameServices {
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
 
+    //PARTIDA_CARTAS_TACTICAS_TABLE
+    protected static final String COL_1_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO";
+    protected static final String COL_2_PARTIDA_CARTAS_TACTICAS_TABLE = "NOMBRE";
+    protected static final String COL_3_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCARTADA";
+    protected static final String COL_4_PARTIDA_CARTAS_TACTICAS_TABLE = "TIPO_TACTICA";
+    protected static final String COL_5_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
+    protected static final String COL_6_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
+
+    // PARTIDA_HEROES_JUGADOR_TABLE
+    protected static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
+
+    // PARTIDA_HEROE_DUMMY_TABLE
+    protected static final String COL_1_PARTIDA_HEROE_DUMMY_TABLE = "NOMBRE";
+
+    // PARTIDA_CARTAS_HEROE_DUMMY_TABLE
+    protected static final String COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NUMERO";
+    protected static final String COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "NOMBRE";
+    protected static final String COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCARTADA";
+    protected static final String COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR";
+    protected static final String COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "COLOR_SECUNDARIO";
+    protected static final String COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_BASICA";
+    protected static final String COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "DESCRIPCION_AVANZADA";
+    protected static final String COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
+    protected static final String COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "INDICE";
+
+    //PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE
+    protected static final String COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "ID_FICHA";
+    protected static final String COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "NOMBRE";
+    protected static final String COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCRIPCION";
+    protected static final String COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "DESCARTADA";
+    protected static final String COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "HEROE_DUMMY";
+    protected static final String COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE = "INDICE";
+
+    // PARTIDA_CRISTALES_HEROE_DUMMY_TABLE
+    protected static final String COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE = "CRISTAL";
+
 
     // DatabaseHel no entrega a través de sus métodos ni Heroes ni Cartas ni Cristales. Sólo cursores
 
     //I - Declarar las variables
     private SQLiteDatabaseHelper myDB;
 
-    private Cursor partidaEstadoCursor;
-    private Cursor partidaModoCursor;
     private Cursor heroesCursor;
     private Cursor heroesCristalesCursor;
     private Cursor cartasCursor;
@@ -94,40 +130,17 @@ public class GameServicesImpl implements GameServices {
     private Cursor cartasAccionesBasicasCursor;
     private Cursor fichasHabilidadesCursor;
 
+    private Cursor partidaEstadoCursor;
+    private Cursor partidaModoCursor;
+    private Cursor partidaHeroeDummyCursor;
+    private Cursor partidaCristalesDummyCursor;
+    private Cursor partidaCartasDummyCursor;
 
+    //Constructor
     public GameServicesImpl (Context context){
         myDB = InitialMenuActivity.myDB;
     }
 
-    @Override
-    public String getGameStatus() {
-        partidaEstadoCursor = myDB.getGameStatus();
-
-        String estadoPartida = "";
-
-        if (partidaEstadoCursor.moveToFirst()){
-            estadoPartida = partidaEstadoCursor.getString(partidaEstadoCursor.getColumnIndex(COL_1_PARTIDA_DATOS_TABLE));
-        }
-        partidaEstadoCursor.close();
-
-        return estadoPartida;
-    }
-
-    @Override
-    public String getGameType() {
-        partidaModoCursor = myDB.getGameType();
-
-        String modoPartida = "";
-
-        if (partidaModoCursor.moveToFirst()){
-            modoPartida = partidaModoCursor.getString(partidaModoCursor.getColumnIndex(COL_1_PARTIDA_MODO_TABLE));
-        }
-        partidaModoCursor.close();
-
-        return modoPartida;
-    }
-
-    // ********************************************
 
     // Implementar los métodos de la interfaz 'GameServices'
     @Override
@@ -151,7 +164,7 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public ArrayList<Cristal> getCristalesFromAHeroe(String heroeName) {
-        heroesCristalesCursor = myDB.getAllHeroesCristales();
+        heroesCristalesCursor = myDB.getAllHeroesCristalesCursor();
 
         ArrayList<Cristal> cristalesHeroe = new ArrayList<Cristal>();
 
@@ -179,7 +192,7 @@ public class GameServicesImpl implements GameServices {
     public Heroe getRandomHeroeFromOneHeroeSelectedByPlayer(Heroe heroeSelectedByPlayer) {
 
         List<String> heroeNames = new ArrayList<>();
-        heroesCursor = myDB.getAllHeroes();
+        heroesCursor = myDB.getAllHeroesCursor();
 
         if(heroesCursor.moveToFirst()){
             do{
@@ -204,7 +217,7 @@ public class GameServicesImpl implements GameServices {
     public Heroe getRandomHeroeFromHeroesSelectedByPlayer(List<Heroe> heroesSelectedByPlayer) {
 
         List<String> heroeNames = new ArrayList<>();
-        heroesCursor = myDB.getAllHeroes();
+        heroesCursor = myDB.getAllHeroesCursor();
 
         if(heroesCursor.moveToFirst()){
             do{
@@ -234,8 +247,8 @@ public class GameServicesImpl implements GameServices {
     public List<CartaTactica> getTacticCards() {
 
         List<CartaTactica> cartasTacticas = new ArrayList<CartaTactica>();
-        cartasCursor = myDB.getAllCartas();
-        cartasTacticasCursor = myDB.getAllCartasTacticas();
+        cartasCursor = myDB.getAllCartasCursor();
+        cartasTacticasCursor = myDB.getAllCartasTacticasCursor();
 
         if(cartasTacticasCursor.moveToFirst()){
             String nombreCartaTactica = "";
@@ -284,7 +297,7 @@ public class GameServicesImpl implements GameServices {
     public ArrayList<CartaAccionBasica> getBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
         ArrayList<CartaAccionBasica> cartaAccionBasicas = new ArrayList<CartaAccionBasica>();
-        cartasAccionesBasicasCursor = myDB.getAllCartasAccionesBasicas();
+        cartasAccionesBasicasCursor = myDB.getAllCartasAccionesBasicasCursor();
 
         if (cartasAccionesBasicasCursor.moveToFirst()){
             int i = 0;
@@ -306,8 +319,8 @@ public class GameServicesImpl implements GameServices {
     @Override
     public CartaAccionBasica getBasicActionCard(int basicActionCardNumber, Heroe randomHeroeDummyPlayer) {
 
-        cartasCursor = myDB.getAllCartas();
-        cartasAccionesCursor = myDB.getAllCartasAcciones();
+        cartasCursor = myDB.getAllCartasCursor();
+        cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
 
         String nombreCarta = "";
         String cristalColor = "";
@@ -368,7 +381,7 @@ public class GameServicesImpl implements GameServices {
     public List<FichaHabilidad> getSkillTokensHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer) {
 
         ArrayList<FichaHabilidad> fichasHabilidades = new ArrayList<FichaHabilidad>();
-        fichasHabilidadesCursor = myDB.getAllFichasHabilidad();
+        fichasHabilidadesCursor = myDB.getAllFichasHabilidadCursor();
 
         if (fichasHabilidadesCursor.moveToFirst()){
             int i = 0;
@@ -401,8 +414,111 @@ public class GameServicesImpl implements GameServices {
     // ********************************************
 
     @Override
+    public String getGameStatus() {
+        partidaEstadoCursor = myDB.getGameStatusCursor();
+
+        String estadoPartida = "";
+
+        if (partidaEstadoCursor.moveToFirst()){
+            estadoPartida = partidaEstadoCursor.getString(partidaEstadoCursor.getColumnIndex(COL_1_PARTIDA_DATOS_TABLE));
+        }
+        partidaEstadoCursor.close();
+
+        return estadoPartida;
+    }
+
+    @Override
+    public String getGameType() {
+        partidaModoCursor = myDB.getGameTypeCursor();
+
+        String modoPartida = "";
+
+        if (partidaModoCursor.moveToFirst()){
+            modoPartida = partidaModoCursor.getString(partidaModoCursor.getColumnIndex(COL_1_PARTIDA_MODO_TABLE));
+        }
+        partidaModoCursor.close();
+
+        return modoPartida;
+    }
+
+    @Override
+    public String getGameRound() {
+        partidaEstadoCursor = myDB.getGameStatusCursor();
+
+        String rondaPartida = "";
+
+        if (partidaEstadoCursor.moveToFirst()){
+            rondaPartida = partidaEstadoCursor.getString(partidaEstadoCursor.getColumnIndex(COL_2_PARTIDA_DATOS_TABLE));
+        }
+        partidaEstadoCursor.close();
+
+        return rondaPartida;
+    }
+
+    @Override
+    public String getHeroeNameDummyPlayer() {
+        partidaHeroeDummyCursor = myDB.getGameHeroeDummyPlayerCursor();
+
+        String nombreHeroeJugadorVirtual = "";
+
+        if (partidaHeroeDummyCursor.moveToFirst()){
+            nombreHeroeJugadorVirtual = partidaHeroeDummyCursor.getString(partidaHeroeDummyCursor.getColumnIndex(COL_1_PARTIDA_HEROE_DUMMY_TABLE));
+        }
+        partidaHeroeDummyCursor.close();
+
+        return nombreHeroeJugadorVirtual;
+    }
+
+    @Override
+    public String getHeroeCristalsDummyPlayer() {
+        partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
+
+        StringBuilder strCristalesJugadorVirtual = new StringBuilder();
+
+        if (partidaCristalesDummyCursor.moveToFirst()){
+            do{
+                String cristal = partidaCristalesDummyCursor.getString(partidaCristalesDummyCursor.getColumnIndex(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE));
+                strCristalesJugadorVirtual.append(cristal);
+                strCristalesJugadorVirtual.append(" ");
+            }while(partidaCristalesDummyCursor.moveToNext() );
+        }
+        partidaCristalesDummyCursor.close();
+
+        return strCristalesJugadorVirtual.toString();
+    }
+
+    @Override
+    public int getTotalCardsDummyPlayer() {
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        int numeroCartasTotalJugadorVirtual = 0;
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            do{
+                int descartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                if(descartada==0){
+                    ++numeroCartasTotalJugadorVirtual;
+                }
+            }while(partidaCartasDummyCursor.moveToNext() );
+        }
+        partidaCartasDummyCursor.close();
+
+        return numeroCartasTotalJugadorVirtual;
+    }
+
+    // ********************************************
+
+    @Override
     public boolean isGameStatusInitiated() {
         if(getGameStatus().equals(TipoEstado.INICIADA.toString())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isGameStatusFinished() {
+        if(getGameStatus().equals(TipoEstado.FINALIZADA.toString())){
             return true;
         }
         return false;
@@ -418,7 +534,7 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public boolean isRoundBeginning() {
-        partidaEstadoCursor = myDB.getGameStatus();
+        partidaEstadoCursor = myDB.getGameStatusCursor();
 
         boolean esInicioRonda = false;
 
@@ -432,7 +548,7 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public boolean isRoundEnding() {
-        partidaEstadoCursor = myDB.getGameStatus();
+        partidaEstadoCursor = myDB.getGameStatusCursor();
 
         boolean esFinalTurno = false;
 
@@ -444,52 +560,18 @@ public class GameServicesImpl implements GameServices {
         return esFinalTurno;
     }
 
-    // ********************************************
-
     @Override
-    public List<Heroe> getAllHeroes() {
-        return null;
-    }
+    public boolean isDummyPlayerCardsFinished() {
+        int numeroCartasTotalJugadorVirtual = getTotalCardsDummyPlayer();
 
-    @Override
-    public List<Carta> getDummyPlayerCards(Heroe heroe) {
-        return null;
-    }
-
-    @Override
-    public List<Carta> getShuffleCards(List<Carta> dummyPlayerCards) {
-        return null;
-    }
-
-    @Override
-    public List<FichaHabilidad> getShuffleSkillTokens(Heroe heroe) {
-        return null;
-    }
-
-    @Override
-    public CartaTactica getRandomTacticCard(List<CartaTactica> tacticsCards) {
-        return null;
-    }
-
-    @Override
-    public List<CartaTactica> getUpdatedTacticCards(List<CartaTactica> tacticsCards) {
-        return null;
-    }
-
-    @Override
-    public List<Carta> getUpdatedDummyPlayerCards(List<Carta> dummyPlayerCards) {
-        return null;
-    }
-
-    @Override
-    public boolean isLastCardColorAlikeInventoryManaCrystalsColor(Carta lastDummyPlayerCard, ArrayList<Cristal> dummyPlayerManaCrystals) {
+        if(numeroCartasTotalJugadorVirtual==0){
+            return true;
+        }
         return false;
     }
 
-    @Override
-    public ArrayList<Cristal> getUpdatedDummyPlayerManaCrystals(ArrayList<Cristal> dummyPlayerManaCrystals) {
-        return null;
-    }
+    // ********************************************
+
 
 
 }

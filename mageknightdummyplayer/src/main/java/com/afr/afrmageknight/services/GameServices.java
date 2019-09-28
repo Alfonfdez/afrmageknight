@@ -12,14 +12,6 @@ import java.util.List;
 
 public interface GameServices {
 
-    // Método para saber el Estado de la partida (EN_PREPARACION, INICIADA, FINALIZADA)
-    public String getGameStatus();
-
-    // Método para saber el Modo de juego de la partida (SOLITARIO, COOPERATIVO)
-    public String getGameType();
-
-    // ********************************************
-
     // Método que devuelve 1 héroe concreto seleccionado por el jugador
     public Heroe getAHeroeSelectedByPlayer(String heroeName);
 
@@ -60,8 +52,31 @@ public interface GameServices {
 
     // ********************************************
 
+    // Método para saber el Estado de la partida (EN_PREPARACION, INICIADA, FINALIZADA)
+    public String getGameStatus();
+
+    // Método para saber el Modo de juego de la partida (SOLITARIO, COOPERATIVO)
+    public String getGameType();
+
+    // Método para saber en qué Ronda de la partida nos encontramos (RONDA_1_DIA, RONDA_2_NOCHE, RONDA_3_DIA, RONDA_4_NOCHE, RONDA_5_DIA, RONDA_6_NOCHE)
+    public String getGameRound();
+
+    // Método para saber el nombre del héroe que lleva el Jugador Virtual
+    public String getHeroeNameDummyPlayer();
+
+    // Método para saber los cristales del Jugador Virtual
+    public String getHeroeCristalsDummyPlayer();
+
+    // Método para saber el total de cartas del Jugador Virtual
+    public int getTotalCardsDummyPlayer();
+
+    // ********************************************
+
     //Método para saber si la Partida se encuentra 'INICIADA' o no ('EN_PREPARACION' / 'FINALIZADA')
     public boolean isGameStatusInitiated();
+
+    //Método para saber si la Partida se encuentra 'FINALIZADA' o no ('EN_PREPARACION' / 'INICIADA')
+    public boolean isGameStatusFinished();
 
     //Método para saber si el modo de la Partida es en 'SOLITARIO' o no ('COOPERATIVO')
     public boolean isGameTypeSolitaire();
@@ -72,38 +87,9 @@ public interface GameServices {
     //Método para saber si estamos al comienzo de la Ronda o no
     public boolean isRoundEnding();
 
+    //Método para saber si el mazo del Jugador Virtual está acabado o no
+    public boolean isDummyPlayerCardsFinished();
 
 
 
-
-    // Método que devuelve todos los héroes del juego
-    public List<Heroe> getAllHeroes();
-
-    // Método para selecionar el mazo inicial de Gesta del Jugador Virtual: las correspondientes 16 cartas de su héroe
-    public List<Carta> getDummyPlayerCards(Heroe heroe);
-
-    // Método para barajar las cartas del mazo de cartas del Jugador Virtual
-    public List<Carta> getShuffleCards(List<Carta> dummyPlayerCards);
-
-    // Método para barajar las Fichas de Habilidad del Jugador Virtual
-    public List<FichaHabilidad> getShuffleSkillTokens(Heroe heroe);
-
-    // Método para seleccionar aleatoriamente una Táctica (de las disponibles) para el Jugador Virtual
-    public CartaTactica getRandomTacticCard(List<CartaTactica> tacticsCards);
-
-    // Método para actualizar el mazo de cartas Tácticas.
-    // Cooperativo: eliminar 1 carta usada por los jugadores, a su elección.
-    // Solitario: eliminar las 2 cartas en total, usadas por el jugador y el Jugador Virtual
-    public List<CartaTactica> getUpdatedTacticCards(List<CartaTactica> tacticsCards);
-
-    // Método para actualizar el mazo de cartas del Jugador Virtual.
-    // Al final de la TipoRonda se eliminarán 3 cartas y si el color de la última carta coincide con algún cristal del Inventario del Jugador Virtual,
-    // se eliminarán tantas cartas más como cristales tenga de ese color.
-    public List<Carta> getUpdatedDummyPlayerCards(List<Carta> dummyPlayerCards);
-
-    // Método para comprobar que el color de la última carta eliminada por el Jugador Virtual (de las 3 eliminadas al final de la TipoRonda) coincide con algún cristal de su Inventario
-    public boolean isLastCardColorAlikeInventoryManaCrystalsColor(Carta lastDummyPlayerCard, ArrayList<Cristal> dummyPlayerManaCrystals);
-
-    // Método para añadir al final de la TipoRonda un cristal del color de la carta Inferior de la Oferta de Hechizos al Inventario del Jugador Virtual
-    public ArrayList<Cristal> getUpdatedDummyPlayerManaCrystals(ArrayList<Cristal> dummyPlayerManaCrystals);
 }

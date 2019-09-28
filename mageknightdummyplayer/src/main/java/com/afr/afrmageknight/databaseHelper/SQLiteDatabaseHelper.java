@@ -34,63 +34,6 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         super.onUpgrade(db, oldVersion, newVersion);
     }
 
-    //Métodos públicos
-    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 1);
-        createTipoPartida(tipoPartida.toString());
-
-        for(CartaTactica cartaTactica: cartasTacticas){
-            createCartaTacticaPartida(cartaTactica);
-        }
-
-        createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
-        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
-
-        int i = 0;
-        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
-            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
-            ++i;
-        }
-
-        int j = 0;
-        for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM SKILL TOKENS -> Numero: "+fichaHabilidad.getIdFicha()+" - Nombre: "+fichaHabilidad.getNombre());
-            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre(), j);
-            ++j;
-        }
-
-        for(Cristal cristal: cristalesDummyPlayer){
-            createCristal(cristal.toString());
-        }
-    }
-
-    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 1);
-        createTipoPartida(tipoPartida.toString());
-
-        for(CartaTactica cartaTactica: cartasTacticas){
-            createCartaTacticaPartida(cartaTactica);
-        }
-
-        for(Heroe heroe: heroesSelectedByPlayer){
-            createHeroeSelectedByPlayer(heroe.getNombre());
-        }
-
-        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
-
-        int i = 0;
-        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
-            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
-            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
-            ++i;
-        }
-
-        for(Cristal cristal: cristalesDummyPlayer){
-            createCristal(cristal.toString());
-        }
-    }
-
     //Insertar datos en su correspondiente tabla
     private void createEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno){
         insertDataGameStatus(estadoPartida, rondaPartida, esRondaInicio, esRondaFinalizada, turno);
@@ -123,6 +66,67 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     private void createCristal(String cristal){
         insertDataCristalesDummyPlayer(cristal);
     }
+
+    // ******************************************************************
+
+    //Métodos públicos
+    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0);
+        createTipoPartida(tipoPartida.toString());
+
+        for(CartaTactica cartaTactica: cartasTacticas){
+            createCartaTacticaPartida(cartaTactica);
+        }
+
+        createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
+        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
+
+        int i = 0;
+        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
+            ++i;
+        }
+
+        int j = 0;
+        for(FichaHabilidad fichaHabilidad: fichaHabilidadesBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM SKILL TOKENS -> Numero: "+fichaHabilidad.getIdFicha()+" - Nombre: "+fichaHabilidad.getNombre());
+            createSkillTokenFromDummyPlayer(fichaHabilidad.getIdFicha(), fichaHabilidad.getNombre(), fichaHabilidad.getDescripcion(), fichaHabilidad.isDescartada(), randomHeroeDummyPlayer.getNombre(), j);
+            ++j;
+        }
+
+        for(Cristal cristal: cristalesDummyPlayer){
+            createCristal(cristal.toString());
+        }
+    }
+
+    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0);
+        createTipoPartida(tipoPartida.toString());
+
+        for(CartaTactica cartaTactica: cartasTacticas){
+            createCartaTacticaPartida(cartaTactica);
+        }
+
+        for(Heroe heroe: heroesSelectedByPlayer){
+            createHeroeSelectedByPlayer(heroe.getNombre());
+        }
+
+        createRandomHeroeDummyPlayer(randomHeroeDummyPlayer.getNombre());
+
+        int i = 0;
+        for(CartaAccionBasica cartaAccionBasica: cartasAccionBasicasBarajadasDummyPlayer){
+            Log.d("DATABASE","INSERT DUMMY PLAYER RANDOM BASIC ACTION CARDS -> Numero: "+cartaAccionBasica.getNumero()+" - Nombre: "+cartaAccionBasica.getNombre());
+            createBasicCardFromDummyPlayer(cartaAccionBasica.getNumero(), cartaAccionBasica.getNombre(), cartaAccionBasica.isDescartada(), cartaAccionBasica.getColor().toString(), cartaAccionBasica.getDescripcionBasica(), cartaAccionBasica.getDescripcionAvanzada(), randomHeroeDummyPlayer.getNombre(), i);
+            ++i;
+        }
+
+        for(Cristal cristal: cristalesDummyPlayer){
+            createCristal(cristal.toString());
+        }
+    }
+
+    // ******************************************************************
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
     private boolean insertDataGameStatus(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno){
@@ -281,6 +285,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
         db.delete(PARTIDA_DATOS_TABLE,null, null);
         db.delete(PARTIDA_MODO_TABLE,null, null);
+        db.delete(PARTIDA_INFORMACION_RONDA_TABLE,null, null);
         db.delete(PARTIDA_CARTAS_TACTICAS_TABLE,null, null);
         db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
         db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);

@@ -43,6 +43,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     protected static final String PARTIDA_DATOS_TABLE = "PARTIDA_DATOS";
     protected static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
+    protected static final String PARTIDA_INFORMACION_RONDA_TABLE = "PARTIDA_INFORMACION_RONDA";
     protected static final String PARTIDA_CARTAS_TACTICAS_TABLE = "PARTIDA_CARTAS_TACTICAS";
     protected static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
     protected static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
@@ -112,6 +113,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
+
+    //PARTIDA_INFORMACION_RONDA_TABLE
+    protected static final String COL_1_PARTIDA_INFORMACION_RONDA_TABLE = "INFORMACION";
 
     //PARTIDA_CARTAS_TACTICAS_TABLE
     protected static final String COL_1_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO";
@@ -206,6 +210,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_MODO_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_INFORMACION_RONDA_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_TACTICAS_TABLE);
@@ -422,6 +429,18 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(strSQLPartidaModoTable.toString());
 
+        //PARTIDA_INFORMACION_RONDA_TABLE
+        StringBuilder strSQLPartidaInformacionTable = new StringBuilder();
+
+        strSQLPartidaInformacionTable.append("CREATE TABLE ").append(PARTIDA_INFORMACION_RONDA_TABLE).append(" (")
+                .append(COL_1_PARTIDA_INFORMACION_RONDA_TABLE).append(" TEXT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "TERCERO - ONCREATE_GAME DATA - PARTIDA_INFORMACION_RONDA_TABLE");
+        Log.d("DATABASE", strSQLPartidaInformacionTable.toString());
+
+        db.execSQL(strSQLPartidaInformacionTable.toString());
+
         //PARTIDA_CARTAS_TACTICAS_TABLE
         StringBuilder strSQLPartidaCartasTacticaTable = new StringBuilder();
 
@@ -434,7 +453,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT")
                 .append(")");
 
-        Log.d("DATABASE", "TERCERO - ONCREATE_GAME DATA - PARTIDA_CARTAS_TACTICAS_TABLE");
+        Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_TACTICAS_TABLE");
         Log.d("DATABASE", strSQLPartidaCartasTacticaTable.toString());
 
         db.execSQL(strSQLPartidaCartasTacticaTable.toString());
@@ -446,7 +465,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_HEROES_JUGADOR_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "CUARTO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
+        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
         Log.d("DATABASE", strSQLPartidaHeroesJugadorTable.toString());
 
         db.execSQL(strSQLPartidaHeroesJugadorTable.toString());
@@ -459,7 +478,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_HEROE_DUMMY_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaHeroeDummyTable.toString());
@@ -480,7 +499,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "SEPTIMO - ONCREATE_GAME DATA - PARTIDA_CARTAS_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaCartasHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaCartasHeroeDummyTable.toString());
@@ -498,7 +517,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEPTIMO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "OCTAVO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
@@ -511,7 +530,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "OCTAVO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "NOVENO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaCristalesHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaCristalesHeroeDummyTable.toString());
@@ -1185,12 +1204,12 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     //CURSORES
     //Un 'Cursor' es una tabla virtual
-    public Cursor getGameStatus(){
+    public Cursor getAllHeroesCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
         // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_DATOS_TABLE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ HEROES_TABLE, null);
 
         //Ejemplo
         // SELECT * FROM AMIGOS WHERE nombre=? AND apellido LIKE '?%';
@@ -1198,27 +1217,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getGameType(){
-        SQLiteDatabase db = getWritableDatabase();
-
-        // 'selectionArgs' es un array de Strings -> Array[]
-        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_MODO_TABLE, null);
-
-        return cursor;
-    }
-
-    public Cursor getAllHeroes(){
-        SQLiteDatabase db = getWritableDatabase();
-
-        // 'selectionArgs' es un array de Strings -> Array[]
-        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ HEROES_TABLE, null);
-
-        return cursor;
-    }
-
-    public Cursor getAllCristales(){
+    public Cursor getAllCristalesCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1228,7 +1227,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllHeroesCristales(){
+    public Cursor getAllHeroesCristalesCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1238,7 +1237,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartas(){
+    public Cursor getAllCartasCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1248,7 +1247,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasAcciones(){
+    public Cursor getAllCartasAccionesCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1258,7 +1257,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasAccionesBasicas(){
+    public Cursor getAllCartasAccionesBasicasCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1268,7 +1267,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasAccionesAvanzadas(){
+    public Cursor getAllCartasAccionesAvanzadasCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1278,7 +1277,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasAccionesAvanzadasEspeciales(){
+    public Cursor getAllCartasAccionesAvanzadasEspecialesCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1288,7 +1287,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasHechizos(){
+    public Cursor getAllCartasHechizosCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1298,7 +1297,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllCartasTacticas(){
+    public Cursor getAllCartasTacticasCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
@@ -1308,12 +1307,102 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor getAllFichasHabilidad(){
+    public Cursor getAllFichasHabilidadCursor(){
         SQLiteDatabase db = getWritableDatabase();
 
         // 'selectionArgs' es un array de Strings -> Array[]
         // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
         Cursor cursor = db.rawQuery("SELECT * FROM "+ FICHAS_HABILIDAD_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameStatusCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_DATOS_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameTypeCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_MODO_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameRoundInformationCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_INFORMACION_RONDA_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameTacticCardsCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_CARTAS_TACTICAS_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameHeroesPlayerCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_HEROES_JUGADOR_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameHeroeDummyPlayerCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_HEROE_DUMMY_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameCardsDummyPlayerCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_CARTAS_HEROE_DUMMY_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameSkillTokensDummyPlayerCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameCristalsDummyPlayerCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_CRISTALES_HEROE_DUMMY_TABLE, null);
 
         return cursor;
     }
