@@ -2,10 +2,14 @@ package com.afr.afrmageknight.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
+import com.afr.afrmageknight.model.TipoRonda;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -38,20 +42,117 @@ public class GameActivity extends AppCompatActivity {
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
-
+        //Si la partida es en SOLITARIO, dejaremos activo el botón para 'Subir el nivel par' (2,4,6,8,10)
         if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){
             buttonSubirNivel.setEnabled(true);
         } else{
             buttonSubirNivel.setEnabled(false);
         }
 
-        textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getHeroeNameDummyPlayer());
-        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getHeroeCristalsDummyPlayer());
-        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getTotalCardsDummyPlayer()));
+        //Tanto el nombre del héroe seleccionado al azar para el Jugador Virtual, como el tipo de partida (SOLITARIO/COOPERATIVO), será información que no se modifique a lo largo de la partida
+        textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
         textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
-        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
 
 
+
+
+
+
+
+        //Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle
+        while(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+            Log.d("DATABASE","Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle");
+
+
+            //La información de la nueva Ronda se actualizará al final de la Ronda anterior
+            textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
+
+            //Los cristales del Jugador Virtual se actualizarán al final de la Ronda anterior
+            textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
+
+
+
+
+
+            //Mientras la Ronda no haya finalizado (NO sea "true") continuaremos en el bucle
+            while(!InitialMenuActivity.gameServicesImpl.isRoundEnding()){
+                Log.d("DATABASE","Mientras la Ronda no haya finalizado (NO sea \"true\") continuaremos en el bucle");
+
+
+
+
+                //El número de cartas disponibles por el Jugador Virtual se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
+                textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
+
+                //La información general de las acciones que ocurran durante la Ronda se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
+                textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
+
+
+
+                //Mientras la Ronda esté en la fase de Inicio (NO sea "false") continuaremos en el bucle
+                while(InitialMenuActivity.gameServicesImpl.isRoundBeginning()){
+                    Log.d("DATABASE","Mientras la Ronda esté en la fase de Inicio (NO sea \"false\") continuaremos en el bucle");
+
+
+                    //Si NO estamos en las 2 últimas Rondas ('RONDA_5_DIA' / 'RONDA_6_NOCHE'), mostraremos un cuadro para seleccionar Tácticas
+                    if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){
+                        Log.d("DATABASE","Si NO estamos en las 2 últimas Rondas ('RONDA_5_DIA' / 'RONDA_6_NOCHE'), mostraremos un cuadro para seleccionar Tácticas");
+
+                        if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ // TÁCTICAS - SOLITARIO
+                            Log.d("DATABASE","Hemos llegado hasta mostrar cuadro de TACTICAS en modo SOLITARIO");
+                        } else { // TÁCTICAS - COOPERATIVO
+                            Log.d("DATABASE","Hemos llegado hasta mostrar cuadro de TACTICAS en modo COOPERATIVO");
+                        }
+                    }
+
+                    //Si NO estamos en la 1a Ronda ('RONDA_1_DIA'), barajaremos las cartas del Jugador Virtual
+                    if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+        if(InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+            buttonContinuarTurno.setEnabled(false);
+            buttonFinalizarRonda.setEnabled(false);
+            buttonMostrarTacticas.setEnabled(false);
+            buttonSubirNivel.setEnabled(false);
+        }
+
+
+
+        buttonContinuarTurno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GameActivity.this, "Soy el botón CONTINUAR TURNO", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        buttonFinalizarRonda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GameActivity.this, "Soy el botón FINALIZAR RONDA", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        buttonMostrarTacticas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GameActivity.this, "Soy el botón MOSTRAR TACTICAS", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        buttonSubirNivel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GameActivity.this, "Soy el botón SUBIR NIVEL PAR en SOLITARIO", Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 

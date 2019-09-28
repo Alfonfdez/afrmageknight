@@ -61,14 +61,17 @@ public interface GameServices {
     // Método para saber en qué Ronda de la partida nos encontramos (RONDA_1_DIA, RONDA_2_NOCHE, RONDA_3_DIA, RONDA_4_NOCHE, RONDA_5_DIA, RONDA_6_NOCHE)
     public String getGameRound();
 
+    // Método para saber la información de la Ronda
+    public String getGameRoundInformation();
+
     // Método para saber el nombre del héroe que lleva el Jugador Virtual
-    public String getHeroeNameDummyPlayer();
+    public String getGameHeroeNameDummyPlayer();
 
     // Método para saber los cristales del Jugador Virtual
-    public String getHeroeCristalsDummyPlayer();
+    public String getGameHeroeCristalsDummyPlayer();
 
     // Método para saber el total de cartas del Jugador Virtual
-    public int getTotalCardsDummyPlayer();
+    public int getGameTotalCardsDummyPlayer();
 
     // ********************************************
 
@@ -84,8 +87,19 @@ public interface GameServices {
     //Método para saber si estamos al comienzo de la Ronda o no
     public boolean isRoundBeginning();
 
-    //Método para saber si estamos al comienzo de la Ronda o no
+    //Método para saber si estamos al final de la Ronda o no
     public boolean isRoundEnding();
+
+    //Método para saber si estamos en la 1a Ronda del juego ('RONDA_1_DIA')
+    public boolean isFirstRound();
+
+    //Método para saber si estamos en la última ronda del juego ('RONDA_6_NOCHE')
+    public boolean isLastRound();
+
+    //Método para saber si estamos en las 2 últimas rondas del juego ('RONDA_5_DIA' / 'RONDA_6_NOCHE')
+    public boolean isLastTwoRounds();
+
+
 
     //Método para saber si el mazo del Jugador Virtual está acabado o no
     public boolean isDummyPlayerCardsFinished();

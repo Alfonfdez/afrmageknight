@@ -14,6 +14,7 @@ import com.afr.afrmageknight.model.FichaHabilidad;
 import com.afr.afrmageknight.model.Heroe;
 import com.afr.afrmageknight.model.TipoEstado;
 import com.afr.afrmageknight.model.TipoPartida;
+import com.afr.afrmageknight.model.TipoRonda;
 import com.afr.afrmageknight.model.TipoTactica;
 
 import java.util.ArrayList;
@@ -80,6 +81,9 @@ public class GameServicesImpl implements GameServices {
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
 
+    //PARTIDA_INFORMACION_RONDA_TABLE
+    protected static final String COL_1_PARTIDA_INFORMACION_RONDA_TABLE = "INFORMACION";
+
     //PARTIDA_CARTAS_TACTICAS_TABLE
     protected static final String COL_1_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO";
     protected static final String COL_2_PARTIDA_CARTAS_TACTICAS_TABLE = "NOMBRE";
@@ -132,6 +136,7 @@ public class GameServicesImpl implements GameServices {
 
     private Cursor partidaEstadoCursor;
     private Cursor partidaModoCursor;
+    private Cursor partidaInformacionRondaCursor;
     private Cursor partidaHeroeDummyCursor;
     private Cursor partidaCristalesDummyCursor;
     private Cursor partidaCartasDummyCursor;
@@ -456,7 +461,25 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public String getHeroeNameDummyPlayer() {
+    public String getGameRoundInformation() {
+        partidaInformacionRondaCursor = myDB.getGameRoundInformationCursor();
+
+        StringBuilder strInformacionRonda = new StringBuilder();
+
+        if (partidaInformacionRondaCursor.moveToFirst()){
+            do{
+                String informacion = partidaInformacionRondaCursor.getString(partidaInformacionRondaCursor.getColumnIndex(COL_1_PARTIDA_INFORMACION_RONDA_TABLE));
+                strInformacionRonda.append(informacion);
+                strInformacionRonda.append("\n");
+            }while(partidaInformacionRondaCursor.moveToNext() );
+        }
+        partidaInformacionRondaCursor.close();
+
+        return strInformacionRonda.toString();
+    }
+
+    @Override
+    public String getGameHeroeNameDummyPlayer() {
         partidaHeroeDummyCursor = myDB.getGameHeroeDummyPlayerCursor();
 
         String nombreHeroeJugadorVirtual = "";
@@ -470,7 +493,7 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public String getHeroeCristalsDummyPlayer() {
+    public String getGameHeroeCristalsDummyPlayer() {
         partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
 
         StringBuilder strCristalesJugadorVirtual = new StringBuilder();
@@ -488,7 +511,7 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public int getTotalCardsDummyPlayer() {
+    public int getGameTotalCardsDummyPlayer() {
         partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
 
         int numeroCartasTotalJugadorVirtual = 0;
@@ -561,8 +584,32 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public boolean isFirstRound() {
+        if(getGameRound().equals(TipoRonda.RONDA_1_DIA.toString())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isLastRound() {
+        if(getGameRound().equals(TipoRonda.RONDA_6_NOCHE.toString())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isLastTwoRounds() {
+        if(getGameRound().equals(TipoRonda.RONDA_5_DIA.toString()) || getGameRound().equals(TipoRonda.RONDA_6_NOCHE.toString())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean isDummyPlayerCardsFinished() {
-        int numeroCartasTotalJugadorVirtual = getTotalCardsDummyPlayer();
+        int numeroCartasTotalJugadorVirtual = getGameTotalCardsDummyPlayer();
 
         if(numeroCartasTotalJugadorVirtual==0){
             return true;
