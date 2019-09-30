@@ -14,6 +14,9 @@ import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.fragments.TacticasDialogFragment;
 import com.afr.afrmageknight.model.TipoRonda;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity {
 
     private Button buttonContinuarTurno;
@@ -164,24 +167,30 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void startRound(){
-        if(InitialMenuActivity.gameServicesImpl.isRoundBeginning()){ // RONDA_ESTADO_INICIO = 1
-            if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){ //Rondas 1, 2, 3, 4
-                showTacticasDialog();
-            } else{ //Rondas 5, 6
+        if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){ // PARTIDA_ESTADO = EN_PREPARACION || PARTIDA_ESTADO = INICIADA
+            if(InitialMenuActivity.gameServicesImpl.isRoundBeginning()){ // RONDA_ESTADO_INICIO = 1
+                if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){ //Rondas 1, 2, 3, 4
+                    showTacticasDialog();
+                } else{ //Rondas 5, 6
+                    //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
+                    shuffleDummyPlayerCardsAndUpdateToAvailable();
 
+                    //Crear método para convertir RONDA_ESTADO_INICIO = 0
+                    InitialMenuActivity.gameServicesImpl.modifyGameStatusRoundBeginning(false);
+                }
             }
-
-            if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){ //Rondas 2, 3, 4, 5, 6
-                //Barajar cartas del Jugador Virtual
-            }
-
-            //Crear método para convertir RONDA_ESTADO_INICIO = 0
         }
-
     }
 
     private void showTacticasDialog(){
         tacticasDialogFragment.show(getSupportFragmentManager(), "Tácticas");
+    }
+
+    private void shuffleDummyPlayerCardsAndUpdateToAvailable(){
+        List<Integer> cartasJugadorVirtualPorNumero = InitialMenuActivity.gameServicesImpl.getGameCardsDummyPlayerByNumber();
+        InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
+
+        InitialMenuActivity.gameServicesImpl.modifyGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
     }
 
 

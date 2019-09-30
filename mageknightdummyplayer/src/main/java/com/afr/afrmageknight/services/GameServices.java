@@ -76,11 +76,31 @@ public interface GameServices {
     // Método para saber el total de cartas del Jugador Virtual
     public int getGameTotalCardsDummyPlayer();
 
+    // Método para obtener todas las cartas disponibles del Jugador Virtual por número de carta ("Descartada" = 0)
+    public List<Integer> getGameAvailableCardsDummyPlayerByNumber();
+
+    // Método para obtener todas las cartas del Jugador Virtual por número de carta
+    public List<Integer> getGameCardsDummyPlayerByNumber();
+
+    // Método para obtener ya barajadas todas las cartas del Jugador Virtual
+    public List<Integer> getShuffledGameCardsDummyPlayerByNumber(List<Integer> gameCardsDummyPlayerByNumber);
+
     // Método para obtener aquellas cartas Tácticas de Día disponibles ("Descartada" = 0 && "Tipo_Tactica" = DIA)
     public List<CartaTactica> getGameAvailableDayTacticsCards();
 
     // Método para obtener aquellas cartas Tácticas de Noche disponibles ("Descartada" = 0 && "Tipo_Tactica" = NOCHE)
     public List<CartaTactica> getGameAvailableNightTacticsCards();
+
+    // ********************************************
+
+    // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"
+    public void modifyGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada);
+
+    // Método para modificar la columna 'RONDA_ESTADO_INICIO'=0 de la tabla 'PARTIDA_DATOS'
+    public void modifyGameStatusRoundBeginning(boolean esRondaInicio);
+
+    // Método para modificar la columna 'INDICE' y 'DESCARTADA'=0, de la tabla 'PARTIDA_CARTAS_HEROE_DUMMY' con las cartas del Jugador Virtual ya barajadas
+    public void modifyGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada);
 
     // ********************************************
 
@@ -114,6 +134,10 @@ public interface GameServices {
     //Método para saber si el mazo del Jugador Virtual está acabado o no
     public boolean isDummyPlayerCardsFinished();
 
+    // ********************************************
+
+    //Método para obtener el nombre de una carta Táctica en concreto
+    public String getTacticCardNameFromString(String tacticCard);
 
 
 }

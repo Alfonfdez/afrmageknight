@@ -5,7 +5,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.afr.afrmageknight.activities.GameActivity;
 import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.model.CartaTactica;
 
@@ -17,14 +21,15 @@ public class TacticasDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         List<CartaTactica> cartasTacticasDisponibles;
+        final String[] tacticasArray;
         String titulo = "";
 
         if(InitialMenuActivity.gameServicesImpl.isDayRound()){
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
-            titulo = "Tácticas de Día disponibles\n\nTáctica seleccionada a descartar";
+            titulo = "Tácticas de Día disponibles\nTáctica seleccionada a descartar";
         } else {
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
-            titulo = "Tácticas de Noche disponibles\n\nTáctica seleccionada a descartar";
+            titulo = "Tácticas de Noche disponibles\nTáctica seleccionada a descartar";
         }
 
         List<String> tacticas = new ArrayList<String>();
@@ -32,48 +37,40 @@ public class TacticasDialogFragment extends DialogFragment {
             String informacionTactica = cartaTactica.getNumeroOrden() + " - " + cartaTactica.getNombre();
             tacticas.add(informacionTactica);
         }
-        String[] tacticasArray = tacticas.toArray(new String[tacticas.size()]);
-
-
-        final ArrayList selectedItems = new ArrayList();  // Where we track the selected items
+        tacticasArray = tacticas.toArray(new String[tacticas.size()]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Set the dialog title
+
         builder.setTitle(titulo)
-                // Specify the list array, the items to be selected by default (null for none),
-                // and the listener through which to receive callbacks when items are selected
-                /*.setMultiChoiceItems(tacticasArray, null,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                if (isChecked) {
-                                    // If the user checked the item, add it to the selected items
-                                    selectedItems.add(which);
-                                } else if (selectedItems.contains(which)) {
-                                    // Else, if the item is already in the array, remove it
-                                    selectedItems.remove(Integer.valueOf(which));
-                                }
-                            }
-                        })*/
-                .setSingleChoiceItems(tacticasArray, 1, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(tacticasArray, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                     }
                 })
-                /*.setSingleChoiceItems(tacticasArray, null, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })*/
-                // Set the action buttons
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK, so save the selectedItems results somewhere
-                        // or return them to the component that opened the dialog
+                        ListView lw = ((AlertDialog)dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
+                        String nombreCartaTactica = InitialMenuActivity.gameServicesImpl.getTacticCardNameFromString(checkedItem.toString());
+
+                        InitialMenuActivity.gameServicesImpl.modifyGameTacticCardAvailabilityByName(nombreCartaTactica, true);
+
+
+                        if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){ //Rondas 2, 3, 4, 5, 6
+                            //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
+                            List<Integer> cartasJugadorVirtualPorNumero = InitialMenuActivity.gameServicesImpl.getGameCardsDummyPlayerByNumber();
+                            InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
+
+                            InitialMenuActivity.gameServicesImpl.modifyGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
+                        }
+
+                        //Crear método para convertir RONDA_ESTADO_INICIO = 0
+                        InitialMenuActivity.gameServicesImpl.modifyGameStatusRoundBeginning(false);
+
+                        dialog.dismiss();
                     }
                 });
 

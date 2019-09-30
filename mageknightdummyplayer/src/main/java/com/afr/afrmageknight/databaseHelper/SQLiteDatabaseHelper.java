@@ -34,39 +34,6 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         super.onUpgrade(db, oldVersion, newVersion);
     }
 
-    //Insertar datos en su correspondiente tabla
-    private void createEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno, int experiencia){
-        insertDataGameStatus(estadoPartida, rondaPartida, esRondaInicio, esRondaFinalizada, turno, experiencia);
-    }
-
-    private void createTipoPartida(String tipoPartida){
-        insertDataGameMode(tipoPartida);
-    }
-
-    private void createCartaTacticaPartida(CartaTactica cartaTactica){
-        insertDataGameTacticCard(cartaTactica.getNumero(), cartaTactica.getNombre(),false, cartaTactica.getTipoTactica().toString(), cartaTactica.getNumeroOrden(),cartaTactica.getDescripcion());
-    }
-
-    private void createHeroeSelectedByPlayer(String heroSelectedByPlayer){
-        insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
-    }
-
-    private void createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
-        insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
-    }
-
-    private void createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
-        insertDataCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, isDescartadaCartaAccionBasica, colorCartaAccionBasica, null, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, heroNameDummy, numeroIndice);
-    }
-
-    private void createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy, int numeroIndice){
-        insertDataShuffledSkillTokenDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, isDescartadaFichaHabilidad, heroNameDummy, numeroIndice);
-    }
-
-    private void createCristal(String cristal){
-        insertDataCristalesDummyPlayer(cristal);
-    }
-
     // ******************************************************************
 
     //Métodos públicos
@@ -124,6 +91,56 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         for(Cristal cristal: cristalesDummyPlayer){
             createCristal(cristal.toString());
         }
+    }
+
+    // ******************************************************************
+
+    //Insertar datos en su correspondiente tabla
+    private void createEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno, int experiencia){
+        insertDataGameStatus(estadoPartida, rondaPartida, esRondaInicio, esRondaFinalizada, turno, experiencia);
+    }
+
+    private void createTipoPartida(String tipoPartida){
+        insertDataGameMode(tipoPartida);
+    }
+
+    private void createCartaTacticaPartida(CartaTactica cartaTactica){
+        insertDataGameTacticCard(cartaTactica.getNumero(), cartaTactica.getNombre(),false, cartaTactica.getTipoTactica().toString(), cartaTactica.getNumeroOrden(),cartaTactica.getDescripcion());
+    }
+
+    private void createHeroeSelectedByPlayer(String heroSelectedByPlayer){
+        insertDataHeroeSelectedByPlayer(heroSelectedByPlayer);
+    }
+
+    private void createRandomHeroeDummyPlayer(String randomHeroeDummyPlayer){
+        insertDataHeroeSelectedByDummyPlayer(randomHeroeDummyPlayer);
+    }
+
+    private void createBasicCardFromDummyPlayer(int numeroCartaAccionBasica, String nombreCartaAccionBasica, boolean isDescartadaCartaAccionBasica, String colorCartaAccionBasica, String descripcionBasicaCartaAccionBasica, String descripcionAvanzadaCartaAccionBasica, String heroNameDummy, int numeroIndice){
+        insertDataCardDummyPlayer(numeroCartaAccionBasica, nombreCartaAccionBasica, isDescartadaCartaAccionBasica, colorCartaAccionBasica, null, descripcionBasicaCartaAccionBasica, descripcionAvanzadaCartaAccionBasica, heroNameDummy, numeroIndice);
+    }
+
+    private void createSkillTokenFromDummyPlayer(int numeroFichaHabilidad, String nombreFichaHabilidad, String descripcionFichaHabilidad, boolean isDescartadaFichaHabilidad, String heroNameDummy, int numeroIndice){
+        insertDataShuffledSkillTokenDummyPlayer(numeroFichaHabilidad, nombreFichaHabilidad, descripcionFichaHabilidad, isDescartadaFichaHabilidad, heroNameDummy, numeroIndice);
+    }
+
+    private void createCristal(String cristal){
+        insertDataCristalesDummyPlayer(cristal);
+    }
+
+    // ******************************************************************
+
+    //Modificar datos en su correspondiente tabla
+    public void updateGameTacticCardAvailabilityByName(String nombreCartaTactica, boolean esDescartada){
+        updateDataGameTacticCardAvailabilityByName(nombreCartaTactica, esDescartada);
+    }
+
+    public void updateGameStatusRoundBeginning(boolean esRondaInicio){
+        updateDataGameGameStatusRoundBeginning(esRondaInicio);
+    }
+
+    public void updateGameShuffledCardsDummyPlayer(int numeroCartaBarajadoJugadorVirtual, int indice, boolean esDescartada){
+        updateDataGameShuffledCardsDummyPlayer(numeroCartaBarajadoJugadorVirtual, indice, esDescartada);
     }
 
     // ******************************************************************
@@ -294,5 +311,59 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         db.delete(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE,null, null);
         db.delete(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE,null, null);
     }
+
+    // ******************************************************************
+
+    private boolean updateDataGameTacticCardAvailabilityByName(String nombreCartaTactica, boolean esDescartada) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE, esDescartada);
+
+        String[] args = new String[]{nombreCartaTactica};
+        long resultado = db.update(PARTIDA_CARTAS_TACTICAS_TABLE, contentValues, COL_2_PARTIDA_CARTAS_TACTICAS_TABLE+"=?", args);
+        //long resultado = db.update(TABLE_NAME, contentValues (valores a modificar), WHERE FILA = args, args);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+
+    private boolean updateDataGameGameStatusRoundBeginning(boolean esRondaInicio) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
+
+        long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    private boolean updateDataGameShuffledCardsDummyPlayer(int numeroCartaBarajadoJugadorVirtual, int indice, boolean esDescartada) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, esDescartada);
+        contentValues.put(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, indice);
+
+        String[] args = new String[]{Integer.toString(numeroCartaBarajadoJugadorVirtual)};
+        long resultado = db.update(PARTIDA_CARTAS_HEROE_DUMMY_TABLE, contentValues, COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE+"=?", args);
+        //long resultado = db.update(TABLE_NAME, contentValues (valores a modificar), WHERE FILA = args, args);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
 
 }

@@ -527,8 +527,8 @@ public class GameServicesImpl implements GameServices {
 
         if (partidaCartasDummyCursor.moveToFirst()){
             do{
-                int descartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
-                if(descartada==0){
+                boolean esDescartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE)) > 0;
+                if(!esDescartada){
                     ++numeroCartasTotalJugadorVirtual;
                 }
             }while(partidaCartasDummyCursor.moveToNext() );
@@ -536,6 +536,54 @@ public class GameServicesImpl implements GameServices {
         partidaCartasDummyCursor.close();
 
         return numeroCartasTotalJugadorVirtual;
+    }
+
+    @Override
+    public List<Integer> getGameAvailableCardsDummyPlayerByNumber() {
+
+        List<Integer> cartasDisponiblesJugadorVirtualPorNumero = new ArrayList<Integer>();
+
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE)) > 0;
+                if(!esDescartada){
+                    int numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                    cartasDisponiblesJugadorVirtualPorNumero.add(numeroCarta);
+                }
+            }while(partidaCartasDummyCursor.moveToNext());
+        }
+        partidaCartasDummyCursor.close();
+
+        return cartasDisponiblesJugadorVirtualPorNumero;
+    }
+
+    @Override
+    public List<Integer> getGameCardsDummyPlayerByNumber() {
+        List<Integer> cartasJugadorVirtualPorNumero = new ArrayList<Integer>();
+
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            do{
+                int numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                cartasJugadorVirtualPorNumero.add(numeroCarta);
+            }while(partidaCartasDummyCursor.moveToNext());
+        }
+        partidaCartasDummyCursor.close();
+
+        return cartasJugadorVirtualPorNumero;
+    }
+
+    @Override
+    public List<Integer> getShuffledGameCardsDummyPlayerByNumber(List<Integer> gameCardsDummyPlayerByNumber) {
+
+        List<Integer> cartasBarajadasJugadorVirtualPorNumero = gameCardsDummyPlayerByNumber;
+
+        Collections.shuffle(cartasBarajadasJugadorVirtualPorNumero);
+
+        return cartasBarajadasJugadorVirtualPorNumero;
     }
 
     @Override
@@ -588,6 +636,56 @@ public class GameServicesImpl implements GameServices {
         partidaCartasTacticas.close();
 
         return cartasTacticas;
+    }
+
+    // ********************************************
+
+    @Override
+    public void modifyGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada) {
+        partidaCartasTacticas = myDB.getGameTacticCardsCursor();
+
+        if(partidaCartasTacticas.moveToFirst()){
+            int i = 0;
+            do{
+                String nombreCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                if(nombreCartaTactica.equals(tacticCardName)){
+                    //Modifica en la fila 'NOMBRE'="tacticCardName" de la tabla 'PARTIDA_CARTAS_TACTICAS': la columna 'DESCARTADA'=1
+                    myDB.updateGameTacticCardAvailabilityByName(tacticCardName, esDescartada);
+                    ++i;
+                }
+            }while(partidaCartasTacticas.moveToNext() && i < 1);
+        }
+        partidaCartasTacticas.close();
+    }
+
+    @Override
+    public void modifyGameStatusRoundBeginning(boolean esRondaInicio) {
+        myDB.updateGameStatusRoundBeginning(esRondaInicio);
+    }
+
+    @Override
+    public void modifyGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada) {
+
+        int indice = 0;
+
+        for(Integer numeroCartaBarajadoJugadorVirtual : gameShuffledCardsDummyPlayerByNumber){
+            partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+            if (partidaCartasDummyCursor.moveToFirst()){
+                int i = 0;
+                do{
+                    int numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                    if(numeroCarta==numeroCartaBarajadoJugadorVirtual){
+                        //Modifica en la fila 'NUMERO'="numeroCartaBarajadoJugadorVirtual" de la tabla 'PARTIDA_CARTAS_HEROE_DUMMY': la columna 'DESCARTADA'=0 y columna 'INDICE'="indice"
+                        myDB.updateGameShuffledCardsDummyPlayer(numeroCartaBarajadoJugadorVirtual, indice, esDescartada);
+                        ++indice;
+                        ++i;
+                    }
+                }while(partidaCartasDummyCursor.moveToNext() && i < 1);
+            }
+            partidaCartasDummyCursor.close();
+        }
     }
 
     // ********************************************
@@ -684,6 +782,18 @@ public class GameServicesImpl implements GameServices {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getTacticCardNameFromString(String tacticCard) {
+        String tacticCardName = "";
+        int guion = tacticCard.indexOf("- ");
+
+        if(guion != -1) {
+            tacticCardName = tacticCard.substring(guion + 1);
+        }
+
+        return tacticCardName.trim();
     }
 
     // ********************************************
