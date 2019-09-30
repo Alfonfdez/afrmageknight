@@ -43,9 +43,9 @@ public class GameActivity extends AppCompatActivity {
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
         //Si la partida es en SOLITARIO, dejaremos activo el botón para 'Subir el nivel par' (2,4,6,8,10)
-        if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){
+        if (InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()) {
             buttonSubirNivel.setEnabled(true);
-        } else{
+        } else {
             buttonSubirNivel.setEnabled(false);
         }
 
@@ -53,14 +53,18 @@ public class GameActivity extends AppCompatActivity {
         textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
         textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
 
-
-
-
-
+        //La información de la nueva Ronda se actualizará al final de la Ronda anterior
+        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
+        //Los cristales del Jugador Virtual se actualizarán al final de la Ronda anterior
+        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
+        //El número de cartas disponibles por el Jugador Virtual se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
+        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
+        //La información general de las acciones que ocurran durante la Ronda se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
+        textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
 
 
         //Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle
-        while(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+        /*while(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
             Log.d("DATABASE","Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle");
 
 
@@ -115,7 +119,7 @@ public class GameActivity extends AppCompatActivity {
 
             }
 
-        }
+        }*/
 
         if(InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
             buttonContinuarTurno.setEnabled(false);
@@ -155,11 +159,6 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
-
 
 }

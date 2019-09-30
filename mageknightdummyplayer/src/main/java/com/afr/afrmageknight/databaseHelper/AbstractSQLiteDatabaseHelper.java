@@ -110,6 +110,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     protected static final String COL_3_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_INICIO";
     protected static final String COL_4_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_FINALIZADO";
     protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO";
+    protected static final String COL_6_PARTIDA_DATOS_TABLE = "EXPERIENCIA";
 
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
@@ -409,7 +410,8 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_2_PARTIDA_DATOS_TABLE).append(" TEXT,")
                 .append(COL_3_PARTIDA_DATOS_TABLE).append(" BIT NOT NULL,")
                 .append(COL_4_PARTIDA_DATOS_TABLE).append(" BIT NOT NULL,")
-                .append(COL_5_PARTIDA_DATOS_TABLE).append(" INTEGER NOT NULL")
+                .append(COL_5_PARTIDA_DATOS_TABLE).append(" INTEGER NOT NULL,")
+                .append(COL_6_PARTIDA_DATOS_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
         Log.d("DATABASE", "PRIMERO - ONCREATE_GAME DATA - PARTIDA_DATOS_TABLE");
@@ -896,7 +898,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     private void insertGameStatus(SQLiteDatabase db){
         //Estado de la Partida
-        insertEstadoPartida(TipoEstado.EN_PREPARACION.toString(), null, true, 1, false, db);
+        insertEstadoPartida(TipoEstado.EN_PREPARACION.toString(), null, true, false, 0, 0, db);
     }
 
     // *******************************************************
@@ -980,7 +982,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    private boolean insertEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, int turno, boolean esTurnoFinalizado, SQLiteDatabase db){
+    private boolean insertEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno, int experiencia, SQLiteDatabase db){
 
         //Necesito una referencia a la base de datos como tal
         //SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -991,8 +993,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
         contentValues.put(COL_2_PARTIDA_DATOS_TABLE, rondaPartida);
         contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
-        contentValues.put(COL_4_PARTIDA_DATOS_TABLE, turno);
-        contentValues.put(COL_5_PARTIDA_DATOS_TABLE, esTurnoFinalizado);
+        contentValues.put(COL_4_PARTIDA_DATOS_TABLE, esRondaFinalizada);
+        contentValues.put(COL_5_PARTIDA_DATOS_TABLE, turno);
+        contentValues.put(COL_6_PARTIDA_DATOS_TABLE, experiencia);
 
         long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
 

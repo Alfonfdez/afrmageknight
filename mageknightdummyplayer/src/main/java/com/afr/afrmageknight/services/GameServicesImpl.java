@@ -608,6 +608,14 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public boolean isDayRound() {
+        if(getGameRound().equals(TipoRonda.RONDA_1_DIA.toString()) || getGameRound().equals(TipoRonda.RONDA_3_DIA.toString()) || getGameRound().equals(TipoRonda.RONDA_5_DIA.toString())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean isDummyPlayerCardsFinished() {
         int numeroCartasTotalJugadorVirtual = getGameTotalCardsDummyPlayer();
 

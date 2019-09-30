@@ -35,8 +35,8 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     //Insertar datos en su correspondiente tabla
-    private void createEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno){
-        insertDataGameStatus(estadoPartida, rondaPartida, esRondaInicio, esRondaFinalizada, turno);
+    private void createEstadoPartida(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno, int experiencia){
+        insertDataGameStatus(estadoPartida, rondaPartida, esRondaInicio, esRondaFinalizada, turno, experiencia);
     }
 
     private void createTipoPartida(String tipoPartida){
@@ -71,7 +71,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     //Métodos públicos
     public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0);
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0, 0);
         createTipoPartida(tipoPartida.toString());
 
         for(CartaTactica cartaTactica: cartasTacticas){
@@ -101,7 +101,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     }
 
     public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
-        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0);
+        createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0, 0);
         createTipoPartida(tipoPartida.toString());
 
         for(CartaTactica cartaTactica: cartasTacticas){
@@ -129,7 +129,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     // ******************************************************************
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
-    private boolean insertDataGameStatus(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno){
+    private boolean insertDataGameStatus(String estadoPartida, String rondaPartida, boolean esRondaInicio, boolean esRondaFinalizada, int turno, int experiencia){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
 
@@ -141,6 +141,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
         contentValues.put(COL_4_PARTIDA_DATOS_TABLE, esRondaFinalizada);
         contentValues.put(COL_5_PARTIDA_DATOS_TABLE, turno);
+        contentValues.put(COL_6_PARTIDA_DATOS_TABLE, experiencia);
 
         long resultado = db.insert(PARTIDA_DATOS_TABLE, null, contentValues);
 

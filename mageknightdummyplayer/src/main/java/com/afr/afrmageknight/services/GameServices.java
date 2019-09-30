@@ -99,7 +99,8 @@ public interface GameServices {
     //Método para saber si estamos en las 2 últimas rondas del juego ('RONDA_5_DIA' / 'RONDA_6_NOCHE')
     public boolean isLastTwoRounds();
 
-
+    //Método para saber si estamos en una Ronda de Día o no (Ronda de Noche)
+    public boolean isDayRound();
 
     //Método para saber si el mazo del Jugador Virtual está acabado o no
     public boolean isDummyPlayerCardsFinished();
