@@ -140,6 +140,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor partidaHeroeDummyCursor;
     private Cursor partidaCristalesDummyCursor;
     private Cursor partidaCartasDummyCursor;
+    private Cursor partidaCartasTacticas;
 
     //Constructor
     public GameServicesImpl (Context context){
@@ -252,24 +253,13 @@ public class GameServicesImpl implements GameServices {
     public List<CartaTactica> getTacticCards() {
 
         List<CartaTactica> cartasTacticas = new ArrayList<CartaTactica>();
-        cartasCursor = myDB.getAllCartasCursor();
         cartasTacticasCursor = myDB.getAllCartasTacticasCursor();
 
         if(cartasTacticasCursor.moveToFirst()){
             String nombreCartaTactica = "";
             do{
                 int numeroCartaTactica = cartasTacticasCursor.getInt(cartasTacticasCursor.getColumnIndex(COL_1_CARTAS_TACTICAS_TABLE));
-
-                if(cartasCursor.moveToFirst()){
-                    int i = 0;
-                    do{
-                        if(numeroCartaTactica==cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE))){
-                            nombreCartaTactica = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
-                            ++i;
-                        }
-                    }while(cartasCursor.moveToNext() && i < 1);
-                }
-
+                nombreCartaTactica = getNameCard(numeroCartaTactica);
                 String tipoCartaTactica = cartasTacticasCursor.getString(cartasTacticasCursor.getColumnIndex(COL_2_CARTAS_TACTICAS_TABLE));
                 int numeroOrdenCartaTactica = cartasTacticasCursor.getInt(cartasTacticasCursor.getColumnIndex(COL_3_CARTAS_TACTICAS_TABLE));
                 String descripcionCartaTactica = cartasTacticasCursor.getString(cartasTacticasCursor.getColumnIndex(COL_4_CARTAS_TACTICAS_TABLE));
@@ -281,6 +271,25 @@ public class GameServicesImpl implements GameServices {
         cartasTacticasCursor.close();
 
         return cartasTacticas;
+    }
+
+    @Override
+    public String getNameCard(int cardNumber) {
+        cartasCursor = myDB.getAllCartasCursor();
+        String nombreCartaTactica = "";
+
+        if(cartasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                if(cardNumber==cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE))){
+                    nombreCartaTactica = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
+                    ++i;
+                }
+            }while(cartasCursor.moveToNext() && i < 1);
+        }
+        cartasCursor.close();
+
+        return nombreCartaTactica;
     }
 
     @Override
@@ -527,6 +536,58 @@ public class GameServicesImpl implements GameServices {
         partidaCartasDummyCursor.close();
 
         return numeroCartasTotalJugadorVirtual;
+    }
+
+    @Override
+    public List<CartaTactica> getGameAvailableDayTacticsCards() {
+        List<CartaTactica> cartasTacticas = new ArrayList<CartaTactica>();
+        partidaCartasTacticas = myDB.getGameTacticCardsCursor();
+
+        if(partidaCartasTacticas.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE)) > 0;
+                String tipoCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                if(!esDescartada && tipoCartaTactica.equals(TipoTactica.DIA.toString())) {
+                    int numeroCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    String nombreCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    int numeroOrdenCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_5_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    String descripcionCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                    CartaTactica cartaTactica = new CartaTactica(numeroCartaTactica, nombreCartaTactica, esDescartada, TipoTactica.valueOf(tipoCartaTactica), numeroOrdenCartaTactica, descripcionCartaTactica);
+                    cartasTacticas.add(cartaTactica);
+                }
+            }while(partidaCartasTacticas.moveToNext());
+        }
+        partidaCartasTacticas.close();
+
+        return cartasTacticas;
+    }
+
+    @Override
+    public List<CartaTactica> getGameAvailableNightTacticsCards() {
+        List<CartaTactica> cartasTacticas = new ArrayList<CartaTactica>();
+        partidaCartasTacticas = myDB.getGameTacticCardsCursor();
+
+        if(partidaCartasTacticas.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE)) > 0;
+                String tipoCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                if(!esDescartada && tipoCartaTactica.equals(TipoTactica.NOCHE.toString())) {
+                    int numeroCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    String nombreCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    int numeroOrdenCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_5_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    String descripcionCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                    CartaTactica cartaTactica = new CartaTactica(numeroCartaTactica, nombreCartaTactica, esDescartada, TipoTactica.valueOf(tipoCartaTactica), numeroOrdenCartaTactica, descripcionCartaTactica);
+                    cartasTacticas.add(cartaTactica);
+                }
+            }while(partidaCartasTacticas.moveToNext());
+        }
+        partidaCartasTacticas.close();
+
+        return cartasTacticas;
     }
 
     // ********************************************

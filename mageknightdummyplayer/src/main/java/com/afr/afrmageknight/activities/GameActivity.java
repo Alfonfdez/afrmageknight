@@ -1,6 +1,8 @@
 package com.afr.afrmageknight.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
+import com.afr.afrmageknight.fragments.TacticasDialogFragment;
 import com.afr.afrmageknight.model.TipoRonda;
 
 public class GameActivity extends AppCompatActivity {
@@ -24,6 +27,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewTipoPartida;
     private TextView textViewRondaPartida;
     private TextView textViewInformacionPartida;
+
+    private DialogFragment tacticasDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,31 +47,19 @@ public class GameActivity extends AppCompatActivity {
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
-        //Si la partida es en SOLITARIO, dejaremos activo el botón para 'Subir el nivel par' (2,4,6,8,10)
-        if (InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()) {
-            buttonSubirNivel.setEnabled(true);
-        } else {
-            buttonSubirNivel.setEnabled(false);
-        }
+        tacticasDialogFragment = new TacticasDialogFragment();
 
-        //Tanto el nombre del héroe seleccionado al azar para el Jugador Virtual, como el tipo de partida (SOLITARIO/COOPERATIVO), será información que no se modifique a lo largo de la partida
-        textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
-        textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
 
-        //La información de la nueva Ronda se actualizará al final de la Ronda anterior
-        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
-        //Los cristales del Jugador Virtual se actualizarán al final de la Ronda anterior
-        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
-        //El número de cartas disponibles por el Jugador Virtual se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
-        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
-        //La información general de las acciones que ocurran durante la Ronda se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
-        textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
+        checkGameType();
+        showGameDataOnScreen();
+        startRound();
+
+
 
 
         //Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle
         /*while(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
             Log.d("DATABASE","Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle");
-
 
             //La información de la nueva Ronda se actualizará al final de la Ronda anterior
             textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
@@ -74,16 +67,9 @@ public class GameActivity extends AppCompatActivity {
             //Los cristales del Jugador Virtual se actualizarán al final de la Ronda anterior
             textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
 
-
-
-
-
             //Mientras la Ronda no haya finalizado (NO sea "true") continuaremos en el bucle
             while(!InitialMenuActivity.gameServicesImpl.isRoundEnding()){
                 Log.d("DATABASE","Mientras la Ronda no haya finalizado (NO sea \"true\") continuaremos en el bucle");
-
-
-
 
                 //El número de cartas disponibles por el Jugador Virtual se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
                 textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
@@ -91,12 +77,9 @@ public class GameActivity extends AppCompatActivity {
                 //La información general de las acciones que ocurran durante la Ronda se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
                 textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
 
-
-
                 //Mientras la Ronda esté en la fase de Inicio (NO sea "false") continuaremos en el bucle
                 while(InitialMenuActivity.gameServicesImpl.isRoundBeginning()){
                     Log.d("DATABASE","Mientras la Ronda esté en la fase de Inicio (NO sea \"false\") continuaremos en el bucle");
-
 
                     //Si NO estamos en las 2 últimas Rondas ('RONDA_5_DIA' / 'RONDA_6_NOCHE'), mostraremos un cuadro para seleccionar Tácticas
                     if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){
@@ -113,20 +96,11 @@ public class GameActivity extends AppCompatActivity {
                     if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){
 
                     }
-
-
                 }
-
             }
-
         }*/
 
-        if(InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
-            buttonContinuarTurno.setEnabled(false);
-            buttonFinalizarRonda.setEnabled(false);
-            buttonMostrarTacticas.setEnabled(false);
-            buttonSubirNivel.setEnabled(false);
-        }
+
 
 
 
@@ -160,5 +134,56 @@ public class GameActivity extends AppCompatActivity {
 
 
     }
+
+    //Métodos privados
+    private void checkGameType(){
+        //Si la partida es en SOLITARIO, dejaremos activo el botón para 'Subir el nivel par' (2,4,6,8,10)
+        if (InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()) {
+            buttonSubirNivel.setEnabled(true);
+        } else {
+            buttonSubirNivel.setEnabled(false);
+        }
+    }
+
+    private void showGameDataOnScreen(){
+        textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
+        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
+        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
+        textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
+        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
+        textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
+    }
+
+    private void checkGameFinished(){
+        if(InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+            buttonContinuarTurno.setEnabled(false);
+            buttonFinalizarRonda.setEnabled(false);
+            buttonMostrarTacticas.setEnabled(false);
+            buttonSubirNivel.setEnabled(false);
+        }
+    }
+
+    private void startRound(){
+        if(InitialMenuActivity.gameServicesImpl.isRoundBeginning()){ // RONDA_ESTADO_INICIO = 1
+            if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){ //Rondas 1, 2, 3, 4
+                showTacticasDialog();
+            } else{ //Rondas 5, 6
+
+            }
+
+            if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){ //Rondas 2, 3, 4, 5, 6
+                //Barajar cartas del Jugador Virtual
+            }
+
+            //Crear método para convertir RONDA_ESTADO_INICIO = 0
+        }
+
+    }
+
+    private void showTacticasDialog(){
+        tacticasDialogFragment.show(getSupportFragmentManager(), "Tácticas");
+    }
+
+
 
 }

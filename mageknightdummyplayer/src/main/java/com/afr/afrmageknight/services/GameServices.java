@@ -32,6 +32,9 @@ public interface GameServices {
     // Método para obtener todas las cartas Tácticas
     public List<CartaTactica> getTacticCards();
 
+    //Método para obtener el nombre de la carta
+    public String getNameCard(int cardNumber);
+
     //Método para obtener todas las cartas de Acción Básica del Jugador Virtual ya barajadas
     public List<CartaAccionBasica> getShuffledBasicActionCardsHeroeFromDummyPlayer(Heroe randomHeroeDummyPlayer);
 
@@ -72,6 +75,12 @@ public interface GameServices {
 
     // Método para saber el total de cartas del Jugador Virtual
     public int getGameTotalCardsDummyPlayer();
+
+    // Método para obtener aquellas cartas Tácticas de Día disponibles ("Descartada" = 0 && "Tipo_Tactica" = DIA)
+    public List<CartaTactica> getGameAvailableDayTacticsCards();
+
+    // Método para obtener aquellas cartas Tácticas de Noche disponibles ("Descartada" = 0 && "Tipo_Tactica" = NOCHE)
+    public List<CartaTactica> getGameAvailableNightTacticsCards();
 
     // ********************************************
 
