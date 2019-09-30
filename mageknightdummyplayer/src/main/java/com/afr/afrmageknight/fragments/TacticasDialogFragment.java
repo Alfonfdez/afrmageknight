@@ -56,24 +56,28 @@ public class TacticasDialogFragment extends DialogFragment {
 
                         String nombreCartaTactica = InitialMenuActivity.gameServicesImpl.getTacticCardNameFromString(checkedItem.toString());
 
-                        InitialMenuActivity.gameServicesImpl.modifyGameTacticCardAvailabilityByName(nombreCartaTactica, true);
-
+                        //Método para actualizar la carta Táctica seleccionada por el Jugador a 'DESCARTADA'=1
+                        InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(nombreCartaTactica, true);
 
                         if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){ //Rondas 2, 3, 4, 5, 6
                             //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
-                            List<Integer> cartasJugadorVirtualPorNumero = InitialMenuActivity.gameServicesImpl.getGameCardsDummyPlayerByNumber();
-                            InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
-
-                            InitialMenuActivity.gameServicesImpl.modifyGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
+                            shuffleDummyPlayerCardsAndUpdateToAvailable();
                         }
 
                         //Crear método para convertir RONDA_ESTADO_INICIO = 0
-                        InitialMenuActivity.gameServicesImpl.modifyGameStatusRoundBeginning(false);
+                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(false);
 
                         dialog.dismiss();
                     }
                 });
 
         return builder.create();
+    }
+
+    private void shuffleDummyPlayerCardsAndUpdateToAvailable(){
+        List<Integer> cartasJugadorVirtualPorNumero = InitialMenuActivity.gameServicesImpl.getGameCardsDummyPlayerByNumber();
+        InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
+
+        InitialMenuActivity.gameServicesImpl.modifyTableGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
     }
 }

@@ -176,7 +176,7 @@ public class GameActivity extends AppCompatActivity {
                     shuffleDummyPlayerCardsAndUpdateToAvailable();
 
                     //Crear método para convertir RONDA_ESTADO_INICIO = 0
-                    InitialMenuActivity.gameServicesImpl.modifyGameStatusRoundBeginning(false);
+                    InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(false);
                 }
             }
         }
@@ -190,7 +190,7 @@ public class GameActivity extends AppCompatActivity {
         List<Integer> cartasJugadorVirtualPorNumero = InitialMenuActivity.gameServicesImpl.getGameCardsDummyPlayerByNumber();
         InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
 
-        InitialMenuActivity.gameServicesImpl.modifyGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
+        InitialMenuActivity.gameServicesImpl.modifyTableGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
     }
 
 

@@ -94,13 +94,13 @@ public interface GameServices {
     // ********************************************
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"
-    public void modifyGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada);
+    public void modifyTableGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada);
 
     // Método para modificar la columna 'RONDA_ESTADO_INICIO'=0 de la tabla 'PARTIDA_DATOS'
-    public void modifyGameStatusRoundBeginning(boolean esRondaInicio);
+    public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio);
 
     // Método para modificar la columna 'INDICE' y 'DESCARTADA'=0, de la tabla 'PARTIDA_CARTAS_HEROE_DUMMY' con las cartas del Jugador Virtual ya barajadas
-    public void modifyGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada);
+    public void modifyTableGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada);
 
     // ********************************************
 

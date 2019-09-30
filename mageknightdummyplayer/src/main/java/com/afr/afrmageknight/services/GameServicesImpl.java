@@ -641,7 +641,7 @@ public class GameServicesImpl implements GameServices {
     // ********************************************
 
     @Override
-    public void modifyGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada) {
+    public void modifyTableGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada) {
         partidaCartasTacticas = myDB.getGameTacticCardsCursor();
 
         if(partidaCartasTacticas.moveToFirst()){
@@ -660,12 +660,12 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public void modifyGameStatusRoundBeginning(boolean esRondaInicio) {
+    public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio) {
         myDB.updateGameStatusRoundBeginning(esRondaInicio);
     }
 
     @Override
-    public void modifyGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada) {
+    public void modifyTableGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada) {
 
         int indice = 0;
 
