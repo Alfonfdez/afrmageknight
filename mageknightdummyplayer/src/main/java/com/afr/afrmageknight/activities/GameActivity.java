@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.fragments.TacticasDialogFragment;
+import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.TipoRonda;
 
 import java.util.ArrayList;
@@ -52,11 +53,10 @@ public class GameActivity extends AppCompatActivity {
 
         tacticasDialogFragment = new TacticasDialogFragment();
 
-
+        //Métodos de inicio en "onCreate"
         checkGameType();
         showGameDataOnScreen();
         startRound();
-
 
 
 
@@ -172,6 +172,15 @@ public class GameActivity extends AppCompatActivity {
                 if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){ //Rondas 1, 2, 3, 4
                     showTacticasDialog();
                 } else{ //Rondas 5, 6
+                    if(!InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ // COOPERATIVO
+                        //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1 en COOPERATIVO
+                        CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
+
+                        //Insertar la información de la Ronda sobre la carta Táctica escogida aleatoriamente por el Jugador Virtual en el modo COOPERATIVO
+                        String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTacticCardDummyPlayerCooperativeType(cartaTacticaDescartadaPartidaCooperativo);
+                        InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+                    }
+
                     //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
                     shuffleDummyPlayerCardsAndUpdateToAvailable();
 
@@ -191,6 +200,30 @@ public class GameActivity extends AppCompatActivity {
         InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
 
         InitialMenuActivity.gameServicesImpl.modifyTableGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
+    }
+
+    private CartaTactica discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative(){
+        if(!InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ //COOPERATIVO
+            if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
+                List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
+                CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
+
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
+                InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+
+                return cartaTacticaAleatoriaDisponible;
+            } else{ //Ronda de NOCHE
+                List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
+                CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
+
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
+                InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+
+                return cartaTacticaAleatoriaDisponible;
+            }
+        }
+
+        return null;
     }
 
 

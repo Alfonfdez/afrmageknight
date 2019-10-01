@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
-import com.afr.afrmageknight.model.Carta;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
@@ -673,6 +672,46 @@ public class GameServicesImpl implements GameServices {
         CartaTactica cartaTacticaAleatoriaDisponible = gameTacticCardsAvailable.get(randomNumber);
 
         return cartaTacticaAleatoriaDisponible;
+    }
+
+    @Override
+    public String getGameInformationTacticCardDummyPlayerSolitaireType(CartaTactica cartaTactica) {
+        StringBuilder strInformacionCartaTacticaJugadorVirtualSolitario = new StringBuilder();
+
+        strInformacionCartaTacticaJugadorVirtualSolitario.append("- El JV ha seleccionado la carta Táctica: ");
+        strInformacionCartaTacticaJugadorVirtualSolitario.append(cartaTactica.getNumeroOrden());
+        strInformacionCartaTacticaJugadorVirtualSolitario.append(" - ");
+        strInformacionCartaTacticaJugadorVirtualSolitario.append(cartaTactica.getNombre());
+        strInformacionCartaTacticaJugadorVirtualSolitario.append(" (");
+        strInformacionCartaTacticaJugadorVirtualSolitario.append(cartaTactica.getTipoTactica().toString());
+        strInformacionCartaTacticaJugadorVirtualSolitario.append(").");
+
+        return strInformacionCartaTacticaJugadorVirtualSolitario.toString();
+    }
+
+    @Override
+    public String getGameInformationTacticCardDummyPlayerCooperativeType(CartaTactica cartaTactica) {
+
+        StringBuilder strInformacionCartaTacticaJugadorVirtualCooperativo = new StringBuilder();
+
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append("- El JV ha seleccionado la carta Táctica: ");
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append(cartaTactica.getNumeroOrden());
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append(" - ");
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append(cartaTactica.getNombre());
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append(" (");
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append(cartaTactica.getTipoTactica().toString());
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append(").");
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append("\n");
+        strInformacionCartaTacticaJugadorVirtualCooperativo.append("Esta carta Táctica volverá a estar disponible una vez los jugadores hayan descartado 1 carta usada por ellos.");
+
+        return strInformacionCartaTacticaJugadorVirtualCooperativo.toString();
+    }
+
+    // ********************************************
+
+    @Override
+    public void insertTableGameRoundInformation(String roundInformation) {
+        myDB.createGameInformation(roundInformation);
     }
 
     // ********************************************

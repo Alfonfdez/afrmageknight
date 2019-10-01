@@ -130,6 +130,12 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     // ******************************************************************
 
+    public void createGameInformation(String gameInformation){
+        insertDataGameInformation(gameInformation);
+    }
+
+    // ******************************************************************
+
     //Modificar datos en su correspondiente tabla
     public void updateGameTacticCardAvailabilityByName(String nombreCartaTactica, boolean esDescartada){
         updateDataGameTacticCardAvailabilityByName(nombreCartaTactica, esDescartada);

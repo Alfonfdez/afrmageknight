@@ -97,6 +97,17 @@ public interface GameServices {
     // Método para obtener una carta Táctica disponible al azar
     public CartaTactica getGameAvailableRandomTacticCard(List<CartaTactica> gameTacticCardsAvailable);
 
+    //Método para obtener un "String" informativo sobre la Carta Táctica escogida por el Jugador Virtual en el modo Solitario
+    public String getGameInformationTacticCardDummyPlayerSolitaireType(CartaTactica cartaTactica);
+
+    //Método para obtener un "String" informativo sobre la Carta Táctica escogida por el Jugador Virtual en el modo Cooperativo
+    public String getGameInformationTacticCardDummyPlayerCooperativeType(CartaTactica cartaTactica);
+
+    // ********************************************
+
+    //Método para insertar informacion en la tabla 'PARTIDA_INFORMACION_RONDA'
+    public void insertTableGameRoundInformation(String roundInformation);
+
     // ********************************************
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"

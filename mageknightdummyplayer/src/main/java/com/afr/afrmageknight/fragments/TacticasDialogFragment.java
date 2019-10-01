@@ -22,14 +22,18 @@ public class TacticasDialogFragment extends DialogFragment {
 
         List<CartaTactica> cartasTacticasDisponibles;
         final String[] tacticasArray;
-        String titulo = "";
+        String tituloDialogFragment = "";
 
+        //Si la partida es en COOPERATIVO descartaremos 1 carta Táctica aleatoriamente, que volverá a estar disponible después de la selección de los Jugadores
+        final CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
+
+        //Obtener todas las cartas Tácticas disponibles de la Partida
         if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
-            titulo = "Tácticas de Día disponibles\nTáctica seleccionada a descartar";
+            tituloDialogFragment = "Tácticas de Día disponibles\nTáctica seleccionada a descartar";
         } else {    //Ronda de NOCHE
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
-            titulo = "Tácticas de Noche disponibles\nTáctica seleccionada a descartar";
+            tituloDialogFragment = "Tácticas de Noche disponibles\nTáctica seleccionada a descartar";
         }
 
         List<String> tacticas = new ArrayList<String>();
@@ -41,7 +45,7 @@ public class TacticasDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(titulo)
+        builder.setTitle(tituloDialogFragment)
                 .setSingleChoiceItems(tacticasArray, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -61,6 +65,9 @@ public class TacticasDialogFragment extends DialogFragment {
 
                         //Método para descartar al azar una carta Táctica después de la selección del Jugador en el modo SOLITARIO
                         discardGameTacticCardRandomlyAfterPlayerTacticCardSelectionInSolitaireGame();
+
+                        //Método para actualizar la carta Táctica seleccionada al azar anteriormente por el Jugador Virtual a 'DESCARTADA'=0 (Carta disponible) en el modo COOPERATIVO
+                        availableSameGameTacticCardAfterPlayersTacticCardSelectionInCooperative(cartaTacticaDescartadaPartidaCooperativo);
 
                         if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){ //Rondas 2, 3, 4, 5, 6
                             //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
@@ -86,28 +93,67 @@ public class TacticasDialogFragment extends DialogFragment {
     }
 
     private void discardGameTacticCardRandomlyAfterPlayerTacticCardSelectionInSolitaireGame(){
-        if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){
+        if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ //SOLITARIO
             if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
                 List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
                 CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
 
                 //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
                 InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+
+                //Insertar la información de la Ronda sobre la carta Táctica escogida aleatoriamente por el Jugador Virtual en el modo SOLITARIO
+                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTacticCardDummyPlayerSolitaireType(cartaTacticaAleatoriaDisponible);
+                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
             } else{ //Ronda de NOCHE
                 List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
                 CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
 
                 //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
                 InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+
+                //Insertar la información de la Ronda sobre la carta Táctica escogida aleatoriamente por el Jugador Virtual en el modo SOLITARIO
+                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTacticCardDummyPlayerSolitaireType(cartaTacticaAleatoriaDisponible);
+                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
             }
         }
     }
 
-    private void discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative(){
+    private CartaTactica discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative(){
+        if(!InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ //COOPERATIVO
+            if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
+                List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
+                CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
 
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
+                InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+
+                //Insertar la información de la Ronda sobre la carta Táctica escogida aleatoriamente por el Jugador Virtual en el modo COOPERATIVO
+                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTacticCardDummyPlayerCooperativeType(cartaTacticaAleatoriaDisponible);
+                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+
+                return cartaTacticaAleatoriaDisponible;
+            } else{ //Ronda de NOCHE
+                List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
+                CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
+
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
+                InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+
+                //Insertar la información de la Ronda sobre la carta Táctica escogida aleatoriamente por el Jugador Virtual en el modo COOPERATIVO
+                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTacticCardDummyPlayerCooperativeType(cartaTacticaAleatoriaDisponible);
+                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+
+                return cartaTacticaAleatoriaDisponible;
+            }
+        }
+
+        return null;
     }
 
-    private void availableSameGameTacticCardAfterPlayersTacticCardSelectionInCooperative(){
-
+    private void availableSameGameTacticCardAfterPlayersTacticCardSelectionInCooperative(CartaTactica cartaTacticaDescartadaPartidaCooperativo){
+        if(!InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ //COOPERATIVO
+            //Método para actualizar la carta Táctica seleccionada al azar anteriormente por el Jugador Virtual a 'DESCARTADA'=0 (Carta disponible)
+            InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaDescartadaPartidaCooperativo.getNombre(), false);
+        }
     }
 }
