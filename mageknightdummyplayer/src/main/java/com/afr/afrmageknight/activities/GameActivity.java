@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.fragments.LevelUpDialogFragment;
 import com.afr.afrmageknight.fragments.TacticsDialogFragment;
+import com.afr.afrmageknight.fragments.TacticsListDialogFragment;
 import com.afr.afrmageknight.model.CartaTactica;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewInformacionPartida;
 
     private DialogFragment tacticasDialogFragment;
+    private DialogFragment tacticasListadoDialogFragment;
     private DialogFragment subidaNivelDialogFragment;
 
     @Override
@@ -50,6 +52,7 @@ public class GameActivity extends AppCompatActivity {
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
         tacticasDialogFragment = new TacticsDialogFragment();
+        tacticasListadoDialogFragment = new TacticsListDialogFragment();
         subidaNivelDialogFragment = new LevelUpDialogFragment();
 
         //Métodos de inicio en "onCreate"
@@ -125,15 +128,15 @@ public class GameActivity extends AppCompatActivity {
         buttonMostrarTacticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GameActivity.this, "Soy el botón MOSTRAR TACTICAS", Toast.LENGTH_LONG).show();
+                showListadoTacticasDialog();
             }
         });
 
         buttonSubirNivel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GameActivity.this, "Soy el botón SUBIR NIVEL PAR en SOLITARIO", Toast.LENGTH_LONG).show();
                 showSubidaNivelDialog();
+                showGameDataOnScreen();
             }
         });
 
@@ -195,6 +198,10 @@ public class GameActivity extends AppCompatActivity {
 
     private void showTacticasDialog(){
         tacticasDialogFragment.show(getSupportFragmentManager(), "Tácticas");
+    }
+
+    private void showListadoTacticasDialog(){
+        tacticasListadoDialogFragment.show(getSupportFragmentManager(), "Listado Tácticas");
     }
 
     private void showSubidaNivelDialog(){

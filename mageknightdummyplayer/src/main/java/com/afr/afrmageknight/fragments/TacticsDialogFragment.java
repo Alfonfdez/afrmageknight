@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 
+import com.afr.afrmageknight.activities.GameActivity;
 import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.model.CartaTactica;
 
@@ -57,7 +58,7 @@ public class TacticsDialogFragment extends DialogFragment {
 
                         String nombreCartaTactica = InitialMenuActivity.gameServicesImpl.getTacticCardNameFromString(checkedItem.toString());
 
-                        //Método para actualizar la carta Táctica seleccionada por el Jugador a 'DESCARTADA'=1
+                        //Método para actualizar la carta Táctica seleccionada por el Jugador/Jugadores a 'DESCARTADA'=1
                         InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(nombreCartaTactica, true);
 
                         //Método para descartar al azar una carta Táctica después de la selección del Jugador en el modo SOLITARIO

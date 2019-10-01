@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.afr.afrmageknight.activities.GameActivity;
 import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -729,6 +730,21 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public String getGameInformationSkillTokenDummyPlayerSolitaireType(FichaHabilidad fichaHabilidad) {
+
+        StringBuilder strInformacionFichaHabilidadJugadorVirtualSolitario = new StringBuilder();
+
+        strInformacionFichaHabilidadJugadorVirtualSolitario.append("- El JV ha seleccionado la Ficha de Habilidad: ");
+        strInformacionFichaHabilidadJugadorVirtualSolitario.append(fichaHabilidad.getNombre());
+        strInformacionFichaHabilidadJugadorVirtualSolitario.append(" (");
+        strInformacionFichaHabilidadJugadorVirtualSolitario.append(fichaHabilidad.getHeroe().getNombre());
+        strInformacionFichaHabilidadJugadorVirtualSolitario.append(") que estará disponible cuando subas a Nivel ");
+        strInformacionFichaHabilidadJugadorVirtualSolitario.append((getGamePlayerExperiencePlusTwo()));
+
+        return strInformacionFichaHabilidadJugadorVirtualSolitario.toString();
+    }
+
+    @Override
     public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador) {
 
         List<FichaHabilidad> fichaHabilidadesJugadorVirtual = new ArrayList<FichaHabilidad>();
@@ -786,10 +802,33 @@ public class GameServicesImpl implements GameServices {
         return fichaHabilidad;
     }
 
+    @Override
+    public FichaHabilidad getGameSkillTokenDummyPlayerByPlayerExperience(int nivelExperienciaJugador) {
+
+        FichaHabilidad fichaHabilidad = null;
+
+        if(nivelExperienciaJugador==2){
+            fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(0);
+        } else if(nivelExperienciaJugador==4){
+            fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(1);
+        } else if(nivelExperienciaJugador==6){
+            fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(2);
+        } else if(nivelExperienciaJugador==8){
+            fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(3);
+        }
+
+        return fichaHabilidad;
+    }
+
     // ********************************************
 
     @Override
     public void insertTableGameRoundInformation(String roundInformation) {
+        myDB.createGameInformation(roundInformation);
+    }
+
+    @Override
+    public void insertTableGameSkillTokenInformation(String roundInformation) {
         myDB.createGameInformation(roundInformation);
     }
 
@@ -959,6 +998,16 @@ public class GameServicesImpl implements GameServices {
         int nivelExperienciaJugador = getGamePlayerExperience();
 
         if(nivelExperienciaJugador == 10){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isPlayerExperienceFromTwoToEight() {
+        int nivelExperienciaJugador = getGamePlayerExperience();
+
+        if(nivelExperienciaJugador == 2 || nivelExperienciaJugador == 4 || nivelExperienciaJugador == 6 || nivelExperienciaJugador == 8 ){
             return true;
         }
         return false;

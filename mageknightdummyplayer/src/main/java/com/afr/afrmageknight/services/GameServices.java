@@ -109,16 +109,25 @@ public interface GameServices {
     //Método para obtener un "String" informativo sobre la Carta Táctica escogida por el Jugador Virtual en el modo Cooperativo
     public String getGameInformationTacticCardDummyPlayerCooperativeType(CartaTactica cartaTactica);
 
+    //Método para obtener un "String" informativo sobre la Ficha de Habilidad escogida del Jugador Virtual en el modo Solitario
+    public String getGameInformationSkillTokenDummyPlayerSolitaireType(FichaHabilidad fichaHabilidad);
+
     //Método para obtener un "List<FichaHabilidad>" dependiendo del nivel de experiencia del Jugador (Niveles 4, 6, 8, 10)
     public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador);
 
     //Método para obtener un "FichaHabilidad" dependiendo del número de su 'INDICE'
     public FichaHabilidad getGameSkillTokenDummyPlayerByIndex(int indiceFichaHabilidad);
 
+    //Método para obtener un "FichaHabilidad" dependiendo del nivel de experiencia del Jugador (Niveles 2, 4, 6, 8)
+    public FichaHabilidad getGameSkillTokenDummyPlayerByPlayerExperience(int nivelExperienciaJugador);
+
     // ********************************************
 
     //Método para insertar informacion en la tabla 'PARTIDA_INFORMACION_RONDA'
     public void insertTableGameRoundInformation(String roundInformation);
+
+    //Método para insertar informacion en la tabla 'PARTIDA_INFORMACION_RONDA'
+    public void insertTableGameSkillTokenInformation(String roundInformation);
 
     // ********************************************
 
@@ -172,10 +181,12 @@ public interface GameServices {
     //Método para saber si el Jugador ha alcanzado el máximo nivel de Experiencia (10)
     public boolean isPlayerExperienceUpToTen();
 
+    //Método para saber si el Jugador tiene Experiencia 2 hasta 8
+    public boolean isPlayerExperienceFromTwoToEight();
+
     // ********************************************
 
     //Método para obtener el nombre de una carta Táctica en concreto
     public String getTacticCardNameFromString(String tacticCard);
-
 
 }
