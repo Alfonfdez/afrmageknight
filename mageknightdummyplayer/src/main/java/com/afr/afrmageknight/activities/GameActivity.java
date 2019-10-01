@@ -2,20 +2,17 @@ package com.afr.afrmageknight.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
-import com.afr.afrmageknight.fragments.TacticasDialogFragment;
+import com.afr.afrmageknight.fragments.LevelUpDialogFragment;
+import com.afr.afrmageknight.fragments.TacticsDialogFragment;
 import com.afr.afrmageknight.model.CartaTactica;
-import com.afr.afrmageknight.model.TipoRonda;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
@@ -33,6 +30,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewInformacionPartida;
 
     private DialogFragment tacticasDialogFragment;
+    private DialogFragment subidaNivelDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +49,15 @@ public class GameActivity extends AppCompatActivity {
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
-        tacticasDialogFragment = new TacticasDialogFragment();
+        tacticasDialogFragment = new TacticsDialogFragment();
+        subidaNivelDialogFragment = new LevelUpDialogFragment();
 
         //Métodos de inicio en "onCreate"
         checkGameType();
+        checkGameFinished();
         showGameDataOnScreen();
         startRound();
+
 
 
 
@@ -132,6 +133,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(GameActivity.this, "Soy el botón SUBIR NIVEL PAR en SOLITARIO", Toast.LENGTH_LONG).show();
+                showSubidaNivelDialog();
             }
         });
 
@@ -148,15 +150,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void showGameDataOnScreen(){
-        textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
-        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
-        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
-        textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
-        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
-        textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
-    }
-
     private void checkGameFinished(){
         if(InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
             buttonContinuarTurno.setEnabled(false);
@@ -164,6 +157,15 @@ public class GameActivity extends AppCompatActivity {
             buttonMostrarTacticas.setEnabled(false);
             buttonSubirNivel.setEnabled(false);
         }
+    }
+
+    private void showGameDataOnScreen(){
+        textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
+        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
+        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
+        textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
+        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
+        textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
     }
 
     private void startRound(){
@@ -193,6 +195,10 @@ public class GameActivity extends AppCompatActivity {
 
     private void showTacticasDialog(){
         tacticasDialogFragment.show(getSupportFragmentManager(), "Tácticas");
+    }
+
+    private void showSubidaNivelDialog(){
+        subidaNivelDialogFragment.show(getSupportFragmentManager(), "Subida de Nivel");
     }
 
     private void shuffleDummyPlayerCardsAndUpdateToAvailable(){

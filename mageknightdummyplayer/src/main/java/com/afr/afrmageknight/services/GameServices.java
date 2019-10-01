@@ -64,6 +64,12 @@ public interface GameServices {
     // Método para saber en qué Ronda de la partida nos encontramos (RONDA_1_DIA, RONDA_2_NOCHE, RONDA_3_DIA, RONDA_4_NOCHE, RONDA_5_DIA, RONDA_6_NOCHE)
     public String getGameRound();
 
+    // Método para saber qué nivel de Experiencia tiene el Jugador (EXPERIENCIA) (0, 2, 4, 6, 8, 10)
+    public int getGamePlayerExperience();
+
+    // Método para saber qué nivel de Experiencia tendrá el Jugador con 2 niveles más (EXPERIENCIA) (2, 4, 6, 8, 10)
+    public int getGamePlayerExperiencePlusTwo();
+
     // Método para saber la información de la Ronda
     public String getGameRoundInformation();
 
@@ -103,6 +109,12 @@ public interface GameServices {
     //Método para obtener un "String" informativo sobre la Carta Táctica escogida por el Jugador Virtual en el modo Cooperativo
     public String getGameInformationTacticCardDummyPlayerCooperativeType(CartaTactica cartaTactica);
 
+    //Método para obtener un "List<FichaHabilidad>" dependiendo del nivel de experiencia del Jugador (Niveles 4, 6, 8, 10)
+    public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador);
+
+    //Método para obtener un "FichaHabilidad" dependiendo del número de su 'INDICE'
+    public FichaHabilidad getGameSkillTokenDummyPlayerByIndex(int indiceFichaHabilidad);
+
     // ********************************************
 
     //Método para insertar informacion en la tabla 'PARTIDA_INFORMACION_RONDA'
@@ -115,6 +127,9 @@ public interface GameServices {
 
     // Método para modificar la columna 'RONDA_ESTADO_INICIO'=0 de la tabla 'PARTIDA_DATOS'
     public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio);
+
+    // Método para modificar la columna 'EXPERIENCIA' de la tabla 'PARTIDA_DATOS'
+    public void modifyTableGameStatusPlayerExperience(int experienciaJugador);
 
     // Método para modificar la columna 'INDICE' y 'DESCARTADA'=0, de la tabla 'PARTIDA_CARTAS_HEROE_DUMMY' con las cartas del Jugador Virtual ya barajadas
     public void modifyTableGameShuffledCardsDummyPlayer(List<Integer> gameShuffledCardsDummyPlayerByNumber, boolean esDescartada);
@@ -150,6 +165,12 @@ public interface GameServices {
 
     //Método para saber si el mazo del Jugador Virtual está acabado o no
     public boolean isDummyPlayerCardsFinished();
+
+    //Método para saber si el Jugador tiene Experiencia 4 o más (6, 8 o 10)
+    public boolean isPlayerExperienceLevelFourOrMore();
+
+    //Método para saber si el Jugador ha alcanzado el máximo nivel de Experiencia (10)
+    public boolean isPlayerExperienceUpToTen();
 
     // ********************************************
 

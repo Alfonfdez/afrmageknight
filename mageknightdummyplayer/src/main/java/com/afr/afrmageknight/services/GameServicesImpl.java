@@ -76,6 +76,7 @@ public class GameServicesImpl implements GameServices {
     protected static final String COL_3_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_INICIO";
     protected static final String COL_4_PARTIDA_DATOS_TABLE = "RONDA_ESTADO_FINALIZADO";
     protected static final String COL_5_PARTIDA_DATOS_TABLE = "TURNO";
+    protected static final String COL_6_PARTIDA_DATOS_TABLE = "EXPERIENCIA";
 
     //PARTIDA_MODO_TABLE
     protected static final String COL_1_PARTIDA_MODO_TABLE = "TIPO";
@@ -140,6 +141,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor partidaCristalesDummyCursor;
     private Cursor partidaCartasDummyCursor;
     private Cursor partidaCartasTacticas;
+    private Cursor partidaFichasHabilidad;
 
     //Constructor
     public GameServicesImpl (Context context){
@@ -469,6 +471,25 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public int getGamePlayerExperience() {
+        partidaEstadoCursor = myDB.getGameStatusCursor();
+
+        int experienciaJugador = 0;
+
+        if (partidaEstadoCursor.moveToFirst()){
+            experienciaJugador = partidaEstadoCursor.getInt(partidaEstadoCursor.getColumnIndex(COL_6_PARTIDA_DATOS_TABLE));
+        }
+        partidaEstadoCursor.close();
+
+        return experienciaJugador;
+    }
+
+    @Override
+    public int getGamePlayerExperiencePlusTwo() {
+        return getGamePlayerExperience()+2;
+    }
+
+    @Override
     public String getGameRoundInformation() {
         partidaInformacionRondaCursor = myDB.getGameRoundInformationCursor();
 
@@ -707,6 +728,64 @@ public class GameServicesImpl implements GameServices {
         return strInformacionCartaTacticaJugadorVirtualCooperativo.toString();
     }
 
+    @Override
+    public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador) {
+
+        List<FichaHabilidad> fichaHabilidadesJugadorVirtual = new ArrayList<FichaHabilidad>();
+
+        if(nivelExperienciaJugador==10){
+            for(int i = 0; i < 4 ; i++){
+                FichaHabilidad fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(i);
+                fichaHabilidadesJugadorVirtual.add(fichaHabilidad);
+            }
+        } else if(nivelExperienciaJugador==8){
+            for(int i = 0; i < 3 ; i++){
+                FichaHabilidad fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(i);
+                fichaHabilidadesJugadorVirtual.add(fichaHabilidad);
+            }
+        } else if(nivelExperienciaJugador==6){
+            for(int i = 0; i < 2 ; i++){
+                FichaHabilidad fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(i);
+                fichaHabilidadesJugadorVirtual.add(fichaHabilidad);
+            }
+        } else if(nivelExperienciaJugador==4){
+            FichaHabilidad fichaHabilidad = getGameSkillTokenDummyPlayerByIndex(0);
+            fichaHabilidadesJugadorVirtual.add(fichaHabilidad);
+        }
+
+        return fichaHabilidadesJugadorVirtual;
+    }
+
+    @Override
+    public FichaHabilidad getGameSkillTokenDummyPlayerByIndex(int indiceFichaHabilidad) {
+
+        FichaHabilidad fichaHabilidad = null;
+        partidaFichasHabilidad = myDB.getGameSkillTokensDummyPlayerCursor();
+
+        if(partidaFichasHabilidad.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroIndiceFichaHabilidad = partidaFichasHabilidad.getInt(partidaFichasHabilidad.getColumnIndex(COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE));
+
+                if(numeroIndiceFichaHabilidad==indiceFichaHabilidad) {
+                    int idFicha = partidaFichasHabilidad.getInt(partidaFichasHabilidad.getColumnIndex(COL_1_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE));
+                    String nombre = partidaFichasHabilidad.getString(partidaFichasHabilidad.getColumnIndex(COL_2_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE));
+                    String descripcion = partidaFichasHabilidad.getString(partidaFichasHabilidad.getColumnIndex(COL_3_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE));
+                    boolean esDescartada = partidaFichasHabilidad.getInt(partidaFichasHabilidad.getColumnIndex(COL_4_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE)) > 0;
+                    String nombreHeroe = partidaFichasHabilidad.getString(partidaFichasHabilidad.getColumnIndex(COL_5_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE));
+
+                    Heroe heroe = getAHeroeSelectedByPlayer(nombreHeroe);
+
+                    fichaHabilidad = new FichaHabilidad(idFicha, nombre, descripcion, esDescartada, heroe);
+                    ++i;
+                }
+            }while(partidaFichasHabilidad.moveToNext() && i < 1);
+        }
+        partidaFichasHabilidad.close();
+
+        return fichaHabilidad;
+    }
+
     // ********************************************
 
     @Override
@@ -738,6 +817,11 @@ public class GameServicesImpl implements GameServices {
     @Override
     public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio) {
         myDB.updateGameStatusRoundBeginning(esRondaInicio);
+    }
+
+    @Override
+    public void modifyTableGameStatusPlayerExperience(int experienciaJugador) {
+        myDB.updateGameStatusPlayerExperience(experienciaJugador);
     }
 
     @Override
@@ -855,6 +939,26 @@ public class GameServicesImpl implements GameServices {
         int numeroCartasTotalJugadorVirtual = getGameTotalCardsDummyPlayer();
 
         if(numeroCartasTotalJugadorVirtual==0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isPlayerExperienceLevelFourOrMore() {
+        int nivelExperienciaJugador = getGamePlayerExperience();
+
+        if(nivelExperienciaJugador >= 4){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isPlayerExperienceUpToTen() {
+        int nivelExperienciaJugador = getGamePlayerExperience();
+
+        if(nivelExperienciaJugador == 10){
             return true;
         }
         return false;

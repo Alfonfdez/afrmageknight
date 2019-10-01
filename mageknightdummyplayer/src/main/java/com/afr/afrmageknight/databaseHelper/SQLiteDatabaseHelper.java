@@ -145,6 +145,10 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         updateDataGameGameStatusRoundBeginning(esRondaInicio);
     }
 
+    public void updateGameStatusPlayerExperience(int experienciaJugador){
+        updateDataGameGameStatusPlayerExperience(experienciaJugador);
+    }
+
     public void updateGameShuffledCardsDummyPlayer(int numeroCartaBarajadoJugadorVirtual, int indice, boolean esDescartada){
         updateDataGameShuffledCardsDummyPlayer(numeroCartaBarajadoJugadorVirtual, indice, esDescartada);
     }
@@ -362,6 +366,21 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
+
+        long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    private boolean updateDataGameGameStatusPlayerExperience(int experienciaJugador) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_6_PARTIDA_DATOS_TABLE, experienciaJugador);
 
         long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
 
