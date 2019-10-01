@@ -91,6 +91,12 @@ public interface GameServices {
     // Método para obtener aquellas cartas Tácticas de Noche disponibles ("Descartada" = 0 && "Tipo_Tactica" = NOCHE)
     public List<CartaTactica> getGameAvailableNightTacticsCards();
 
+    // Método para obtener una carta Táctica a partir de su nombre
+    public CartaTactica getGameTacticCard(String gameTacticCard);
+
+    // Método para obtener una carta Táctica disponible al azar
+    public CartaTactica getGameAvailableRandomTacticCard(List<CartaTactica> gameTacticCardsAvailable);
+
     // ********************************************
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"

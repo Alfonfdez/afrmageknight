@@ -638,6 +638,43 @@ public class GameServicesImpl implements GameServices {
         return cartasTacticas;
     }
 
+    @Override
+    public CartaTactica getGameTacticCard(String gameTacticCard) {
+        CartaTactica cartaTactica = null;
+        partidaCartasTacticas = myDB.getGameTacticCardsCursor();
+
+        if(partidaCartasTacticas.moveToFirst()){
+            int i = 0;
+            do{
+                String nombreCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                if(nombreCartaTactica.equals(gameTacticCard)) {
+                    int numeroCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    boolean esDescartada = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE)) > 0;
+                    String tipoCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    int numeroOrdenCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_5_PARTIDA_CARTAS_TACTICAS_TABLE));
+                    String descripcionCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE));
+
+                    cartaTactica = new CartaTactica(numeroCartaTactica, nombreCartaTactica, esDescartada, TipoTactica.valueOf(tipoCartaTactica), numeroOrdenCartaTactica, descripcionCartaTactica);
+                    ++i;
+                }
+            }while(partidaCartasTacticas.moveToNext() && i < 1);
+        }
+        partidaCartasTacticas.close();
+
+        return cartaTactica;
+    }
+
+    @Override
+    public CartaTactica getGameAvailableRandomTacticCard(List<CartaTactica> gameTacticCardsAvailable) {
+
+        //Selecciona un número aleatorio entre 0 y gameTacticCardsAvailable.size()
+        int randomNumber = (int)(Math.random() * gameTacticCardsAvailable.size());
+        CartaTactica cartaTacticaAleatoriaDisponible = gameTacticCardsAvailable.get(randomNumber);
+
+        return cartaTacticaAleatoriaDisponible;
+    }
+
     // ********************************************
 
     @Override
@@ -783,6 +820,8 @@ public class GameServicesImpl implements GameServices {
         }
         return false;
     }
+
+    // ********************************************
 
     @Override
     public String getTacticCardNameFromString(String tacticCard) {

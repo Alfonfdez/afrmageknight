@@ -24,10 +24,10 @@ public class TacticasDialogFragment extends DialogFragment {
         final String[] tacticasArray;
         String titulo = "";
 
-        if(InitialMenuActivity.gameServicesImpl.isDayRound()){
+        if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
             titulo = "Tácticas de Día disponibles\nTáctica seleccionada a descartar";
-        } else {
+        } else {    //Ronda de NOCHE
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
             titulo = "Tácticas de Noche disponibles\nTáctica seleccionada a descartar";
         }
@@ -59,6 +59,9 @@ public class TacticasDialogFragment extends DialogFragment {
                         //Método para actualizar la carta Táctica seleccionada por el Jugador a 'DESCARTADA'=1
                         InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(nombreCartaTactica, true);
 
+                        //Método para descartar al azar una carta Táctica después de la selección del Jugador en el modo SOLITARIO
+                        discardGameTacticCardRandomlyAfterPlayerTacticCardSelectionInSolitaireGame();
+
                         if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){ //Rondas 2, 3, 4, 5, 6
                             //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
                             shuffleDummyPlayerCardsAndUpdateToAvailable();
@@ -74,10 +77,37 @@ public class TacticasDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    //Métodos privados
     private void shuffleDummyPlayerCardsAndUpdateToAvailable(){
         List<Integer> cartasJugadorVirtualPorNumero = InitialMenuActivity.gameServicesImpl.getGameCardsDummyPlayerByNumber();
         InitialMenuActivity.gameServicesImpl.getShuffledGameCardsDummyPlayerByNumber(cartasJugadorVirtualPorNumero);
 
         InitialMenuActivity.gameServicesImpl.modifyTableGameShuffledCardsDummyPlayer(cartasJugadorVirtualPorNumero, false);
+    }
+
+    private void discardGameTacticCardRandomlyAfterPlayerTacticCardSelectionInSolitaireGame(){
+        if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){
+            if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
+                List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
+                CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
+
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
+                InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+            } else{ //Ronda de NOCHE
+                List<CartaTactica> cartasTacticasDisponiblesJuego = InitialMenuActivity.gameServicesImpl.getGameAvailableNightTacticsCards();
+                CartaTactica cartaTacticaAleatoriaDisponible = InitialMenuActivity.gameServicesImpl.getGameAvailableRandomTacticCard(cartasTacticasDisponiblesJuego);
+
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1
+                InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaAleatoriaDisponible.getNombre(), true);
+            }
+        }
+    }
+
+    private void discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative(){
+
+    }
+
+    private void availableSameGameTacticCardAfterPlayersTacticCardSelectionInCooperative(){
+
     }
 }

@@ -182,6 +182,22 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         return resultado == -1 ? false : true;
     }
 
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    private boolean insertDataGameInformation(String informacionPartida){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_INFORMACION_RONDA_TABLE, informacionPartida);
+
+        long resultado = db.insert(PARTIDA_INFORMACION_RONDA_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
 
     //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
     private boolean insertDataGameTacticCard(int numero, String nombre, boolean isDescartadaCartaTactica, String tipoTactica, int numeroOrden, String descripcion){
