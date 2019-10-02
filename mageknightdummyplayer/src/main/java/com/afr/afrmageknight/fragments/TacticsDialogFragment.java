@@ -18,12 +18,9 @@ public class TacticsDialogFragment extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        //I - Declarar variables
         List<CartaTactica> cartasTacticasDisponibles;
-        final String[] tacticasArray;
         String tituloDialogFragment = "";
-
-        //Si la partida es en COOPERATIVO descartaremos 1 carta Táctica aleatoriamente, que volverá a estar disponible después de la selección de los Jugadores
-        final CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
 
         //Obtener todas las cartas Tácticas disponibles de la Partida
         if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
@@ -34,17 +31,17 @@ public class TacticsDialogFragment extends DialogFragment {
             tituloDialogFragment = "Tácticas de Noche disponibles\nTáctica seleccionada a descartar";
         }
 
-        List<String> tacticas = new ArrayList<String>();
-        for(CartaTactica cartaTactica: cartasTacticasDisponibles){
-            String informacionTactica = cartaTactica.getNumeroOrden() + " - " + cartaTactica.getNombre();
-            tacticas.add(informacionTactica);
-        }
-        tacticasArray = tacticas.toArray(new String[tacticas.size()]);
+        final String[] tacticasArrayFinal = getTacticCardArray(cartasTacticasDisponibles);
 
+        //Si la partida es en COOPERATIVO descartaremos 1 carta Táctica aleatoriamente, que volverá a estar disponible después de la selección de los Jugadores
+        final CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
+
+
+        //AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(tituloDialogFragment)
-                .setSingleChoiceItems(tacticasArray, -1, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(tacticasArrayFinal, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -153,5 +150,18 @@ public class TacticsDialogFragment extends DialogFragment {
             //Método para actualizar la carta Táctica seleccionada al azar anteriormente por el Jugador Virtual a 'DESCARTADA'=0 (Carta disponible)
             InitialMenuActivity.gameServicesImpl.modifyTableGameTacticCardAvailabilityByName(cartaTacticaDescartadaPartidaCooperativo.getNombre(), false);
         }
+    }
+
+    private String[] getTacticCardArray(List<CartaTactica> cartasTacticasDisponibles){
+        String[] tacticasArray;
+
+        List<String> tacticas = new ArrayList<String>();
+        for(CartaTactica cartaTactica: cartasTacticasDisponibles){
+            String informacionTactica = cartaTactica.getNumeroOrden() + " - " + cartaTactica.getNombre();
+            tacticas.add(informacionTactica);
+        }
+        tacticasArray = tacticas.toArray(new String[tacticas.size()]);
+
+        return tacticasArray;
     }
 }

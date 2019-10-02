@@ -61,6 +61,8 @@ public interface GameServices {
 
     public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCard(int specialAdvancedActionCardNumber, String colorSecundario);
 
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByNumber(int specialAdvancedActionCardNumber);
+
     public List<CartaAccionAvanzada> getAdvancedActionCards();
 
     public List<CartaAccionAvanzadaEspecial> getSpecialAdvancedActionCards();
@@ -141,6 +143,9 @@ public interface GameServices {
     //Método para insertar informacion en la tabla 'PARTIDA_INFORMACION_RONDA'
     public void insertTableGameSkillTokenInformation(String roundInformation);
 
+    //Método para insertar una nueva fila en la tabla 'PARTIDA_CARTAS_HEROE_DUMMY' con una nueva carta de Acción Avanzada / Acción Avanzada Especial
+    public void insertTableGameNewAdvancedActionCard(int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice);
+
     // ********************************************
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"
@@ -200,5 +205,8 @@ public interface GameServices {
 
     //Método para obtener el nombre de una carta Táctica en concreto
     public String getTacticCardNameFromString(String tacticCard);
+
+    //Método para obtener el nombre de una carta de Acción Avanzada/Acción Avanzada Especial en concreto
+    public int getAdvancedActionCardNumberFromString(String advancedActionCard);
 
 }

@@ -524,6 +524,66 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByNumber(int specialAdvancedActionCardNumber) {
+        cartasCursor = myDB.getAllCartasCursor();
+        cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
+        cartasAccionesAvanzadasCursor = myDB.getAllCartasAccionesAvanzadasCursor();
+
+        String nombreCarta = "";
+        boolean esDescatarda = false;
+        String cristalColor = "";
+        String descripcionBasica = "";
+        String descripcionAvanzada = "";
+        String cristalColorSecundario = "";
+
+        if (cartasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE));
+
+                if(numeroCartaTable==specialAdvancedActionCardNumber){
+                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
+                    esDescatarda = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_3_CARTAS_TABLE)) > 0;
+                    ++i;
+                }
+            }while(cartasCursor.moveToNext() && i < 1);
+        }
+        cartasCursor.close();
+
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_TABLE));
+
+                if(numeroCartaTable==specialAdvancedActionCardNumber){
+                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_TABLE));
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_3_CARTAS_ACCIONES_TABLE));
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_4_CARTAS_ACCIONES_TABLE));
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext() && i < 1);
+        }
+        cartasAccionesCursor.close();
+
+        if (cartasAccionesAvanzadasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesAvanzadasCursor.getInt(cartasAccionesAvanzadasCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
+
+                if(numeroCartaTable==specialAdvancedActionCardNumber){
+                    cristalColorSecundario = cartasAccionesAvanzadasCursor.getString(cartasAccionesAvanzadasCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
+                    ++i;
+                }
+            }while(cartasAccionesAvanzadasCursor.moveToNext() && i < 1);
+        }
+        cartasAccionesAvanzadasCursor.close();
+
+        CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = new CartaAccionAvanzadaEspecial(specialAdvancedActionCardNumber, nombreCarta, esDescatarda, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, Cristal.valueOf(cristalColorSecundario));
+
+        return cartaAccionAvanzadaEspecial;
+    }
+
+    @Override
     public List<CartaAccionAvanzada> getAdvancedActionCards() {
 
         List<CartaAccionAvanzada> cartaAccionAvanzadas = new ArrayList<CartaAccionAvanzada>();
@@ -968,6 +1028,11 @@ public class GameServicesImpl implements GameServices {
         myDB.createGameInformation(roundInformation);
     }
 
+    @Override
+    public void insertTableGameNewAdvancedActionCard(int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice) {
+        myDB.createGameAddedAdvancedActionCard(numeroCarta, nombre, esDescartada, colorCristal, colorSecundarioCristal, descripcionBasica, descripcionAvanzada, heroe, indice);
+    }
+
     // ********************************************
 
     @Override
@@ -1161,6 +1226,15 @@ public class GameServicesImpl implements GameServices {
         }
 
         return tacticCardName.trim();
+    }
+
+    @Override
+    public int getAdvancedActionCardNumberFromString(String advancedActionCard) {
+        String advancedActionCardName = advancedActionCard.substring(0, 3);
+
+        int numeroCartaAccionAvanzada = Integer.parseInt(advancedActionCardName.trim());
+
+        return numeroCartaAccionAvanzada;
     }
 
     // ********************************************

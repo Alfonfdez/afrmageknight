@@ -134,6 +134,11 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         insertDataGameInformation(gameInformation);
     }
 
+    public void createGameAddedAdvancedActionCard(int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice){
+        insertDataGameAddedAdvancedActionCard(numeroCarta, nombre, esDescartada, colorCristal, colorSecundarioCristal, descripcionBasica, descripcionAvanzada, heroe, indice);
+    }
+
+
     // ******************************************************************
 
     //Modificar datos en su correspondiente tabla
@@ -323,6 +328,8 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         return resultado == -1 ? false : true;
     }
 
+    // ******************************************************************
+
     public void deleteGameData(){
         //Necesito una referencia a la base de datos como tal
         SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
@@ -336,6 +343,31 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         db.delete(PARTIDA_CARTAS_HEROE_DUMMY_TABLE,null, null);
         db.delete(PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE,null, null);
         db.delete(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE,null, null);
+    }
+
+    // ******************************************************************
+
+    private boolean insertDataGameAddedAdvancedActionCard(int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, numeroCarta);
+        contentValues.put(COL_2_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, nombre);
+        contentValues.put(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, esDescartada);
+        contentValues.put(COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, colorCristal);
+        contentValues.put(COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, colorSecundarioCristal);
+        contentValues.put(COL_6_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, descripcionBasica);
+        contentValues.put(COL_7_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, descripcionAvanzada);
+        contentValues.put(COL_8_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, heroe);
+        contentValues.put(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, indice);
+
+        long resultado = db.insert(PARTIDA_CARTAS_HEROE_DUMMY_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
     }
 
     // ******************************************************************
