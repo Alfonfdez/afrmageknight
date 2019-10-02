@@ -9,7 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
+import com.afr.afrmageknight.fragments.AdvancedActionCardsDialogFragment;
 import com.afr.afrmageknight.fragments.LevelUpDialogFragment;
+import com.afr.afrmageknight.fragments.SpellCardsDialogFragment;
 import com.afr.afrmageknight.fragments.TacticsDialogFragment;
 import com.afr.afrmageknight.fragments.TacticsListDialogFragment;
 import com.afr.afrmageknight.model.CartaTactica;
@@ -33,6 +35,8 @@ public class GameActivity extends AppCompatActivity {
     private DialogFragment tacticasDialogFragment;
     private DialogFragment tacticasListadoDialogFragment;
     private DialogFragment subidaNivelDialogFragment;
+    private DialogFragment accionesAvanzadasDialogFragment;
+    private DialogFragment hechizosDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class GameActivity extends AppCompatActivity {
         tacticasDialogFragment = new TacticsDialogFragment();
         tacticasListadoDialogFragment = new TacticsListDialogFragment();
         subidaNivelDialogFragment = new LevelUpDialogFragment();
+        accionesAvanzadasDialogFragment = new AdvancedActionCardsDialogFragment();
+        hechizosDialogFragment = new SpellCardsDialogFragment();
 
         //Métodos de inicio en "onCreate"
         checkGameType();
@@ -122,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(GameActivity.this, "Soy el botón FINALIZAR RONDA", Toast.LENGTH_LONG).show();
+                showAccionesAvanzadasDialog();
             }
         });
 
@@ -206,6 +213,14 @@ public class GameActivity extends AppCompatActivity {
 
     private void showSubidaNivelDialog(){
         subidaNivelDialogFragment.show(getSupportFragmentManager(), "Subida de Nivel");
+    }
+
+    private void showAccionesAvanzadasDialog(){
+        accionesAvanzadasDialogFragment.show(getSupportFragmentManager(), "Acciones Avanzadas");
+    }
+
+    private void showHechizosDialog(){
+        hechizosDialogFragment.show(getSupportFragmentManager(), "Hechizos");
     }
 
     private void shuffleDummyPlayerCardsAndUpdateToAvailable(){

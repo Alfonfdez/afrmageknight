@@ -19,21 +19,21 @@ public class AdvancedActionCardsDialogFragment extends DialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        /*String tituloDialogFragment = "Cartas de Acción Avanzada\nCarta inferior de la Oferta para el JV";
-        List<CartaAccionAvanzada> cartasAccionAvanzada = InitialMenuActivity.gameServicesImpl.getAdvancedActionCards();
-        List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspecial = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCards();
+        String tituloDialogFragment = "Cartas de Acción Avanzada\nCarta inferior de la Oferta para el JV";
+        List<CartaAccionAvanzada> cartasAccionesAvanzadas = InitialMenuActivity.gameServicesImpl.getAdvancedActionCards();
+        //List<CartaAccionAvanzadaEspecial> cartasAccionesAvanzadasEspeciales = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCards();
         final String[] accionAvanzadasArray;
 
 
         List<String> accionAvanzadas = new ArrayList<String>();
-        for(CartaAccionAvanzada cartaAccionAvanzada: cartasAccionAvanzada){
+        for(CartaAccionAvanzada cartaAccionAvanzada: cartasAccionesAvanzadas){
             String informacionAccionAvanzada = cartaAccionAvanzada.getNumero() + " - " + cartaAccionAvanzada.getNombre() + " - " + cartaAccionAvanzada.getColor();
-            informacionAccionAvanzada.add(accionAvanzadas);
+            accionAvanzadas.add(informacionAccionAvanzada);
         }
         accionAvanzadasArray = accionAvanzadas.toArray(new String[accionAvanzadas.size()]);
 
-        List<String> accionAvanzadasEspeciales = new ArrayList<String>();
-        for(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial: cartasAccionAvanzadaEspecial){
+        /*List<String> accionAvanzadasEspeciales = new ArrayList<String>();
+        for(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial: cartasAccionesAvanzadasEspeciales){
             String informacionAccionAvanzadaEspecial = cartaAccionAvanzadaEspecial.getNumero() + " - " + cartaAccionAvanzadaEspecial.getNombre() + " - " + cartaAccionAvanzadaEspecial.getColor() + " - " + cartaAccionAvanzadaEspecial.getColorSecundario();
             informacionAccionAvanzadaEspecial.add(accionAvanzadasEspeciales);
         }
@@ -42,7 +42,7 @@ public class AdvancedActionCardsDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        /*builder.setTitle(tituloDialogFragment)
+        builder.setTitle(tituloDialogFragment)
                 .setSingleChoiceItems(accionAvanzadasArray, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -52,7 +52,7 @@ public class AdvancedActionCardsDialogFragment extends DialogFragment {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        ListView lw = ((AlertDialog)dialog).getListView();
+                        /*ListView lw = ((AlertDialog)dialog).getListView();
                         Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
                         String nombreCartaTactica = InitialMenuActivity.gameServicesImpl.getTacticCardNameFromString(checkedItem.toString());
@@ -72,11 +72,11 @@ public class AdvancedActionCardsDialogFragment extends DialogFragment {
                         }
 
                         //Crear método para convertir RONDA_ESTADO_INICIO = 0
-                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(false);
+                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(false);*/
 
                         dialog.dismiss();
                     }
-                });*/
+                });
 
         return builder.create();
     }

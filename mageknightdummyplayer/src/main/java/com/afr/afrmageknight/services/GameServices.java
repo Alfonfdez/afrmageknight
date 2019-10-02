@@ -1,6 +1,9 @@
 package com.afr.afrmageknight.services;
 
 import com.afr.afrmageknight.model.Carta;
+import com.afr.afrmageknight.model.CartaAccion;
+import com.afr.afrmageknight.model.CartaAccionAvanzada;
+import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
@@ -52,6 +55,15 @@ public interface GameServices {
 
     //Método para obtener una ficha de Habilidad
     public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer);
+
+    // ********************************************
+    public CartaAccionAvanzada getAdvancedActionCard(int advancedActionCardNumber);
+
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCard(int specialAdvancedActionCardNumber, String colorSecundario);
+
+    public List<CartaAccionAvanzada> getAdvancedActionCards();
+
+    public List<CartaAccionAvanzadaEspecial> getSpecialAdvancedActionCards();
 
     // ********************************************
 
