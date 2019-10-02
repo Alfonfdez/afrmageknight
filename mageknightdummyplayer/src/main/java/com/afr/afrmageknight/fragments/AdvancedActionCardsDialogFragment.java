@@ -48,10 +48,11 @@ public class AdvancedActionCardsDialogFragment extends DialogFragment {
 
                         if(numeroCarta!=266 && numeroCarta!=267 && numeroCarta!=268 && numeroCarta!=269){
                             CartaAccionAvanzada cartaAccionAvanzada = InitialMenuActivity.gameServicesImpl.getAdvancedActionCard(numeroCarta);
-                            //InitialMenuActivity.gameServicesImpl.insertTableGameNewAdvancedActionCard();
+                            InitialMenuActivity.gameServicesImpl.insertTableGameNewAdvancedActionCard(cartaAccionAvanzada.getNumero(), cartaAccionAvanzada.getNombre(), cartaAccionAvanzada.isDescartada(), cartaAccionAvanzada.getColor().toString(), null, cartaAccionAvanzada.getDescripcionBasica(), cartaAccionAvanzada.getDescripcionAvanzada(), null, InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer());
                             //int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice
                         } else {
                             CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCardByNumber(numeroCarta);
+                            InitialMenuActivity.gameServicesImpl.insertTableGameNewAdvancedActionCard(cartaAccionAvanzadaEspecial.getNumero(), cartaAccionAvanzadaEspecial.getNombre(), cartaAccionAvanzadaEspecial.isDescartada(), cartaAccionAvanzadaEspecial.getColor().toString(), cartaAccionAvanzadaEspecial.getColorSecundario().toString(), cartaAccionAvanzadaEspecial.getDescripcionBasica(), cartaAccionAvanzadaEspecial.getDescripcionAvanzada(), null, InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer());
                         }
 
                         /*ListView lw = ((AlertDialog)dialog).getListView();
