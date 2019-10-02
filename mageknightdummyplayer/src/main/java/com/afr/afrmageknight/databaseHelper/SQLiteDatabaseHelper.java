@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.afr.afrmageknight.activities.InitialMenuActivity;
+import com.afr.afrmageknight.model.CartaAccionAvanzada;
+import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaAccionBasica;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
@@ -37,12 +40,20 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
     // ******************************************************************
 
     //Métodos públicos
-    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+    public void insertAllGameDataSolitaire(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<CartaAccionAvanzada> cartasAccionAvanzadas, List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspeciales, Heroe heroeSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
         createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0, 0);
         createTipoPartida(tipoPartida.toString());
 
         for(CartaTactica cartaTactica: cartasTacticas){
             createCartaTacticaPartida(cartaTactica);
+        }
+
+        for(CartaAccionAvanzada cartaAccionAvanzada : cartasAccionAvanzadas){
+            createCartaAccionAvanzada(cartaAccionAvanzada);
+        }
+
+        for(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial : cartasAccionAvanzadaEspeciales){
+            createCartaAccionAvanzadaEspecial(cartaAccionAvanzadaEspecial);
         }
 
         createHeroeSelectedByPlayer(heroeSelectedByPlayer.getNombre());
@@ -67,12 +78,20 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         }
     }
 
-    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
+    public void insertAllGameDataCooperative(TipoEstado estadoPartida, TipoRonda rondaPartida, TipoPartida tipoPartida, List<CartaTactica> cartasTacticas, List<CartaAccionAvanzada> cartasAccionAvanzadas, List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspeciales, List<Heroe> heroesSelectedByPlayer, Heroe randomHeroeDummyPlayer, List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer, List<Cristal> cristalesDummyPlayer) {
         createEstadoPartida(estadoPartida.toString(), rondaPartida.toString(), true, false, 0, 0);
         createTipoPartida(tipoPartida.toString());
 
         for(CartaTactica cartaTactica: cartasTacticas){
             createCartaTacticaPartida(cartaTactica);
+        }
+
+        for(CartaAccionAvanzada cartaAccionAvanzada : cartasAccionAvanzadas){
+            createCartaAccionAvanzada(cartaAccionAvanzada);
+        }
+
+        for(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial : cartasAccionAvanzadaEspeciales){
+            createCartaAccionAvanzadaEspecial(cartaAccionAvanzadaEspecial);
         }
 
         for(Heroe heroe: heroesSelectedByPlayer){
@@ -106,6 +125,14 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     private void createCartaTacticaPartida(CartaTactica cartaTactica){
         insertDataGameTacticCard(cartaTactica.getNumero(), cartaTactica.getNombre(),false, cartaTactica.getTipoTactica().toString(), cartaTactica.getNumeroOrden(),cartaTactica.getDescripcion());
+    }
+
+    private void createCartaAccionAvanzada(CartaAccionAvanzada cartaAccionAvanzada){
+        insertDataGameAdvancedActionAndSpecialCard(cartaAccionAvanzada.getNumero(), cartaAccionAvanzada.getNombre(), cartaAccionAvanzada.isDescartada(), cartaAccionAvanzada.getColor().toString(), null, cartaAccionAvanzada.getDescripcionBasica(), cartaAccionAvanzada.getDescripcionBasica(), false);
+    }
+
+    private void createCartaAccionAvanzadaEspecial(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial){
+        insertDataGameAdvancedActionAndSpecialCard(cartaAccionAvanzadaEspecial.getNumero(), cartaAccionAvanzadaEspecial.getNombre(), cartaAccionAvanzadaEspecial.isDescartada(), cartaAccionAvanzadaEspecial.getColor().toString(),  cartaAccionAvanzadaEspecial.getColorSecundario().toString(), cartaAccionAvanzadaEspecial.getDescripcionBasica(), cartaAccionAvanzadaEspecial.getDescripcionBasica(), true);
     }
 
     private void createHeroeSelectedByPlayer(String heroSelectedByPlayer){
@@ -249,6 +276,29 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         contentValues.put(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE, descripcion);
 
         long resultado = db.insert(PARTIDA_CARTAS_TACTICAS_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    //Métodos para realizar operaciones CRUD (Create, Read, Update, Delete)
+    private boolean insertDataGameAdvancedActionAndSpecialCard(int numero, String nombre, boolean isDescartadaCartaTactica, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, boolean esEspecial){
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, numero);
+        contentValues.put(COL_2_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, nombre);
+        contentValues.put(COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, isDescartadaCartaTactica);
+        contentValues.put(COL_4_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, colorCristal);
+        contentValues.put(COL_5_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, colorSecundarioCristal);
+        contentValues.put(COL_6_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, descripcionBasica);
+        contentValues.put(COL_7_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, descripcionAvanzada);
+        contentValues.put(COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, esEspecial);
+
+        long resultado = db.insert(PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, null, contentValues);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
         return resultado == -1 ? false : true;

@@ -45,6 +45,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     protected static final String PARTIDA_MODO_TABLE = "PARTIDA_MODO";
     protected static final String PARTIDA_INFORMACION_RONDA_TABLE = "PARTIDA_INFORMACION_RONDA";
     protected static final String PARTIDA_CARTAS_TACTICAS_TABLE = "PARTIDA_CARTAS_TACTICAS";
+    protected static final String PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES";
     protected static final String PARTIDA_HEROES_JUGADOR_TABLE = "PARTIDA_HEROES_JUGADOR";
     protected static final String PARTIDA_HEROE_DUMMY_TABLE = "PARTIDA_HEROE_DUMMY";
     protected static final String PARTIDA_CARTAS_HEROE_DUMMY_TABLE = "PARTIDA_CARTAS_HEROE_DUMMY";
@@ -126,7 +127,15 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     protected static final String COL_5_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
     protected static final String COL_6_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
 
-    //PARTIDA_CARTAS_TACTICAS_TABLE
+    //PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE
+    protected static final String COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "NUMERO";
+    protected static final String COL_2_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "NOMBRE";
+    protected static final String COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "DESCARTADA";
+    protected static final String COL_4_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "COLOR";
+    protected static final String COL_5_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "COLOR_SECUNDARIO";
+    protected static final String COL_6_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "DESCRIPCION_BASICA";
+    protected static final String COL_7_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "DESCRIPCION_AVANZADA";
+    protected static final String COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "ESPECIAL";
 
     // PARTIDA_HEROES_JUGADOR_TABLE
     protected static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
@@ -219,6 +228,9 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_TACTICAS_TABLE);
+        onCreate(db);
+
+        db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE);
         onCreate(db);
 
         db.execSQL("DROP TABLE IF EXISTS " + PARTIDA_HEROES_JUGADOR_TABLE);
@@ -449,7 +461,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         StringBuilder strSQLPartidaCartasTacticaTable = new StringBuilder();
 
         strSQLPartidaCartasTacticaTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_TACTICAS_TABLE).append(" (")
-                .append(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT PRIMARY KEY,")
+                .append(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE).append(" INT PRIMARY KEY,")
                 .append(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
                 .append(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE).append(" BIT NOT NULL,")
                 .append(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE).append(" TEXT NOT NULL,")
@@ -462,6 +474,25 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(strSQLPartidaCartasTacticaTable.toString());
 
+        //PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE
+        StringBuilder strSQLPartidaCartasAccionesAvanzadasYEspecialesTable = new StringBuilder();
+
+        strSQLPartidaCartasAccionesAvanzadasYEspecialesTable.append("CREATE TABLE ").append(PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" (")
+                .append(COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" INT PRIMARY KEY,")
+                .append(COL_2_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" BIT NOT NULL,")
+                .append(COL_4_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_5_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" TEXT,")
+                .append(COL_6_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_7_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" TEXT NOT NULL,")
+                .append(COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE).append(" BIT NOT NULL")
+                .append(")");
+
+        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE");
+        Log.d("DATABASE", strSQLPartidaCartasAccionesAvanzadasYEspecialesTable.toString());
+
+        db.execSQL(strSQLPartidaCartasAccionesAvanzadasYEspecialesTable.toString());
+
         //PARTIDA_HEROES_JUGADOR_TABLE
         StringBuilder strSQLPartidaHeroesJugadorTable = new StringBuilder();
 
@@ -469,7 +500,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_HEROES_JUGADOR_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "QUINTO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
+        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_HEROES_JUGADOR_TABLE");
         Log.d("DATABASE", strSQLPartidaHeroesJugadorTable.toString());
 
         db.execSQL(strSQLPartidaHeroesJugadorTable.toString());
@@ -482,7 +513,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_HEROE_DUMMY_TABLE).append(" TEXT PRIMARY KEY")
                 .append(")");
 
-        Log.d("DATABASE", "SEXTO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "SEPTIMO - ONCREATE_GAME DATA - PARTIDA_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaHeroeDummyTable.toString());
@@ -503,7 +534,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "SEPTIMO - ONCREATE_GAME DATA - PARTIDA_CARTAS_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "OCTAVO - ONCREATE_GAME DATA - PARTIDA_CARTAS_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaCartasHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaCartasHeroeDummyTable.toString());
@@ -521,7 +552,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_6_PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE).append(" INTEGER NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "OCTAVO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "NOVENO - ONCREATE_GAME DATA - PARTIDA_FICHAS_HABILIDAD_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaFichasHabilidadHeroeDummyTable.toString());
@@ -534,7 +565,7 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE).append(" TEXT NOT NULL")
                 .append(")");
 
-        Log.d("DATABASE", "NOVENO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
+        Log.d("DATABASE", "DECIMO - ONCREATE_GAME DATA - PARTIDA_CRISTALES_HEROE_DUMMY_TABLE");
         Log.d("DATABASE", strSQLPartidaCristalesHeroeDummyTable.toString());
 
         db.execSQL(strSQLPartidaCristalesHeroeDummyTable.toString());
@@ -1358,6 +1389,16 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
         // 'selectionArgs' es un array de Strings -> Array[]
         // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
         Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_CARTAS_TACTICAS_TABLE, null);
+
+        return cursor;
+    }
+
+    public Cursor getGameAdvancedActionCardsAndSpecialCursor(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        // 'selectionArgs' es un array de Strings -> Array[]
+        // En la consulta pueden haber ?s que serán sustituidos por los valores de este array de String
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, null);
 
         return cursor;
     }
