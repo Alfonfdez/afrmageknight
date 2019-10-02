@@ -138,6 +138,9 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         insertDataGameAddedAdvancedActionCard(numeroCarta, nombre, esDescartada, colorCristal, colorSecundarioCristal, descripcionBasica, descripcionAvanzada, heroe, indice);
     }
 
+    public void createGameAddedCristal(String nombreCristal){
+        insertDataGameAddedCristal(nombreCristal);
+    }
 
     // ******************************************************************
 
@@ -146,8 +149,24 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         updateDataGameTacticCardAvailabilityByName(nombreCartaTactica, esDescartada);
     }
 
+    public void updateGameStatus(String estadoPartida){
+        updateDataGameGameStatus(estadoPartida);
+    }
+
+    public void updateGameRound(String estadoRondaSiguiente){
+        updateDataGameGameRound(estadoRondaSiguiente);
+    }
+
     public void updateGameStatusRoundBeginning(boolean esRondaInicio){
         updateDataGameGameStatusRoundBeginning(esRondaInicio);
+    }
+
+    public void updateGameStatusRoundEnding(boolean esRondaFinalizada){
+        updateDataGameGameStatusRoundEnding(esRondaFinalizada);
+    }
+
+    public void  updateGameStatusRoundTurn(int numeroTurno){
+        updateDataGameGameStatusRoundTurn(numeroTurno);
     }
 
     public void updateGameStatusPlayerExperience(int experienciaJugador){
@@ -370,6 +389,21 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         return resultado == -1 ? false : true;
     }
 
+    private boolean insertDataGameAddedCristal(String nombreCristal) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE, nombreCristal);
+
+        long resultado = db.insert(PARTIDA_CRISTALES_HEROE_DUMMY_TABLE, null, contentValues);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
     // ******************************************************************
 
     private boolean updateDataGameTacticCardAvailabilityByName(String nombreCartaTactica, boolean esDescartada) {
@@ -389,6 +423,35 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         return resultado == -1 ? false : true;
     }
 
+    private boolean updateDataGameGameStatus(String estadoPartida) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_1_PARTIDA_DATOS_TABLE, estadoPartida);
+
+        long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    private boolean updateDataGameGameRound(String estadoRondaSiguiente) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_2_PARTIDA_DATOS_TABLE, estadoRondaSiguiente);
+
+        long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
 
     private boolean updateDataGameGameStatusRoundBeginning(boolean esRondaInicio) {
         //Necesito una referencia a la base de datos como tal
@@ -398,6 +461,37 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COL_3_PARTIDA_DATOS_TABLE, esRondaInicio);
+
+        long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    private boolean updateDataGameGameStatusRoundEnding(boolean esRondaFinalizada) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_4_PARTIDA_DATOS_TABLE, esRondaFinalizada);
+
+        long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+
+    private boolean updateDataGameGameStatusRoundTurn(int numeroTurno) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_5_PARTIDA_DATOS_TABLE, numeroTurno);
 
         long resultado = db.update(PARTIDA_DATOS_TABLE, contentValues, null, null);
 

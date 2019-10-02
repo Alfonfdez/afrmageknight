@@ -15,6 +15,7 @@ import com.afr.afrmageknight.fragments.SpellCardsDialogFragment;
 import com.afr.afrmageknight.fragments.TacticsDialogFragment;
 import com.afr.afrmageknight.fragments.TacticsListDialogFragment;
 import com.afr.afrmageknight.model.CartaTactica;
+import com.afr.afrmageknight.model.TipoEstado;
 
 import java.util.List;
 
@@ -67,83 +68,55 @@ public class GameActivity extends AppCompatActivity {
         showGameDataOnScreen();
         startRound();
 
-
-
-
-        //Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle
-        /*while(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
-            Log.d("DATABASE","Mientras el juego no haya finalizado ('FINALIZADA') continuaremos en el bucle");
-
-            //La información de la nueva Ronda se actualizará al final de la Ronda anterior
-            textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
-
-            //Los cristales del Jugador Virtual se actualizarán al final de la Ronda anterior
-            textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
-
-            //Mientras la Ronda no haya finalizado (NO sea "true") continuaremos en el bucle
-            while(!InitialMenuActivity.gameServicesImpl.isRoundEnding()){
-                Log.d("DATABASE","Mientras la Ronda no haya finalizado (NO sea \"true\") continuaremos en el bucle");
-
-                //El número de cartas disponibles por el Jugador Virtual se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
-                textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
-
-                //La información general de las acciones que ocurran durante la Ronda se irá actualizando a medida que vayan pasando los turnos dentro de la Ronda
-                textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
-
-                //Mientras la Ronda esté en la fase de Inicio (NO sea "false") continuaremos en el bucle
-                while(InitialMenuActivity.gameServicesImpl.isRoundBeginning()){
-                    Log.d("DATABASE","Mientras la Ronda esté en la fase de Inicio (NO sea \"false\") continuaremos en el bucle");
-
-                    //Si NO estamos en las 2 últimas Rondas ('RONDA_5_DIA' / 'RONDA_6_NOCHE'), mostraremos un cuadro para seleccionar Tácticas
-                    if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){
-                        Log.d("DATABASE","Si NO estamos en las 2 últimas Rondas ('RONDA_5_DIA' / 'RONDA_6_NOCHE'), mostraremos un cuadro para seleccionar Tácticas");
-
-                        if(InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ // TÁCTICAS - SOLITARIO
-                            Log.d("DATABASE","Hemos llegado hasta mostrar cuadro de TACTICAS en modo SOLITARIO");
-                        } else { // TÁCTICAS - COOPERATIVO
-                            Log.d("DATABASE","Hemos llegado hasta mostrar cuadro de TACTICAS en modo COOPERATIVO");
-                        }
-                    }
-
-                    //Si NO estamos en la 1a Ronda ('RONDA_1_DIA'), barajaremos las cartas del Jugador Virtual
-                    if(!InitialMenuActivity.gameServicesImpl.isFirstRound()){
-
-                    }
-                }
-            }
-        }*/
-
-
-
-
-
+        //Jugar Turno a Turno
         buttonContinuarTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GameActivity.this, "Soy el botón CONTINUAR TURNO", Toast.LENGTH_LONG).show();
+                if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+
+                }
             }
         });
 
+        //Finalizar la Ronda
         buttonFinalizarRonda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GameActivity.this, "Soy el botón FINALIZAR RONDA", Toast.LENGTH_LONG).show();
-                showAccionesAvanzadasDialog();
+                if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){ // PARTIDA_ESTADO = EN_PREPARACION || PARTIDA_ESTADO = INICIADA
+                    if(InitialMenuActivity.gameServicesImpl.isLastRound()){ // RONDA = RONDA_6_NOCHE -> Cambiaremos el estado de la partida a PARTIDA_ESTADO = FINALIZADA
+                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatus(TipoEstado.FINALIZADA.toString());
+
+                        //Insertar la información sobre la finalización de la partida
+                        String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationGameFinished();
+                        InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+                    } else {
+                        showHechizosDialog();
+                        showAccionesAvanzadasDialog();
+                        showGameDataOnScreen();
+                    }
+                }
             }
         });
 
+        //Mostrar las Tácticas disponibles
         buttonMostrarTacticas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showListadoTacticasDialog();
+                if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+                    showListadoTacticasDialog();
+                    showGameDataOnScreen();
+                }
             }
         });
 
+        //Mostrar las Fichas de Habilidad del Jugador Virtual disponibles para el nivel del Jugador y aumento de nivel de Experiencia (solo en SOLITARIO)
         buttonSubirNivel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSubidaNivelDialog();
-                showGameDataOnScreen();
+                if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+                    showSubidaNivelDialog();
+                    showGameDataOnScreen();
+                }
             }
         });
 
@@ -172,7 +145,7 @@ public class GameActivity extends AppCompatActivity {
     private void showGameDataOnScreen(){
         textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
         textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
-        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalCardsDummyPlayer()));
+        textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalAvailableCardsDummyPlayer()));
         textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
         textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
         textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());

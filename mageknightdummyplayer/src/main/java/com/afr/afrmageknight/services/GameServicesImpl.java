@@ -9,6 +9,7 @@ import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
 import com.afr.afrmageknight.model.CartaAccionAvanzada;
 import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaAccionBasica;
+import com.afr.afrmageknight.model.CartaAccionHechizo;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
@@ -137,6 +138,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor fichasHabilidadesCursor;
     private Cursor cartasAccionesAvanzadasCursor;
     private Cursor cartasAccionesAvanzadasEspecialesCursor;
+    private Cursor cartasAccionesHechizosCursor;
 
     private Cursor partidaEstadoCursor;
     private Cursor partidaModoCursor;
@@ -433,7 +435,7 @@ public class GameServicesImpl implements GameServices {
     // ********************************************
 
     @Override
-    public CartaAccionAvanzada getAdvancedActionCard(int advancedActionCardNumber) {
+    public CartaAccionAvanzada getAdvancedActionCardByCardNumber(int advancedActionCardNumber) {
 
         cartasCursor = myDB.getAllCartasCursor();
         cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
@@ -479,55 +481,10 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCard(int specialAdvancedActionCardNumber, String colorSecundario) {
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByCardNumber(int specialAdvancedActionCardNumber) {
         cartasCursor = myDB.getAllCartasCursor();
         cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
-
-        String nombreCarta = "";
-        boolean esDescatarda = false;
-        String cristalColor = "";
-        String descripcionBasica = "";
-        String descripcionAvanzada = "";
-
-        if (cartasCursor.moveToFirst()){
-            int i = 0;
-            do{
-                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE));
-
-                if(numeroCartaTable==specialAdvancedActionCardNumber){
-                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
-                    esDescatarda = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_3_CARTAS_TABLE)) > 0;
-                    ++i;
-                }
-            }while(cartasCursor.moveToNext() && i < 1);
-        }
-        cartasCursor.close();
-
-        if (cartasAccionesCursor.moveToFirst()){
-            int i = 0;
-            do{
-                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_TABLE));
-
-                if(numeroCartaTable==specialAdvancedActionCardNumber){
-                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_TABLE));
-                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_3_CARTAS_ACCIONES_TABLE));
-                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_4_CARTAS_ACCIONES_TABLE));
-                    ++i;
-                }
-            }while(cartasAccionesCursor.moveToNext() && i < 1);
-        }
-        cartasAccionesCursor.close();
-
-        CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = new CartaAccionAvanzadaEspecial(specialAdvancedActionCardNumber, nombreCarta, esDescatarda, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, Cristal.valueOf(colorSecundario));
-
-        return cartaAccionAvanzadaEspecial;
-    }
-
-    @Override
-    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByNumber(int specialAdvancedActionCardNumber) {
-        cartasCursor = myDB.getAllCartasCursor();
-        cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
-        cartasAccionesAvanzadasCursor = myDB.getAllCartasAccionesAvanzadasCursor();
+        cartasAccionesAvanzadasEspecialesCursor = myDB.getAllCartasAccionesAvanzadasEspecialesCursor();
 
         String nombreCarta = "";
         boolean esDescatarda = false;
@@ -565,22 +522,172 @@ public class GameServicesImpl implements GameServices {
         }
         cartasAccionesCursor.close();
 
-        if (cartasAccionesAvanzadasCursor.moveToFirst()){
+        if (cartasAccionesAvanzadasEspecialesCursor.moveToFirst()){
             int i = 0;
             do{
-                int numeroCartaTable = cartasAccionesAvanzadasCursor.getInt(cartasAccionesAvanzadasCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
+                int numeroCartaTable = cartasAccionesAvanzadasEspecialesCursor.getInt(cartasAccionesAvanzadasEspecialesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
 
                 if(numeroCartaTable==specialAdvancedActionCardNumber){
-                    cristalColorSecundario = cartasAccionesAvanzadasCursor.getString(cartasAccionesAvanzadasCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
+                    cristalColorSecundario = cartasAccionesAvanzadasEspecialesCursor.getString(cartasAccionesAvanzadasEspecialesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
                     ++i;
                 }
-            }while(cartasAccionesAvanzadasCursor.moveToNext() && i < 1);
+            }while(cartasAccionesAvanzadasEspecialesCursor.moveToNext() && i < 1);
         }
-        cartasAccionesAvanzadasCursor.close();
+        cartasAccionesAvanzadasEspecialesCursor.close();
 
         CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = new CartaAccionAvanzadaEspecial(specialAdvancedActionCardNumber, nombreCarta, esDescatarda, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, Cristal.valueOf(cristalColorSecundario));
 
         return cartaAccionAvanzadaEspecial;
+    }
+
+    @Override
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByCardNumberSecondCristal(int specialAdvancedActionCardNumber, String colorSecundarioCristal) {
+        cartasCursor = myDB.getAllCartasCursor();
+        cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
+
+        String nombreCarta = "";
+        boolean esDescatarda = false;
+        String cristalColor = "";
+        String descripcionBasica = "";
+        String descripcionAvanzada = "";
+
+        if (cartasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE));
+
+                if(numeroCartaTable==specialAdvancedActionCardNumber){
+                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
+                    esDescatarda = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_3_CARTAS_TABLE)) > 0;
+                    ++i;
+                }
+            }while(cartasCursor.moveToNext() && i < 1);
+        }
+        cartasCursor.close();
+
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_TABLE));
+
+                if(numeroCartaTable==specialAdvancedActionCardNumber){
+                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_TABLE));
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_3_CARTAS_ACCIONES_TABLE));
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_4_CARTAS_ACCIONES_TABLE));
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext() && i < 1);
+        }
+        cartasAccionesCursor.close();
+
+        CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = new CartaAccionAvanzadaEspecial(specialAdvancedActionCardNumber, nombreCarta, esDescatarda, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, Cristal.valueOf(colorSecundarioCristal));
+
+        return cartaAccionAvanzadaEspecial;
+    }
+
+    @Override
+    public CartaAccionHechizo getSpellCardByCardNumber(int spellCardNumber) {
+        cartasCursor = myDB.getAllCartasCursor();
+        cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
+        cartasAccionesHechizosCursor = myDB.getAllCartasHechizosCursor();
+
+        String nombreCarta = "";
+        boolean esDescatarda = false;
+        String cristalColor = "";
+        String descripcionBasica = "";
+        String descripcionAvanzada = "";
+        String nombreSecundario = "";
+
+        if (cartasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE));
+
+                if(numeroCartaTable==spellCardNumber){
+                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
+                    esDescatarda = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_3_CARTAS_TABLE)) > 0;
+                    ++i;
+                }
+            }while(cartasCursor.moveToNext() && i < 1);
+        }
+        cartasCursor.close();
+
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_TABLE));
+
+                if(numeroCartaTable==spellCardNumber){
+                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_TABLE));
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_3_CARTAS_ACCIONES_TABLE));
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_4_CARTAS_ACCIONES_TABLE));
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext() && i < 1);
+        }
+        cartasAccionesCursor.close();
+
+        if (cartasAccionesHechizosCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesHechizosCursor.getInt(cartasAccionesHechizosCursor.getColumnIndex(COL_1_CARTAS_HECHIZOS_TABLE));
+
+                if(numeroCartaTable==spellCardNumber){
+                    nombreSecundario = cartasAccionesHechizosCursor.getString(cartasAccionesHechizosCursor.getColumnIndex(COL_2_CARTAS_HECHIZOS_TABLE));
+                    ++i;
+                }
+            }while(cartasAccionesHechizosCursor.moveToNext() && i < 1);
+        }
+        cartasAccionesHechizosCursor.close();
+
+        CartaAccionHechizo cartaAccionHechizo = new CartaAccionHechizo(spellCardNumber, nombreCarta, esDescatarda, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, nombreSecundario);
+
+        return cartaAccionHechizo;
+    }
+
+    @Override
+    public CartaAccionHechizo getSpellCardByCardNumberSecondName(int spellCardNumber, String nombreSecundario) {
+        cartasCursor = myDB.getAllCartasCursor();
+        cartasAccionesCursor = myDB.getAllCartasAccionesCursor();
+
+        String nombreCarta = "";
+        boolean esDescatarda = false;
+        String cristalColor = "";
+        String descripcionBasica = "";
+        String descripcionAvanzada = "";
+
+        if (cartasCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_1_CARTAS_TABLE));
+
+                if(numeroCartaTable==spellCardNumber){
+                    nombreCarta = cartasCursor.getString(cartasCursor.getColumnIndex(COL_2_CARTAS_TABLE));
+                    esDescatarda = cartasCursor.getInt(cartasCursor.getColumnIndex(COL_3_CARTAS_TABLE)) > 0;
+                    ++i;
+                }
+            }while(cartasCursor.moveToNext() && i < 1);
+        }
+        cartasCursor.close();
+
+        if (cartasAccionesCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCartaTable = cartasAccionesCursor.getInt(cartasAccionesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_TABLE));
+
+                if(numeroCartaTable==spellCardNumber){
+                    cristalColor = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_TABLE));
+                    descripcionBasica = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_3_CARTAS_ACCIONES_TABLE));
+                    descripcionAvanzada = cartasAccionesCursor.getString(cartasAccionesCursor.getColumnIndex(COL_4_CARTAS_ACCIONES_TABLE));
+                    ++i;
+                }
+            }while(cartasAccionesCursor.moveToNext() && i < 1);
+        }
+        cartasAccionesCursor.close();
+
+        CartaAccionHechizo cartaAccionHechizo = new CartaAccionHechizo(spellCardNumber, nombreCarta, esDescatarda, Cristal.valueOf(cristalColor), descripcionBasica, descripcionAvanzada, nombreSecundario);
+
+        return cartaAccionHechizo;
     }
 
     @Override
@@ -593,7 +700,7 @@ public class GameServicesImpl implements GameServices {
             do{
                 int numeroAccionAvanzada = cartasAccionesAvanzadasCursor.getInt(cartasAccionesAvanzadasCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_AVANZADAS_TABLE));
 
-                CartaAccionAvanzada cartaAccionAvanzada = getAdvancedActionCard(numeroAccionAvanzada);
+                CartaAccionAvanzada cartaAccionAvanzada = getAdvancedActionCardByCardNumber(numeroAccionAvanzada);
                 cartaAccionAvanzadas.add(cartaAccionAvanzada);
 
             }while(cartasAccionesAvanzadasCursor.moveToNext());
@@ -610,17 +717,35 @@ public class GameServicesImpl implements GameServices {
 
         if (cartasAccionesAvanzadasEspecialesCursor.moveToFirst()){
             do{
-                int numeroAccionAvanzadaEspecial =  cartasAccionesAvanzadasEspecialesCursor.getInt( cartasAccionesAvanzadasEspecialesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
-                String colorSecundario = cartasAccionesAvanzadasEspecialesCursor.getString( cartasAccionesAvanzadasEspecialesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
+                int numeroAccionAvanzadaEspecial =  cartasAccionesAvanzadasEspecialesCursor.getInt(cartasAccionesAvanzadasEspecialesCursor.getColumnIndex(COL_1_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
+                String colorSecundarioCristal =  cartasAccionesAvanzadasEspecialesCursor.getString(cartasAccionesAvanzadasEspecialesCursor.getColumnIndex(COL_2_CARTAS_ACCIONES_AVANZADAS_ESPECIALES_TABLE));
 
-                CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = getSpecialAdvancedActionCard(numeroAccionAvanzadaEspecial, colorSecundario);
+                CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = getSpecialAdvancedActionCardByCardNumberSecondCristal(numeroAccionAvanzadaEspecial, colorSecundarioCristal);
                 cartaAccionAvanzadasEspeciales.add(cartaAccionAvanzadaEspecial);
-
             }while(cartasAccionesAvanzadasEspecialesCursor.moveToNext());
         }
         cartasAccionesAvanzadasEspecialesCursor.close();
 
         return cartaAccionAvanzadasEspeciales;
+    }
+
+    @Override
+    public List<CartaAccionHechizo> getSpellCards() {
+        List<CartaAccionHechizo> cartaAccionHechizos = new ArrayList<CartaAccionHechizo>();
+        cartasAccionesHechizosCursor = myDB.getAllCartasHechizosCursor();
+
+        if (cartasAccionesHechizosCursor.moveToFirst()){
+            do{
+                int numeroHechizo =  cartasAccionesHechizosCursor.getInt(cartasAccionesHechizosCursor.getColumnIndex(COL_1_CARTAS_HECHIZOS_TABLE));
+                String nombreSecundario =  cartasAccionesHechizosCursor.getString(cartasAccionesHechizosCursor.getColumnIndex(COL_2_CARTAS_HECHIZOS_TABLE));
+
+                CartaAccionHechizo cartaAccionHechizo = getSpellCardByCardNumberSecondName(numeroHechizo, nombreSecundario);
+                cartaAccionHechizos.add(cartaAccionHechizo);
+            }while(cartasAccionesHechizosCursor.moveToNext());
+        }
+        cartasAccionesHechizosCursor.close();
+
+        return cartaAccionHechizos;
     }
 
     // ********************************************
@@ -737,6 +862,25 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public int getGameTotalAvailableCardsDummyPlayer() {
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        int numeroCartasDisponiblesTotalJugadorVirtual = 0;
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE)) > 0;
+                if(!esDescartada){
+                    ++numeroCartasDisponiblesTotalJugadorVirtual;
+                }
+            }while(partidaCartasDummyCursor.moveToNext() );
+        }
+        partidaCartasDummyCursor.close();
+
+        return numeroCartasDisponiblesTotalJugadorVirtual;
+    }
+
+    @Override
     public int getGameTotalCardsDummyPlayer() {
         partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
 
@@ -744,11 +888,8 @@ public class GameServicesImpl implements GameServices {
 
         if (partidaCartasDummyCursor.moveToFirst()){
             do{
-                boolean esDescartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE)) > 0;
-                if(!esDescartada){
-                    ++numeroCartasTotalJugadorVirtual;
-                }
-            }while(partidaCartasDummyCursor.moveToNext() );
+                ++numeroCartasTotalJugadorVirtual;
+            }while(partidaCartasDummyCursor.moveToNext());
         }
         partidaCartasDummyCursor.close();
 
@@ -941,6 +1082,62 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public String getGameInformationAdvancedActionCardAddedToDummyPlayer(CartaAccionAvanzada cartaAccionAvanzada) {
+        StringBuilder strInformacionCartaAccionAvanzadaJugadorVirtual = new StringBuilder();
+
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append("- Se añade al mazo del JV la carta de Acción Avanzada inferior de la Oferta: ");
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append(cartaAccionAvanzada.getNumero());
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append(" - ");
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append(cartaAccionAvanzada.getNombre());
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append(" (");
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append(cartaAccionAvanzada.getColor().toString());
+        strInformacionCartaAccionAvanzadaJugadorVirtual.append(").");
+
+        return strInformacionCartaAccionAvanzadaJugadorVirtual.toString();
+    }
+
+    @Override
+    public String getGameInformationSpecialAdvancedActionCardAddedToDummyPlayer(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial) {
+        StringBuilder strInformacionCartaAccionAvanzadaEspecialJugadorVirtual = new StringBuilder();
+
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append("- Se añade al mazo del JV la carta de Acción Avanzada Especial inferior de la Oferta: ");
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(cartaAccionAvanzadaEspecial.getNumero());
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(" - ");
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(cartaAccionAvanzadaEspecial.getNombre());
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(" (");
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(cartaAccionAvanzadaEspecial.getColor().toString());
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(") (");
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(cartaAccionAvanzadaEspecial.getColorSecundario().toString());
+        strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.append(").");
+
+        return strInformacionCartaAccionAvanzadaEspecialJugadorVirtual.toString();
+    }
+
+    @Override
+    public String getGameInformationCristalAddedToDummyPlayer(CartaAccionHechizo cartaAccionHechizo) {
+        StringBuilder strInformacionCristalJugadorVirtual = new StringBuilder();
+
+        strInformacionCristalJugadorVirtual.append("- Se añade un cristal " + cartaAccionHechizo.getColor().toString() + " al Inventario del JV.");
+        strInformacionCristalJugadorVirtual.append("\n");
+        strInformacionCristalJugadorVirtual.append("El color viene dado por la carta de Hechizo inferior de la Oferta: ");
+        strInformacionCristalJugadorVirtual.append(cartaAccionHechizo.getNumero());
+        strInformacionCristalJugadorVirtual.append(" - ");
+        strInformacionCristalJugadorVirtual.append(cartaAccionHechizo.getNombre());
+        strInformacionCristalJugadorVirtual.append(" / ");
+        strInformacionCristalJugadorVirtual.append(cartaAccionHechizo.getNombreSecundario());
+        strInformacionCristalJugadorVirtual.append(".");
+
+        return strInformacionCristalJugadorVirtual.toString();
+    }
+
+    @Override
+    public String getGameInformationGameFinished() {
+        String partidaFinalizada = "- ** PARTIDA FINALIZADA **";
+
+        return partidaFinalizada;
+    }
+
+    @Override
     public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador) {
 
         List<FichaHabilidad> fichaHabilidadesJugadorVirtual = new ArrayList<FichaHabilidad>();
@@ -1033,6 +1230,11 @@ public class GameServicesImpl implements GameServices {
         myDB.createGameAddedAdvancedActionCard(numeroCarta, nombre, esDescartada, colorCristal, colorSecundarioCristal, descripcionBasica, descripcionAvanzada, heroe, indice);
     }
 
+    @Override
+    public void insertTableGameNewCristal(String nombreCristal) {
+        myDB.createGameAddedCristal(nombreCristal);
+    }
+
     // ********************************************
 
     @Override
@@ -1055,8 +1257,28 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public void modifyTableGameStatus(String estadoPartida) {
+        myDB.updateGameStatus(estadoPartida);
+    }
+
+    @Override
+    public void modifyTableGameRound(String estadoRondaSiguiente) {
+        myDB.updateGameRound(estadoRondaSiguiente);
+    }
+
+    @Override
     public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio) {
         myDB.updateGameStatusRoundBeginning(esRondaInicio);
+    }
+
+    @Override
+    public void modifyTableGameStatusRoundEnding(boolean esRondaFinalizada) {
+        myDB.updateGameStatusRoundEnding(esRondaFinalizada);
+    }
+
+    @Override
+    public void modifyTableGameStatusTurnNumber(int numeroTurno) {
+        myDB.updateGameStatusRoundTurn(numeroTurno);
     }
 
     @Override
@@ -1176,7 +1398,7 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public boolean isDummyPlayerCardsFinished() {
-        int numeroCartasTotalJugadorVirtual = getGameTotalCardsDummyPlayer();
+        int numeroCartasTotalJugadorVirtual = getGameTotalAvailableCardsDummyPlayer();
 
         if(numeroCartasTotalJugadorVirtual==0){
             return true;
@@ -1229,12 +1451,31 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public int getAdvancedActionCardNumberFromString(String advancedActionCard) {
-        String advancedActionCardName = advancedActionCard.substring(0, 3);
+    public int getActionCardNumberFromString(String actionCard) {
+        String actionCardNumber = actionCard.substring(0, 3);
 
-        int numeroCartaAccionAvanzada = Integer.parseInt(advancedActionCardName.trim());
+        int numeroCartaAccion = Integer.parseInt(actionCardNumber.trim());
 
-        return numeroCartaAccionAvanzada;
+        return numeroCartaAccion;
+    }
+
+    @Override
+    public String getNextGameRoundFromCurrentRound(String estadoRondaActual) {
+        String estadoRondaSiguiente = "";
+
+        if(estadoRondaActual.equals(TipoRonda.RONDA_1_DIA.toString())){          // RONDA_1_DIA -> RONDA_2_NOCHE
+            estadoRondaSiguiente = TipoRonda.RONDA_2_NOCHE.toString();
+        } else if(estadoRondaActual.equals(TipoRonda.RONDA_2_NOCHE.toString())){ // RONDA_2_NOCHE -> RONDA_3_DIA
+            estadoRondaSiguiente = TipoRonda.RONDA_3_DIA.toString();
+        } else if(estadoRondaActual.equals(TipoRonda.RONDA_3_DIA.toString())){   // RONDA_3_DIA -> RONDA_4_NOCHE
+            estadoRondaSiguiente = TipoRonda.RONDA_4_NOCHE.toString();
+        } else if(estadoRondaActual.equals(TipoRonda.RONDA_4_NOCHE.toString())){ // RONDA_4_NOCHE -> RONDA_5_DIA
+            estadoRondaSiguiente = TipoRonda.RONDA_5_DIA.toString();
+        } else if(estadoRondaActual.equals(TipoRonda.RONDA_5_DIA.toString())){   // RONDA_5_DIA -> RONDA_6_NOCHE
+            estadoRondaSiguiente = TipoRonda.RONDA_6_NOCHE.toString();
+        }
+
+        return estadoRondaSiguiente;
     }
 
     // ********************************************

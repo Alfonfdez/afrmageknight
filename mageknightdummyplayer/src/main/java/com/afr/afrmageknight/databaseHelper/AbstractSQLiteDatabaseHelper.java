@@ -126,6 +126,8 @@ public abstract class AbstractSQLiteDatabaseHelper extends SQLiteOpenHelper {
     protected static final String COL_5_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
     protected static final String COL_6_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
 
+    //PARTIDA_CARTAS_TACTICAS_TABLE
+
     // PARTIDA_HEROES_JUGADOR_TABLE
     protected static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
 

@@ -5,6 +5,7 @@ import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionAvanzada;
 import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaAccionBasica;
+import com.afr.afrmageknight.model.CartaAccionHechizo;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.Cristal;
 import com.afr.afrmageknight.model.FichaHabilidad;
@@ -57,15 +58,30 @@ public interface GameServices {
     public FichaHabilidad getSkillToken(int idFicha, String nombreFichaHabilidad,  String descripcionFichaHabilidad, Heroe randomHeroeDummyPlayer);
 
     // ********************************************
-    public CartaAccionAvanzada getAdvancedActionCard(int advancedActionCardNumber);
 
-    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCard(int specialAdvancedActionCardNumber, String colorSecundario);
+    //Método para obtener una carta de Acción Avanzada por su número de carta
+    public CartaAccionAvanzada getAdvancedActionCardByCardNumber(int advancedActionCardNumber);
 
-    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByNumber(int specialAdvancedActionCardNumber);
+    //Método para obtener una carta de Acción Avanzada Especial por su número de carta
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByCardNumber(int specialAdvancedActionCardNumber);
 
+    //Método para obtener una carta de Acción Avanzada Especial por su número de carta y nombre de color secundario
+    public CartaAccionAvanzadaEspecial getSpecialAdvancedActionCardByCardNumberSecondCristal(int specialAdvancedActionCardNumber, String colorSecundarioCristal);
+
+    //Método para obtener una carta de Hechizo por su número de carta
+    public CartaAccionHechizo getSpellCardByCardNumber(int spellCardNumber);
+
+    //Método para obtener una carta de Hechizo por su número de carta y nombre secundario
+    public CartaAccionHechizo getSpellCardByCardNumberSecondName(int spellCardNumber, String nombreSecundario);
+
+    //Método para obtener un listado de cartas de Acción Avanzada
     public List<CartaAccionAvanzada> getAdvancedActionCards();
 
+    //Método para obtener un listado de cartas de Acción Avanzada Especiales
     public List<CartaAccionAvanzadaEspecial> getSpecialAdvancedActionCards();
+
+    //Método para obtener un listado de cartas de Hechizo
+    public List<CartaAccionHechizo> getSpellCards();
 
     // ********************************************
 
@@ -93,7 +109,10 @@ public interface GameServices {
     // Método para saber los cristales del Jugador Virtual
     public String getGameHeroeCristalsDummyPlayer();
 
-    // Método para saber el total de cartas del Jugador Virtual
+    // Método para saber el total de cartas disponibles del Jugador Virtual
+    public int getGameTotalAvailableCardsDummyPlayer();
+
+    // Método para saber el total de cartas (disponibles y no disponibles) del Jugador Virtual
     public int getGameTotalCardsDummyPlayer();
 
     // Método para obtener todas las cartas disponibles del Jugador Virtual por número de carta ("Descartada" = 0)
@@ -126,6 +145,18 @@ public interface GameServices {
     //Método para obtener un "String" informativo sobre la Ficha de Habilidad escogida del Jugador Virtual en el modo Solitario
     public String getGameInformationSkillTokenDummyPlayerSolitaireType(FichaHabilidad fichaHabilidad);
 
+    //Método para obtener un "String" informativo sobre la carta de Acción Avanzada seleccionada por el Jugador de la parte inferior de la Oferta para añadir al mazo del Jugador Virtual
+    public String getGameInformationAdvancedActionCardAddedToDummyPlayer(CartaAccionAvanzada cartaAccionAvanzada);
+
+    //Método para obtener un "String" informativo sobre la carta de Acción Avanzada Especial seleccionada por el Jugador de la parte inferior de la Oferta para añadir al mazo del Jugador Virtual
+    public String getGameInformationSpecialAdvancedActionCardAddedToDummyPlayer(CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial);
+
+    //Método para obtener un "String" informativo sobre la carta de Hechizo seleccionada por el Jugador de la parte inferior de la Oferta para añadir el cristal al Inventario del Jugador Virtual
+    public String getGameInformationCristalAddedToDummyPlayer(CartaAccionHechizo cartaAccionHechizo);
+
+    //Método para obtener un "String" informativo sobre la finalización de la partida
+    public String getGameInformationGameFinished();
+
     //Método para obtener un "List<FichaHabilidad>" dependiendo del nivel de experiencia del Jugador (Niveles 4, 6, 8, 10)
     public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador);
 
@@ -146,13 +177,28 @@ public interface GameServices {
     //Método para insertar una nueva fila en la tabla 'PARTIDA_CARTAS_HEROE_DUMMY' con una nueva carta de Acción Avanzada / Acción Avanzada Especial
     public void insertTableGameNewAdvancedActionCard(int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice);
 
+    //Método para insertar una nueva fila en la tabla 'PARTIDA_CRISTALES_HEROE_DUMMY' con un nuevo cristal a partir de una carta de Hechizo inferior en la Oferta de Hechizos
+    public void insertTableGameNewCristal(String nombreCristal);
+
     // ********************************************
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"
     public void modifyTableGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada);
 
+    // Método para modificar la columna 'PARTIDA_ESTADO' de la tabla 'PARTIDA_DATOS' (EN_PREPARACION, INICIADA, FINALIZADA)
+    public void modifyTableGameStatus(String estadoPartida);
+
+    // Método para modificar la columna 'RONDA' de la tabla 'PARTIDA_DATOS' (RONDA_2_NOCHE, RONDA_3_DIA, RONDA_4_NOCHE, RONDA_5_DIA, RONDA_6_NOCHE)
+    public void modifyTableGameRound(String estadoRondaSiguiente);
+
     // Método para modificar la columna 'RONDA_ESTADO_INICIO'=0 de la tabla 'PARTIDA_DATOS'
     public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio);
+
+    // Método para modificar la columna 'RONDA_ESTADO_FINALIZADO' de la tabla 'PARTIDA_DATOS'
+    public void modifyTableGameStatusRoundEnding(boolean esRondaInicio);
+
+    // Método para modificar la columna 'TURNO' de la tabla 'PARTIDA_DATOS'
+    public void modifyTableGameStatusTurnNumber(int numeroTurno);
 
     // Método para modificar la columna 'EXPERIENCIA' de la tabla 'PARTIDA_DATOS'
     public void modifyTableGameStatusPlayerExperience(int experienciaJugador);
@@ -206,7 +252,11 @@ public interface GameServices {
     //Método para obtener el nombre de una carta Táctica en concreto
     public String getTacticCardNameFromString(String tacticCard);
 
-    //Método para obtener el nombre de una carta de Acción Avanzada/Acción Avanzada Especial en concreto
-    public int getAdvancedActionCardNumberFromString(String advancedActionCard);
+    //Método para obtener el número de carta a partir de un String de una carta de: Acción Avanzada/Acción Avanzada Especial/Hechizo
+    public int getActionCardNumberFromString(String actionCard);
+
+    //Método para obtener el nombre de la siguiente de Ronda del estado de Partida
+    // RONDA_1_DIA -> RONDA_2_NOCHE / RONDA_2_NOCHE -> RONDA_3_DIA / RONDA_3_DIA -> RONDA_4_NOCHE / RONDA_4_NOCHE -> RONDA_5_DIA / RONDA_5_DIA -> RONDA_6_NOCHE
+    public String getNextGameRoundFromCurrentRound(String estadoRondaActual);
 
 }
