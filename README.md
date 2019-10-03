@@ -47,3 +47,7 @@ Además ofrecer una guía auxiliar con toda la información de todas las cartas 
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappjugarpartidaextra.jpg)
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappjugarpartidaextras.jpg)
 
+
+## 4.	UML POJOS
+
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightappumlpojos.jpg)
