@@ -86,7 +86,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
             createCartaTacticaPartida(cartaTactica);
         }
 
-        for(CartaAccionAvanzada cartaAccionAvanzada : cartasAccionAvanzadas){
+        for(CartaAccionAvanzada cartaAccionAvanzada: cartasAccionAvanzadas){
             createCartaAccionAvanzada(cartaAccionAvanzada);
         }
 
@@ -176,6 +176,10 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         updateDataGameTacticCardAvailabilityByName(nombreCartaTactica, esDescartada);
     }
 
+    public void updateGameAdvancedActionCardAvailabilityByCardNumber(int numeroCartaAccionAvanzada, boolean esDescartada){
+        updateDataGameAdvancedActionCardAvailabilityByCardNumber(numeroCartaAccionAvanzada, esDescartada);
+    }
+
     public void updateGameStatus(String estadoPartida){
         updateDataGameGameStatus(estadoPartida);
     }
@@ -192,7 +196,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         updateDataGameGameStatusRoundEnding(esRondaFinalizada);
     }
 
-    public void  updateGameStatusRoundTurn(int numeroTurno){
+    public void updateGameStatusRoundTurn(int numeroTurno){
         updateDataGameGameStatusRoundTurn(numeroTurno);
     }
 
@@ -407,6 +411,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
         db.delete(PARTIDA_MODO_TABLE,null, null);
         db.delete(PARTIDA_INFORMACION_RONDA_TABLE,null, null);
         db.delete(PARTIDA_CARTAS_TACTICAS_TABLE,null, null);
+        db.delete(PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE,null, null);
         db.delete(PARTIDA_HEROES_JUGADOR_TABLE,null, null);
         db.delete(PARTIDA_HEROE_DUMMY_TABLE,null, null);
         db.delete(PARTIDA_CARTAS_HEROE_DUMMY_TABLE,null, null);
@@ -467,6 +472,23 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
         String[] args = new String[]{nombreCartaTactica};
         long resultado = db.update(PARTIDA_CARTAS_TACTICAS_TABLE, contentValues, COL_2_PARTIDA_CARTAS_TACTICAS_TABLE+"=?", args);
+        //long resultado = db.update(TABLE_NAME, contentValues (valores a modificar), WHERE FILA = args, args);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    private boolean updateDataGameAdvancedActionCardAvailabilityByCardNumber(int numeroCartaAccionAvanzada, boolean esDescartada) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, esDescartada);
+
+        String[] args = new String[]{Integer.toString(numeroCartaAccionAvanzada)};
+        long resultado = db.update(PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, contentValues, COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE+"=?", args);
         //long resultado = db.update(TABLE_NAME, contentValues (valores a modificar), WHERE FILA = args, args);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados

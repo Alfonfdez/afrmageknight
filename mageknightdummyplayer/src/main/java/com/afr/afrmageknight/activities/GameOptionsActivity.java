@@ -64,7 +64,6 @@ public class GameOptionsActivity extends AppCompatActivity {
         // 1) Vamos a instanciar un 'intent'
         final Intent intent = new Intent(this, GameActivity.class);
 
-
         // Botón para insertar toda la información de la partida:
         // 1) Tipo de Partida (Solitario/Cooperativo)
         // 2) Héroes seleccionados por el jugador/los jugadores
@@ -90,27 +89,10 @@ public class GameOptionsActivity extends AppCompatActivity {
 
                         for(TextView textView : heroesTextViews){
                             if(textView.isActivated()){
+
                                 String heroeName = textView.getText().toString();
 
-                                Toast.makeText(GameOptionsActivity.this, "¡TODO OK! Partida en SOLITARIO y 1 único héroe ("+heroeName+") seleccionado", Toast.LENGTH_LONG).show();
-
-                                List<CartaTactica> cartasTacticas = InitialMenuActivity.gameServicesImpl.getTacticCards();
-
-                                List<CartaAccionAvanzada> cartasAccionAvanzadas = InitialMenuActivity.gameServicesImpl.getAdvancedActionCards();
-
-                                List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspeciales = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCards();
-
-                                Heroe heroeSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getAHeroeSelectedByPlayer(heroeName);
-
-                                Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
-
-                                List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-
-                                List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-
-                                List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
-
-                                InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.SOLITARIO, cartasTacticas, cartasAccionAvanzadas, cartasAccionAvanzadaEspeciales, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+                                insertSolitaireGameData(heroeName);
 
                                 // 2) Vamos a cambiar de 'activity'
                                 startActivity(intent);
@@ -141,21 +123,7 @@ public class GameOptionsActivity extends AppCompatActivity {
                             }
                         }
 
-                        List<CartaTactica> cartasTacticas = InitialMenuActivity.gameServicesImpl.getTacticCards();
-
-                        List<CartaAccionAvanzada> cartasAccionAvanzadas = InitialMenuActivity.gameServicesImpl.getAdvancedActionCards();
-
-                        List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspeciales = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCards();
-
-                        List<Heroe> heroesSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getHeroesSelectedByPlayer(heroeNames);
-
-                        Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromHeroesSelectedByPlayer(heroesSelectedByPlayer);
-
-                        List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
-
-                        List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
-
-                        InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.COOPERATIVO, cartasTacticas, cartasAccionAvanzadas, cartasAccionAvanzadaEspeciales, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
+                        insertCooperativeGameData(heroeNames);
 
                         // 2) Vamos a cambiar de 'activity'
                         startActivity(intent);
@@ -257,6 +225,48 @@ public class GameOptionsActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
+    //Métodos privados
+    private void insertSolitaireGameData(String heroeName){
+
+        List<CartaTactica> cartasTacticas = InitialMenuActivity.gameServicesImpl.getTacticCards();
+
+        List<CartaAccionAvanzada> cartasAccionAvanzadas = InitialMenuActivity.gameServicesImpl.getAdvancedActionCards();
+
+        List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspeciales = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCards();
+
+        Heroe heroeSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getAHeroeSelectedByPlayer(heroeName);
+
+        Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromOneHeroeSelectedByPlayer(heroeSelectedByPlayer);
+
+        List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+
+        List<FichaHabilidad> fichaHabilidadesBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledSkillTokensHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+
+        List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+
+        InitialMenuActivity.myDB.insertAllGameDataSolitaire(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.SOLITARIO, cartasTacticas, cartasAccionAvanzadas, cartasAccionAvanzadaEspeciales, heroeSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, fichaHabilidadesBarajadasDummyPlayer, cristalesDummyPlayer);
+    }
+
+    private void insertCooperativeGameData(List<String> heroeNames){
+        List<CartaTactica> cartasTacticas = InitialMenuActivity.gameServicesImpl.getTacticCards();
+
+        List<CartaAccionAvanzada> cartasAccionAvanzadas = InitialMenuActivity.gameServicesImpl.getAdvancedActionCards();
+
+        List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadaEspeciales = InitialMenuActivity.gameServicesImpl.getSpecialAdvancedActionCards();
+
+        List<Heroe> heroesSelectedByPlayer = InitialMenuActivity.gameServicesImpl.getHeroesSelectedByPlayer(heroeNames);
+
+        Heroe randomHeroeDummyPlayer = InitialMenuActivity.gameServicesImpl.getRandomHeroeFromHeroesSelectedByPlayer(heroesSelectedByPlayer);
+
+        List<CartaAccionBasica> cartasAccionBasicasBarajadasDummyPlayer = InitialMenuActivity.gameServicesImpl.getShuffledBasicActionCardsHeroeFromDummyPlayer(randomHeroeDummyPlayer);
+
+        List<Cristal> cristalesDummyPlayer = InitialMenuActivity.gameServicesImpl.getCristalesFromAHeroe(randomHeroeDummyPlayer.getNombre());
+
+        InitialMenuActivity.myDB.insertAllGameDataCooperative(TipoEstado.INICIADA, TipoRonda.RONDA_1_DIA, TipoPartida.COOPERATIVO, cartasTacticas, cartasAccionAvanzadas, cartasAccionAvanzadaEspeciales, heroesSelectedByPlayer, randomHeroeDummyPlayer, cartasAccionBasicasBarajadasDummyPlayer, cristalesDummyPlayer);
+    }
+
+
+
 }

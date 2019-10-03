@@ -115,6 +115,9 @@ public interface GameServices {
     // Método para saber el total de cartas (disponibles y no disponibles) del Jugador Virtual
     public int getGameTotalCardsDummyPlayer();
 
+    // Método para saber el total de cartas de Acción Avanzadas disponibles de la partida
+    public int getGameNumberOfAvailableSpecialAdvancedActionCards();
+
     // Método para obtener todas las cartas disponibles del Jugador Virtual por número de carta ("Descartada" = 0)
     public List<Integer> getGameAvailableCardsDummyPlayerByNumber();
 
@@ -130,8 +133,11 @@ public interface GameServices {
     // Método para obtener aquellas cartas Tácticas de Noche disponibles ("Descartada" = 0 && "Tipo_Tactica" = NOCHE)
     public List<CartaTactica> getGameAvailableNightTacticsCards();
 
-    // Método para obtener una carta Táctica a partir de su nombre
-    public CartaTactica getGameTacticCard(String gameTacticCard);
+    // Método para obtener aquellas cartas de Acción Avanzada disponibles de la Partida ("DESCARTADA" = 0 && "ESPECIAL" = 0)
+    public List<CartaAccionAvanzada> getGameAvailableAdvancedActionCards();
+
+    // Método para obtener aquellas cartas de Acción Avanzada Especiales disponibles de la Partida ("DESCARTADA" = 0 && "ESPECIAL" = 1)
+    public List<CartaAccionAvanzadaEspecial> getGameAvailableSpecialAdvancedActionCards();
 
     // Método para obtener una carta Táctica disponible al azar
     public CartaTactica getGameAvailableRandomTacticCard(List<CartaTactica> gameTacticCardsAvailable);
@@ -184,6 +190,9 @@ public interface GameServices {
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_TACTICAS' en la fila 'NOMBRE'="tacticCardName"
     public void modifyTableGameTacticCardAvailabilityByName(String tacticCardName, boolean esDescartada);
+
+    // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES' en la fila 'NUMERO'="advancedActionCardNumber"
+    public void modifyTableGameAdvancedActionAndSpecialCardAvailabilityByCardNumber(int advancedActionCardNumber, boolean esDescartada);
 
     // Método para modificar la columna 'PARTIDA_ESTADO' de la tabla 'PARTIDA_DATOS' (EN_PREPARACION, INICIADA, FINALIZADA)
     public void modifyTableGameStatus(String estadoPartida);
@@ -246,6 +255,9 @@ public interface GameServices {
 
     //Método para saber si el Jugador tiene Experiencia 2 hasta 8
     public boolean isPlayerExperienceFromTwoToEight();
+
+    //Método para saber si todas las 4 cartas de Acción Avanzadas Especiales de la partida han sido descartas o no
+    public boolean isAllSpecialAdvancedActionCardsDiscarded();
 
     // ********************************************
 

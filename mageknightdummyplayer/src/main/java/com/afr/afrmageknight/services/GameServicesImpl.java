@@ -95,6 +95,16 @@ public class GameServicesImpl implements GameServices {
     protected static final String COL_5_PARTIDA_CARTAS_TACTICAS_TABLE = "NUMERO_ORDEN";
     protected static final String COL_6_PARTIDA_CARTAS_TACTICAS_TABLE = "DESCRIPCION";
 
+    //PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE
+    protected static final String COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "NUMERO";
+    protected static final String COL_2_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "NOMBRE";
+    protected static final String COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "DESCARTADA";
+    protected static final String COL_4_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "COLOR";
+    protected static final String COL_5_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "COLOR_SECUNDARIO";
+    protected static final String COL_6_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "DESCRIPCION_BASICA";
+    protected static final String COL_7_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "DESCRIPCION_AVANZADA";
+    protected static final String COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE = "ESPECIAL";
+
     // PARTIDA_HEROES_JUGADOR_TABLE
     protected static final String COL_1_PARTIDA_HEROES_JUGADOR_TABLE = "NOMBRE";
 
@@ -146,6 +156,7 @@ public class GameServicesImpl implements GameServices {
     private Cursor partidaHeroeDummyCursor;
     private Cursor partidaCristalesDummyCursor;
     private Cursor partidaCartasDummyCursor;
+    private Cursor partidaCartasAccionAvanzadaYEspecialCursor;
     private Cursor partidaCartasTacticas;
     private Cursor partidaFichasHabilidad;
 
@@ -897,6 +908,26 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public int getGameNumberOfAvailableSpecialAdvancedActionCards() {
+        int numeroCartasAccionAvanzadasEspeciales = 0;
+        partidaCartasAccionAvanzadaYEspecialCursor = myDB.getGameAdvancedActionCardsAndSpecialCursor();
+
+        if(partidaCartasAccionAvanzadaYEspecialCursor.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE)) > 0;
+                boolean esEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE)) > 0;
+
+                if(!esDescartada && esEspecial) {
+                    ++numeroCartasAccionAvanzadasEspeciales;
+                }
+            }while(partidaCartasAccionAvanzadaYEspecialCursor.moveToNext());
+        }
+        partidaCartasAccionAvanzadaYEspecialCursor.close();
+
+        return numeroCartasAccionAvanzadasEspeciales;
+    }
+
+    @Override
     public List<Integer> getGameAvailableCardsDummyPlayerByNumber() {
 
         List<Integer> cartasDisponiblesJugadorVirtualPorNumero = new ArrayList<Integer>();
@@ -997,30 +1028,58 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
-    public CartaTactica getGameTacticCard(String gameTacticCard) {
-        CartaTactica cartaTactica = null;
-        partidaCartasTacticas = myDB.getGameTacticCardsCursor();
+    public List<CartaAccionAvanzada> getGameAvailableAdvancedActionCards() {
+        List<CartaAccionAvanzada> cartasAccionAvanzadasDisponibles = new ArrayList<CartaAccionAvanzada>();
+        partidaCartasAccionAvanzadaYEspecialCursor = myDB.getGameAdvancedActionCardsAndSpecialCursor();
 
-        if(partidaCartasTacticas.moveToFirst()){
-            int i = 0;
+        if(partidaCartasAccionAvanzadaYEspecialCursor.moveToFirst()){
             do{
-                String nombreCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_2_PARTIDA_CARTAS_TACTICAS_TABLE));
+                boolean esDescartada = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE)) > 0;
+                boolean esEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE)) > 0;
 
-                if(nombreCartaTactica.equals(gameTacticCard)) {
-                    int numeroCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_1_PARTIDA_CARTAS_TACTICAS_TABLE));
-                    boolean esDescartada = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_3_PARTIDA_CARTAS_TACTICAS_TABLE)) > 0;
-                    String tipoCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_4_PARTIDA_CARTAS_TACTICAS_TABLE));
-                    int numeroOrdenCartaTactica = partidaCartasTacticas.getInt(partidaCartasTacticas.getColumnIndex(COL_5_PARTIDA_CARTAS_TACTICAS_TABLE));
-                    String descripcionCartaTactica = partidaCartasTacticas.getString(partidaCartasTacticas.getColumnIndex(COL_6_PARTIDA_CARTAS_TACTICAS_TABLE));
+                if(!esDescartada && !esEspecial) {
+                    int numeroCartaAccionAvanzada = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String nombreCartaAccionAvanzada = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_2_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String colorCartaAccionAvanzada = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_4_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String descripcionBasicaCartaAccionAvanzada = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_6_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String descripcionAvanzadaCartaAccionAvanzada = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_7_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
 
-                    cartaTactica = new CartaTactica(numeroCartaTactica, nombreCartaTactica, esDescartada, TipoTactica.valueOf(tipoCartaTactica), numeroOrdenCartaTactica, descripcionCartaTactica);
-                    ++i;
+                    CartaAccionAvanzada cartaAccionAvanzada = new CartaAccionAvanzada(numeroCartaAccionAvanzada, nombreCartaAccionAvanzada, esDescartada, Cristal.valueOf(colorCartaAccionAvanzada), descripcionBasicaCartaAccionAvanzada, descripcionAvanzadaCartaAccionAvanzada);
+                    cartasAccionAvanzadasDisponibles.add(cartaAccionAvanzada);
                 }
-            }while(partidaCartasTacticas.moveToNext() && i < 1);
+            }while(partidaCartasAccionAvanzadaYEspecialCursor.moveToNext());
         }
-        partidaCartasTacticas.close();
+        partidaCartasAccionAvanzadaYEspecialCursor.close();
 
-        return cartaTactica;
+        return cartasAccionAvanzadasDisponibles;
+    }
+
+    @Override
+    public List<CartaAccionAvanzadaEspecial> getGameAvailableSpecialAdvancedActionCards() {
+        List<CartaAccionAvanzadaEspecial> cartasAccionAvanzadasEspecialesDisponibles = new ArrayList<CartaAccionAvanzadaEspecial>();
+        partidaCartasAccionAvanzadaYEspecialCursor = myDB.getGameAdvancedActionCardsAndSpecialCursor();
+
+        if(partidaCartasAccionAvanzadaYEspecialCursor.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE)) > 0;
+                boolean esEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_8_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE)) > 0;
+
+                if(!esDescartada && esEspecial) {
+                    int numeroCartaAccionAvanzadaEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String nombreCartaAccionAvanzadaEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_2_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String colorCartaAccionAvanzadaEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_4_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String descripcionBasicaCartaAccionAvanzadaEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_6_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String descripcionAvanzadaCartaAccionAvanzadaEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_7_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+                    String colorSecundarioCartaAccionAvanzadaEspecial = partidaCartasAccionAvanzadaYEspecialCursor.getString(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_5_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+
+                    CartaAccionAvanzadaEspecial cartaAccionAvanzadaEspecial = new CartaAccionAvanzadaEspecial(numeroCartaAccionAvanzadaEspecial, nombreCartaAccionAvanzadaEspecial, esDescartada, Cristal.valueOf(colorCartaAccionAvanzadaEspecial), descripcionBasicaCartaAccionAvanzadaEspecial, descripcionAvanzadaCartaAccionAvanzadaEspecial, Cristal.valueOf(colorSecundarioCartaAccionAvanzadaEspecial));
+                    cartasAccionAvanzadasEspecialesDisponibles.add(cartaAccionAvanzadaEspecial);
+                }
+            }while(partidaCartasAccionAvanzadaYEspecialCursor.moveToNext());
+        }
+        partidaCartasAccionAvanzadaYEspecialCursor.close();
+
+        return cartasAccionAvanzadasEspecialesDisponibles;
     }
 
     @Override
@@ -1257,6 +1316,26 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public void modifyTableGameAdvancedActionAndSpecialCardAvailabilityByCardNumber(int advancedActionCardNumber, boolean esDescartada) {
+        partidaCartasAccionAvanzadaYEspecialCursor = myDB.getGameAdvancedActionCardsAndSpecialCursor();
+
+        if (partidaCartasAccionAvanzadaYEspecialCursor.moveToFirst()) {
+            int i = 0;
+            do {
+                int numeroCartaAccionAvanzada = partidaCartasAccionAvanzadaYEspecialCursor.getInt(partidaCartasAccionAvanzadaYEspecialCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE));
+
+                if (numeroCartaAccionAvanzada==advancedActionCardNumber) {
+                    //Modifica en la fila 'NUMERO'="advancedActionCardNumber" de la tabla 'PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE': la columna 'DESCARTADA'=1
+                    myDB.updateGameAdvancedActionCardAvailabilityByCardNumber(advancedActionCardNumber, esDescartada);
+                    ++i;
+                }
+            } while (partidaCartasAccionAvanzadaYEspecialCursor.moveToNext() && i < 1);
+        }
+        partidaCartasAccionAvanzadaYEspecialCursor.close();
+    }
+
+
+    @Override
     public void modifyTableGameStatus(String estadoPartida) {
         myDB.updateGameStatus(estadoPartida);
     }
@@ -1431,6 +1510,16 @@ public class GameServicesImpl implements GameServices {
         int nivelExperienciaJugador = getGamePlayerExperience();
 
         if(nivelExperienciaJugador == 2 || nivelExperienciaJugador == 4 || nivelExperienciaJugador == 6 || nivelExperienciaJugador == 8 ){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isAllSpecialAdvancedActionCardsDiscarded() {
+        int numeroCartasAccionAvanzadaEspecialesJuego = getGameNumberOfAvailableSpecialAdvancedActionCards();
+
+        if(numeroCartasAccionAvanzadaEspecialesJuego == 0){
             return true;
         }
         return false;

@@ -22,6 +22,9 @@ public class TacticsDialogFragment extends DialogFragment {
         List<CartaTactica> cartasTacticasDisponibles;
         String tituloDialogFragment = "";
 
+        //Si la partida es en COOPERATIVO descartaremos 1 carta Táctica aleatoriamente, que volverá a estar disponible después de la selección de los Jugadores
+        final CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
+
         //Obtener todas las cartas Tácticas disponibles de la Partida
         if(InitialMenuActivity.gameServicesImpl.isDayRound()){  //Ronda de DÍA
             cartasTacticasDisponibles = InitialMenuActivity.gameServicesImpl.getGameAvailableDayTacticsCards();
@@ -32,9 +35,6 @@ public class TacticsDialogFragment extends DialogFragment {
         }
 
         final String[] tacticasArrayFinal = getTacticCardArray(cartasTacticasDisponibles);
-
-        //Si la partida es en COOPERATIVO descartaremos 1 carta Táctica aleatoriamente, que volverá a estar disponible después de la selección de los Jugadores
-        final CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
 
 
         //AlertDialog.Builder
