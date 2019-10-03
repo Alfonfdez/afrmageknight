@@ -7,7 +7,7 @@ Proyecto desarrollado para Android consistente en una aplicación capaz de gesti
 
 La *app* creará una base de datos (BBDD) utilizando la librería SQLite e insertará toda la información necesaria del juego (cartas, fichas, etc.). A partir de esta BBDD se gestionará la partida, proporcionando una ayuda esencial para el jugador que quiera disfrutar *Mage Knight* en modo Solitario o los jugadores que se propongan jugar en modo Cooperativo.
 
-Debido a la constante actualización de la información de la partida en las tablas correspondientes de la *database*, el jugador o jugadores podrán cerrar la aplicación y continuar su partida en cualquier momento otro momento sin miedo a perder sus datos.
+Debido a la constante actualización de la información de la partida en las tablas correspondientes de la *database*, el jugador o jugadores podrán cerrar la aplicación y continuar su partida en cualquier otro momento sin miedo a perder sus datos.
 
 Este proyecto realizará las siguientes acciones resumidas a continuación:
 
