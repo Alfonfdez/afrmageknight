@@ -5,6 +5,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewRondaPartida;
     private TextView textViewInformacionPartida;
 
+    private ScrollView scrollView;
+
     private DialogFragment tacticasDialogFragment;
     private DialogFragment tacticasListadoDialogFragment;
     private DialogFragment subidaNivelDialogFragment;
@@ -58,6 +61,8 @@ public class GameActivity extends AppCompatActivity {
         textViewTipoPartida = (TextView) findViewById(R.id.idTextViewTipoPartida);
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
+
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         tacticasDialogFragment = new TacticsDialogFragment();
         tacticasListadoDialogFragment = new TacticsListDialogFragment();
