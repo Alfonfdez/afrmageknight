@@ -7,21 +7,21 @@ Proyecto desarrollado para Android consistente en una aplicación capaz de gesti
 
 La *app* creará una base de datos (BBDD) utilizando la librería SQLite e insertará toda la información necesaria del juego (cartas, fichas, etc.). A partir de esta BBDD se gestionará la partida, proporcionando una ayuda esencial para el jugador que quiera disfrutar *Mage Knight* en modo Solitario o los jugadores que se propongan jugar en modo Cooperativo.
 
-Debido a la constante actualización de la información de la partida en las tablas correspondientes de la *database*, el jugador o jugadores podrán cerrar la aplicación y continuar su partida en cualquier otro momento sin miedo a perder sus datos.
+Debido a la persistencia de la información de la partida en las correspondientes tablas de la *database*, el jugador o jugadores podrán cerrar la aplicación y continuar su partida, con sus progresos, en cualquier otro momento.
 
-Este proyecto realizará las siguientes acciones resumidas a continuación:
+Este proyecto realizará las siguientes acciones, resumidas a continuación:
 
 -	A partir de la selección del usuario, o usuarios, del tipo de partida a jugar (Solitario o Cooperativo) y del héroe, o héroes seleccionados (los 7 héroes disponibles: Arythea, Tovak, Norowas, Goldyx, Wolfhawk, Krang y Braevalar), el Jugador Virtual escogerá un héroe disponible al azar.
 
--	El héroe del Jugador Virtual dispondrá de inicio 3 cristales y 16 cartas en su mazo.
+-	El héroe del Jugador Virtual dispondrá de inicio de 3 cristales y 16 cartas en su mazo.
 
--	El juego dispondrá de 6 Rondas en total (3 de Día y 3 de Noche) y en cada una de éstas se irán desarrollando turnos donde el Dummy Player irá consumiendo su mazo de cartas, de manera aleatoria, hasta terminarlo. 
+-	El juego dispondrá de 6 Rondas en total (3 de Día y 3 de Noche) y en cada una de éstas se irán desarrollando turnos donde el Dummy Player irá descartando cartas de su mazo, de manera aleatoria, hasta terminarlo.
 
 -	Al inicio de cada Ronda la aplicación de encargará de escoger una Táctica al azar.
 
 -	Al final de cada Ronda se añadirá una carta y un cristal a su Inventario. Estos cristales acelerarán el proceso de descarte de cartas.
 
--	Esta gestión de la app ayudará al jugador humano a tener un tempo aleatorio de la partida que hará que pueda jugar en aquellos escenarios donde no se enfrente a otras personas.
+-	Esta gestión de la app ayudará al jugador humano a tener un *tempo* de la partida, que hará que pueda jugar en aquellos escenarios donde no se enfrente a otras personas.
 
 
 ## 2.	Descripción objetiva
