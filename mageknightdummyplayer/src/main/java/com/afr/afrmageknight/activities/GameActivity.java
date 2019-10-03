@@ -3,6 +3,7 @@ package com.afr.afrmageknight.activities;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -62,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        //scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         tacticasDialogFragment = new TacticsDialogFragment();
         tacticasListadoDialogFragment = new TacticsListDialogFragment();
@@ -241,13 +242,18 @@ public class GameActivity extends AppCompatActivity {
         textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalAvailableCardsDummyPlayer()));
         textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
         textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundWithoutUnderscores());
+
         textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
+        textViewInformacionPartida.setMovementMethod(new ScrollingMovementMethod());
 
         if(InitialMenuActivity.gameServicesImpl.isDummyPlayerWithExtraCristals()){ //Si el Jugador Virtual tiene cristales extras
             textViewCristalesExtrasJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeAddedCristalsDummyPlayer());
         } else {
             textViewCristalesExtrasJugadorVirtual.setText("");
         }
+        //TextView textView = new TextView(this);
+        //textView.setText("Dummy");
+        //scrollView.addView(textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation()));
     }
 
     private void startRound(){
