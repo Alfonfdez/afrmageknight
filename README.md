@@ -29,13 +29,13 @@ Este proyecto realizará las siguientes acciones, resumidas a continuación:
 
 Se ha logrado obtener un programa que permite a los jugadores poder enfocarse en su propia partida sin tener que molestarse a gestionar un Jugador Virtual de manera física.
 
-El programa desarrolla todos los pasos de principio a fin, hasta la finalización de la partida a Mage Knight.
+El programa desarrolla todos los pasos de principio a fin, hasta la finalización de una partida a *Mage Knight Ultimate Edition*.
 
 ### 2b. Objetivos no alcanzados
 
 Las siguientes versiones de la aplicación deberán tener ofrecer la posibilidad de multilenguaje, incluyendo el idioma inglés (aparte del castellano ya incluido en la versión actual).
 
-Además ofrecer una guía auxiliar con toda la información de todas las cartas y fichas del juego de mesa, que ya se encuentra en la propia base de datos.
+Además se podría ofrecer una guía auxiliar con toda la información de todas las cartas y fichas del juego de mesa, que ya se encuentra en la propia base de datos.
 
 
 ## 3.	Capturas de pantalla de la aplicación
