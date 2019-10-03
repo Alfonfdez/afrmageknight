@@ -180,6 +180,7 @@ public class GameActivity extends AppCompatActivity {
                     } else {
                         showHechizosDialog();
                         showAccionesAvanzadasDialog();
+                        startRound();
                         showGameDataOnScreen();
                     }
                 }
@@ -245,9 +246,6 @@ public class GameActivity extends AppCompatActivity {
         } else {
             textViewCristalesExtrasJugadorVirtual.setText("");
         }
-        //TextView textView = new TextView(this);
-        //textView.setText("Dummy");
-        //scrollView.addView(textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation()));
     }
 
     private void startRound(){
@@ -275,6 +273,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    //Mostrar 'Dialogs'
     private void showTacticasDialog(){
         tacticasDialogFragment.show(getSupportFragmentManager(), "Tácticas");
     }

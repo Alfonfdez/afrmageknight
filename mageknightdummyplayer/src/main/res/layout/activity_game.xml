@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageViewJugadorVirtual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mkedjugadorvirtual" />
+
     <Button
         android:id="@+id/idButtonContinuarTurno"
         android:layout_width="150dp"
@@ -35,7 +45,7 @@
         android:id="@+id/idButtonTacticasDisponibles"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@android:color/holo_green_dark"
         android:text="Tácticas"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/guideline43"
@@ -47,7 +57,7 @@
         android:id="@+id/idButtonSubidaNivel"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@android:color/holo_green_dark"
         android:text="Subida Nivel (par)"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/guideline43"
@@ -77,6 +87,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
         app:layout_constraintTop_toTopOf="@+id/guideline17" />
+
+    <TextView
+        android:id="@+id/idTextViewCristalesFinalesJV"
+        android:layout_width="197dp"
+        android:layout_height="37dp"
+        android:gravity="center"
+        android:text="Cristales extras"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline28"
+        app:layout_constraintTop_toTopOf="@+id/guideline19" />
 
     <TextView
         android:id="@+id/idTextViewCartasJV"
@@ -114,17 +137,17 @@
         app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
     <TextView
-        android:id="@+id/textViewJugarRonda"
+        android:id="@+id/textViewDatosJugadorVirtual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jugar Ronda"
+        android:text="Datos Jugador Virtual (JV)"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline41"
+        app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline22" />
+        app:layout_constraintTop_toTopOf="@+id/guideline31" />
 
     <TextView
         android:id="@+id/textViewJugadorVirtual"
@@ -153,6 +176,19 @@
         app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
     <TextView
+        android:id="@+id/textViewCristalesFinalesJV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cristales añadidos:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toStartOf="@+id/guideline28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline19" />
+
+    <TextView
         android:id="@+id/textViewCartasJV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -164,6 +200,19 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline20" />
+
+    <TextView
+        android:id="@+id/textViewJugarRonda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jugar Ronda"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline41"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline22" />
 
     <TextView
         android:id="@+id/textViewTipo"
@@ -190,6 +239,28 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline23" />
+
+    <LinearLayout
+        android:layout_width="375dp"
+        android:layout_height="225dp"
+        android:background="@android:color/background_light"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guideline15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline25">
+
+        <TextView
+            android:id="@+id/idTextViewInformacionPartida"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:text="Rondas JV"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline16"
@@ -224,14 +295,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.27" />
+        app:layout_constraintGuide_percent="0.28" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.31" />
+        app:layout_constraintGuide_percent="0.32" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline22"
@@ -239,7 +310,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="visible"
-        app:layout_constraintGuide_percent="0.32" />
+        app:layout_constraintGuide_percent="0.33" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline23"
@@ -297,81 +368,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.15" />
 
-    <TextView
-        android:id="@+id/textViewCristalesFinalesJV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cristales añadidos:"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline20"
-        app:layout_constraintEnd_toStartOf="@+id/guideline28"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline19" />
-
-    <TextView
-        android:id="@+id/idTextViewCristalesFinalesJV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cristales extras"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/guideline20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline19" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Datos Jugador Virtual (JV)"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline32"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline31" />
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.53" />
-
-    <LinearLayout
-        android:layout_width="375dp"
-        android:layout_height="225dp"
-        android:background="@android:color/black"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideline15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline25">
-
-        <TextView
-            android:id="@+id/idTextViewInformacionPartida"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:gravity="center_vertical"
-            android:text="Rondas JV"
-            android:textColor="@android:color/background_light" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline14"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mkedjugadorvirtual" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline18"
@@ -392,7 +394,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.37" />
+        app:layout_constraintGuide_percent="0.38" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline43"

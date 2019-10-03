@@ -158,6 +158,7 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     public void createGameInformation(String gameInformation){
         insertDataGameInformation(gameInformation);
+        insertDataGameInformation("");
     }
 
     public void createGameAddedAdvancedActionCard(int numeroCarta, String nombre, boolean esDescartada, String colorCristal, String colorSecundarioCristal, String descripcionBasica, String descripcionAvanzada, String heroe, int indice){
