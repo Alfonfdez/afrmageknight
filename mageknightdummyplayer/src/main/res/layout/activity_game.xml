@@ -49,7 +49,7 @@
         android:id="@+id/idTextViewNombreHeroeJV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="JV"
+        android:text="Héroe JV"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
@@ -58,15 +58,15 @@
         app:layout_constraintTop_toTopOf="@+id/guideline24" />
 
     <TextView
-        android:id="@+id/idTextViewCristalesJV"
+        android:id="@+id/idTextViewCristalesInicialesJV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cristales"
+        android:text="Cristales iniciales"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintBottom_toTopOf="@+id/guideline19"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline19" />
+        app:layout_constraintStart_toStartOf="@+id/guideline28"
+        app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
     <TextView
         android:id="@+id/idTextViewCartasJV"
@@ -74,10 +74,9 @@
         android:layout_height="wrap_content"
         android:text="16"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/guideline22"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline21" />
+        app:layout_constraintStart_toStartOf="@+id/guideline28"
+        app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
     <TextView
         android:id="@+id/idTextViewTipoPartida"
@@ -152,13 +151,15 @@
         app:layout_constraintTop_toTopOf="@+id/guideline24" />
 
     <TextView
-        android:id="@+id/textViewCristalesJV"
+        android:id="@+id/textViewCristalesInicialesJV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cristales de maná"
-        android:textColor="@android:color/holo_blue_dark"
+        android:text="Cristales iniciales:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline19"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
@@ -167,9 +168,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cartas restantes"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline21"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline20" />
 
@@ -320,5 +323,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.32" />
+
+    <TextView
+        android:id="@+id/textViewCristalesFinalesJV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cristales añadidos:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toStartOf="@+id/guideline28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline19" />
+
+    <TextView
+        android:id="@+id/idTextViewCristalesFinalesJV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cristales extras"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline28"
+        app:layout_constraintTop_toTopOf="@+id/guideline19" />
 
 </android.support.constraint.ConstraintLayout>

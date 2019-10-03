@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.model.CartaAccionAvanzada;
 import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -178,6 +177,10 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
     public void updateGameAdvancedActionCardAvailabilityByCardNumber(int numeroCartaAccionAvanzada, boolean esDescartada){
         updateDataGameAdvancedActionCardAvailabilityByCardNumber(numeroCartaAccionAvanzada, esDescartada);
+    }
+
+    public void updateGameDummyPlayerCardAvailabilityByCardNumber(int numeroCarta, boolean esDescartada){
+        updateDataGameDummyPlayerCardAvailabilityByCardNumber(numeroCarta, esDescartada);
     }
 
     public void updateGameStatus(String estadoPartida){
@@ -489,6 +492,23 @@ public class SQLiteDatabaseHelper extends AbstractSQLiteDatabaseHelper {
 
         String[] args = new String[]{Integer.toString(numeroCartaAccionAvanzada)};
         long resultado = db.update(PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE, contentValues, COL_1_PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES_TABLE+"=?", args);
+        //long resultado = db.update(TABLE_NAME, contentValues (valores a modificar), WHERE FILA = args, args);
+
+        //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados
+        return resultado == -1 ? false : true;
+    }
+
+    private boolean updateDataGameDummyPlayerCardAvailabilityByCardNumber(int numeroCarta, boolean esDescartada) {
+        //Necesito una referencia a la base de datos como tal
+        SQLiteDatabase db = getWritableDatabase(); // El método 'getWritableDatabase()' nos da una referencia SÍ o SÍ. Si existe, ésa misma, y sino nos creará una nueva
+
+        //Objeto específico de SQLite. Contenedor de valores: valores a insertar en la tabla.
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE, esDescartada);
+
+        String[] args = new String[]{Integer.toString(numeroCarta)};
+        long resultado = db.update(PARTIDA_CARTAS_HEROE_DUMMY_TABLE, contentValues, COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE+"=?", args);
         //long resultado = db.update(TABLE_NAME, contentValues (valores a modificar), WHERE FILA = args, args);
 
         //Si 'resultado' es igual a -1 es que algo ha ido mal - Si 'resultado' es mayor o igual a 0, indicará el número de registros afectados

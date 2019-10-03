@@ -17,6 +17,7 @@ import com.afr.afrmageknight.fragments.TacticsListDialogFragment;
 import com.afr.afrmageknight.model.CartaTactica;
 import com.afr.afrmageknight.model.TipoEstado;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
@@ -27,7 +28,8 @@ public class GameActivity extends AppCompatActivity {
     private Button buttonSubirNivel;
 
     private TextView textViewNombreJugadorVirtual;
-    private TextView textViewCristalesJugadorVirtual;
+    private TextView textViewCristalesInicialesJugadorVirtual;
+    private TextView textViewCristalesExtrasJugadorVirtual;
     private TextView textViewNumeroTotalCartasJugadorVirtual;
     private TextView textViewTipoPartida;
     private TextView textViewRondaPartida;
@@ -50,7 +52,8 @@ public class GameActivity extends AppCompatActivity {
         buttonSubirNivel = (Button) findViewById(R.id.idButtonSubidaNivel);
 
         textViewNombreJugadorVirtual = (TextView) findViewById(R.id.idTextViewNombreHeroeJV);
-        textViewCristalesJugadorVirtual = (TextView) findViewById(R.id.idTextViewCristalesJV);
+        textViewCristalesInicialesJugadorVirtual = (TextView) findViewById(R.id.idTextViewCristalesInicialesJV);
+        textViewCristalesExtrasJugadorVirtual = (TextView) findViewById(R.id.idTextViewCristalesFinalesJV);
         textViewNumeroTotalCartasJugadorVirtual = (TextView) findViewById(R.id.idTextViewCartasJV);
         textViewTipoPartida = (TextView) findViewById(R.id.idTextViewTipoPartida);
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
@@ -75,6 +78,11 @@ public class GameActivity extends AppCompatActivity {
                 if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){ // PARTIDA_ESTADO = EN_PREPARACION || PARTIDA_ESTADO = INICIADA
                     if(!InitialMenuActivity.gameServicesImpl.isRoundEnding()){ // RONDA_ESTADO_FINALIZADO = 0
 
+                        //Aumentaremos en 1 el número del Turno
+                        int numeroTurno = InitialMenuActivity.gameServicesImpl.getGameTurnInformation();
+                        int siguienteTurno = ++numeroTurno;
+                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusTurnNumber(siguienteTurno);
+
                         if(InitialMenuActivity.gameServicesImpl.isDummyPlayerCardsFinished()){ // Si el mazo de cartas del Jugador Virtual está vacío (0), cambiaremos a 'RONDA_ESTADO_FINALIZADO' = 1
                             // Cambiaremos a 'RONDA_ESTADO_FINALIZADO' = 1 de la tabla 'PARTIDO_DATOS'
                             InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundEnding(true);
@@ -82,20 +90,76 @@ public class GameActivity extends AppCompatActivity {
                             //Insertar la información de la Ronda finalizada
                             String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationRoundFinishedByEmptyDeedDeckDummyPlayer();
                             InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+
+                            showGameDataOnScreen();
                         } else {
+                            int numeroCartasDescartadasPrincipio = 0;
 
-                            //todo
+                            //Seleccionaremos las 3 primeras cartas con índices inferiores del Jugador Virtual (Si es posible, sino 2 cartas y sino 1 carta solamente)
+                            for(int i = 0 ; i < 3; i++){
+                                if(!InitialMenuActivity.gameServicesImpl.isDummyPlayerCardsFinished()){ //Si el mazo de cartas del Jugador Virtual NO está vacío, seguiremos descartando cartas (hasta un máximo de 3 descartes)
+                                    int numeroIndiceCartaADescartar = InitialMenuActivity.gameServicesImpl.getMinIndexFromFirstToBeDiscardedGameCardsDummyPlayerDuringTurn();
+                                    int numeroCartaADescartar = InitialMenuActivity.gameServicesImpl.getCardNumberDummyPlayerTurnFromIndex(numeroIndiceCartaADescartar);
 
+                                    //Método para descartar ('DESCARTADA' = 1) la carta del mazo del Jugador Virtual a partir de su numero de carta
+                                    InitialMenuActivity.gameServicesImpl.modifyTableGameDummyPlayerCardAvailabilityByCardNumber(numeroCartaADescartar, true);
 
+                                    ++numeroCartasDescartadasPrincipio;
+                                }
+                                i++;
+                            }
 
+                            int numeroIndiceUltimaCartaDescartada = InitialMenuActivity.gameServicesImpl.getMaxIndexFromDiscardedGameCardsDummyPlayerDuringTurn();
+                            int numeroUltimaCartaDescartada = InitialMenuActivity.gameServicesImpl.getCardNumberDummyPlayerTurnFromIndex(numeroIndiceUltimaCartaDescartada);
 
+                            String colorCarta = "";
+                            List<String> coloresCarta = new ArrayList<String>();
+                            int numeroCartasExtrasADescartar = 0;
 
+                            if(!InitialMenuActivity.gameServicesImpl.isLastDiscardedCardDummyPlayerSpecialAdvancedActionCardType(numeroUltimaCartaDescartada)){ // La última carta descartada es de tipo Básica / Acción Avanzada (1 único color)
+                                colorCarta = InitialMenuActivity.gameServicesImpl.getColorFromLastDiscardedCardDummyPlayerTurnByCardNumber(numeroUltimaCartaDescartada);
 
+                                // Si la última carta descartada es de tipo Básica / Acción Avanzada (1 color), descartaremos tantas cartas extras del mazo del Jugador Virtual, como cristales de ese color tenga en el Inventario
+                                numeroCartasExtrasADescartar = InitialMenuActivity.gameServicesImpl.getNumberOfExtraCardsToBeDiscardedByLastCardDiscardedColor(colorCarta);
 
+                                //Insertar la información del Turno sobre las primeras cartas descartadas y el color de la última carta descartada
+                                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTurnFirstDiscardedCardsLastCardBasicOrAdvancedActionCardType(numeroCartasDescartadasPrincipio, colorCarta, siguienteTurno);
+                                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+                            } else {  // La última carta descartada es de tipo Acción Avanzada Especial (2 colores)
+                                coloresCarta = InitialMenuActivity.gameServicesImpl.getColorsFromLastDiscardedCardDummyPlayerTurnByCardNumber(numeroUltimaCartaDescartada);
 
+                                // Si la última carta descartada es de Acción Avanzada Especial (2 colores), descartaremos tantas cartas extras del mazo del Jugador Virtual, como cristales de esos colores tenga en el Inventario
+                                numeroCartasExtrasADescartar = InitialMenuActivity.gameServicesImpl.getNumberOfExtraCardsToBeDiscardedByLastCardDiscardedColors(coloresCarta);
 
+                                //Insertar la información del Turno sobre las primeras cartas descartadas y los colores de la última carta descartada
+                                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTurnFirstDiscardedCardsLastCardSpecialAdvancedActionCardType(numeroCartasDescartadasPrincipio, coloresCarta, siguienteTurno);
+                                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+                            }
 
+                            //Si ha habido alguna coincidencia de color de última carta descartada con los cristales del Inventario del JV, descartaremos tantas cartas como coincidencias hayan habido (si esto es posible)
+                            if(numeroCartasExtrasADescartar != 0){
+                                int numeroCartasDescartadasExtras = 0;
 
+                                //Descartaremos tantas cartas extras como número de coincidencias con el color o colores de la última carta descartada del mazo del Jugador Virtual (Si es posible todavía descartar más cartas del mazo)
+                                for(int i = 0 ; i < numeroCartasExtrasADescartar; i++){
+                                    if(!InitialMenuActivity.gameServicesImpl.isDummyPlayerCardsFinished()){ //Si el mazo de cartas del Jugador Virtual NO está vacío, seguiremos descartando cartas
+                                        int numeroIndiceCartaADescartarExtra = InitialMenuActivity.gameServicesImpl.getMinIndexFromFirstToBeDiscardedGameCardsDummyPlayerDuringTurn();
+                                        int numeroCartaADescartarExtra = InitialMenuActivity.gameServicesImpl.getCardNumberDummyPlayerTurnFromIndex(numeroIndiceCartaADescartarExtra);
+
+                                        //Método para descartar ('DESCARTADA' = 1) la carta del mazo del Jugador Virtual a partir de su numero de carta
+                                        InitialMenuActivity.gameServicesImpl.modifyTableGameDummyPlayerCardAvailabilityByCardNumber(numeroCartaADescartarExtra, true);
+
+                                        ++numeroCartasDescartadasExtras;
+                                    }
+                                    i++;
+                                }
+
+                                //Insertar la información del Turno sobre el número de cartas extras descartadas
+                                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTurnSecondExtraDiscardedCards(numeroCartasDescartadasExtras);
+                                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+                            }
+
+                            showGameDataOnScreen();
                         }
                     }
                 }
@@ -168,11 +232,17 @@ public class GameActivity extends AppCompatActivity {
 
     private void showGameDataOnScreen(){
         textViewNombreJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeNameDummyPlayer());
-        textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
+        textViewCristalesInicialesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeInitialCristalsDummyPlayer());
         textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalAvailableCardsDummyPlayer()));
         textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
         textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundWithoutUnderscores());
         textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
+
+        if(InitialMenuActivity.gameServicesImpl.isDummyPlayerWithExtraCristals()){ //Si el Jugador Virtual tiene cristales extras
+            textViewCristalesExtrasJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeAddedCristalsDummyPlayer());
+        } else {
+            textViewCristalesExtrasJugadorVirtual.setText("");
+        }
     }
 
     private void startRound(){

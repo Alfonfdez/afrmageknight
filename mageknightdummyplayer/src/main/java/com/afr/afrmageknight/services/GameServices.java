@@ -1,7 +1,5 @@
 package com.afr.afrmageknight.services;
 
-import com.afr.afrmageknight.model.Carta;
-import com.afr.afrmageknight.model.CartaAccion;
 import com.afr.afrmageknight.model.CartaAccionAvanzada;
 import com.afr.afrmageknight.model.CartaAccionAvanzadaEspecial;
 import com.afr.afrmageknight.model.CartaAccionBasica;
@@ -101,13 +99,25 @@ public interface GameServices {
     public int getGamePlayerExperiencePlusTwo();
 
     // Método para saber la información de la Ronda
+    public int getGameTurnInformation();
+
+    // Método para saber la información de la Ronda
     public String getGameRoundInformation();
 
     // Método para saber el nombre del héroe que lleva el Jugador Virtual
     public String getGameHeroeNameDummyPlayer();
 
+    // Método para saber el número de cristales del Jugador Virtual
+    public int getGameHeroeNumberOfCristalsDummyPlayer();
+
     // Método para saber los cristales del Jugador Virtual
     public String getGameHeroeCristalsDummyPlayer();
+
+    // Método para saber los cristales iniciales del Jugador Virtual
+    public String getGameHeroeInitialCristalsDummyPlayer();
+
+    // Método para saber los cristales que vaya añadiendo el Jugador Virtual
+    public String getGameHeroeAddedCristalsDummyPlayer();
 
     // Método para saber el total de cartas disponibles del Jugador Virtual
     public int getGameTotalAvailableCardsDummyPlayer();
@@ -118,8 +128,29 @@ public interface GameServices {
     // Método para saber el total de cartas de Acción Avanzadas disponibles de la partida
     public int getGameNumberOfAvailableSpecialAdvancedActionCards();
 
-    // Método para obtener todas las cartas disponibles del Jugador Virtual por número de carta ("Descartada" = 0)
+    // Método para obtener todas las cartas disponibles del Jugador Virtual por número de carta ('DESCARTADA' = 0)
     public List<Integer> getGameAvailableCardsDummyPlayerByNumber();
+
+    // Método para obtener el número de índice mínimo de aquella carta disponible ('DESCARTADA' = 0) del mazo de cartas del Jugador Virtual (Será la primera carta a descartar)
+    public int getMinIndexFromFirstToBeDiscardedGameCardsDummyPlayerDuringTurn();
+
+    // Método para obtener el número de índice máximo de aquella carta NO disponible ('DESCARTADA' = 1) del mazo de cartas del Jugador Virtual (Última carta descartada durante el turno)
+    public int getMaxIndexFromDiscardedGameCardsDummyPlayerDuringTurn();
+
+    // Método para obtener el número de la carta a partir de su número de Índice
+    public int getCardNumberDummyPlayerTurnFromIndex(int cardIndex);
+
+    // Método para obtener 1 color de la última carta descarta del mazo del Jugador Virtual (Básica / Acción Avanzada)
+    public String getColorFromLastDiscardedCardDummyPlayerTurnByCardNumber(int numeroUltimaCartaDescartadaJugadorVirtual);
+
+    // Método para obtener 2 colores de la última carta descarta del mazo del Jugador Virtual (Acción Avanzada Especial)
+    public List<String> getColorsFromLastDiscardedCardDummyPlayerTurnByCardNumber(int numeroUltimaCartaDescartadaJugadorVirtual);
+
+    //Método para obtener el número de cartas extras a Descartar (si es posible) a partir del color de la última carta descartada del Jugador Virtual
+    public int getNumberOfExtraCardsToBeDiscardedByLastCardDiscardedColor(String color);
+
+    //Método para obtener el número de cartas extras a Descartar (si es posible) a partir de los colores de la última carta descartada del Jugador Virtual
+    public int getNumberOfExtraCardsToBeDiscardedByLastCardDiscardedColors(List<String> colores);
 
     // Método para obtener todas las cartas del Jugador Virtual por número de carta
     public List<Integer> getGameCardsDummyPlayerByNumber();
@@ -160,6 +191,15 @@ public interface GameServices {
     //Método para obtener un "String" informativo sobre la carta de Hechizo seleccionada por el Jugador de la parte inferior de la Oferta para añadir el cristal al Inventario del Jugador Virtual
     public String getGameInformationCristalAddedToDummyPlayer(CartaAccionHechizo cartaAccionHechizo);
 
+    //Método para obtener un "String" informativo sobre el principio del Turno con sus correspondientes descartes (última carta de Tipo Básica o Acción Avanzada)
+    public String getGameInformationTurnFirstDiscardedCardsLastCardBasicOrAdvancedActionCardType(int numeroCartasDescartadas, String colorUltimaCartaDescartada, int numeroTurno);
+
+    //Método para obtener un "String" informativo sobre el principio del Turno con sus correspondientes descartes (última carta de Tipo Acción Avanzada Especial)
+    public String getGameInformationTurnFirstDiscardedCardsLastCardSpecialAdvancedActionCardType(int numeroCartasDescartadas, List<String> coloresUltimaCartaDescartada, int numeroTurno);
+
+    //Método para obtener un "String" informativo sobre el final del Turno con el número de descartes extras
+    public String getGameInformationTurnSecondExtraDiscardedCards(int numeroCartasExtrasDescartadas);
+
     //Método para obtener un "String" informativo sobre la finalización de la partida
     public String getGameInformationGameFinished();
 
@@ -196,6 +236,9 @@ public interface GameServices {
 
     // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_ACCIONES_AVANZADAS_Y_ESPECIALES' en la fila 'NUMERO'="advancedActionCardNumber"
     public void modifyTableGameAdvancedActionAndSpecialCardAvailabilityByCardNumber(int advancedActionCardNumber, boolean esDescartada);
+
+    // Método para modificar la columna 'DESCARTADA'=1 de la tabla 'PARTIDA_CARTAS_HEROE_DUMMY' en la fila 'NUMERO'="cardNumber"
+    public void modifyTableGameDummyPlayerCardAvailabilityByCardNumber(int cardNumber, boolean esDescartada);
 
     // Método para modificar la columna 'PARTIDA_ESTADO' de la tabla 'PARTIDA_DATOS' (EN_PREPARACION, INICIADA, FINALIZADA)
     public void modifyTableGameStatus(String estadoPartida);
@@ -261,6 +304,12 @@ public interface GameServices {
 
     //Método para saber si todas las 4 cartas de Acción Avanzadas Especiales de la partida han sido descartas o no
     public boolean isAllSpecialAdvancedActionCardsDiscarded();
+
+    //Método para saber si la última carta descarta es: Básica/Acción Avanzada (1 cristal) (false) o Acción Avanzada Especial (2 cristales) (true) a partir de su numero de carta
+    public boolean isLastDiscardedCardDummyPlayerSpecialAdvancedActionCardType(int numeroUltimaCartaDescartadaJugadorVirtual);
+
+    //Método para saber si el Jugador Virtual ha obtenido cristales extras o no
+    public boolean isDummyPlayerWithExtraCristals();
 
     // ********************************************
 

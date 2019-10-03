@@ -823,6 +823,20 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public int getGameTurnInformation() {
+        partidaEstadoCursor = myDB.getGameStatusCursor();
+
+        int numeroTurno = 0;
+
+        if (partidaEstadoCursor.moveToFirst()){
+            numeroTurno = partidaEstadoCursor.getInt(partidaEstadoCursor.getColumnIndex(COL_5_PARTIDA_DATOS_TABLE));
+        }
+        partidaEstadoCursor.close();
+
+        return numeroTurno;
+    }
+
+    @Override
     public String getGameRoundInformation() {
         partidaInformacionRondaCursor = myDB.getGameRoundInformationCursor();
 
@@ -855,21 +869,78 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public int getGameHeroeNumberOfCristalsDummyPlayer() {
+        int numeroCristales = 0;
+        partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
+
+        if (partidaCristalesDummyCursor.moveToFirst()) {
+            do {
+                ++numeroCristales;
+            } while (partidaCristalesDummyCursor.moveToNext());
+        }
+        partidaCristalesDummyCursor.close();
+
+        return numeroCristales;
+    }
+
+    @Override
     public String getGameHeroeCristalsDummyPlayer() {
         partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
 
         StringBuilder strCristalesJugadorVirtual = new StringBuilder();
 
+        if (partidaCristalesDummyCursor.moveToFirst()) {
+            do {
+                String cristal = partidaCristalesDummyCursor.getString(partidaCristalesDummyCursor.getColumnIndex(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE));
+                strCristalesJugadorVirtual.append(cristal);
+                strCristalesJugadorVirtual.append(" ");
+            } while (partidaCristalesDummyCursor.moveToNext());
+        }
+        partidaCristalesDummyCursor.close();
+
+        return strCristalesJugadorVirtual.toString().trim();
+    }
+
+    @Override
+    public String getGameHeroeInitialCristalsDummyPlayer() {
+        partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
+
+        StringBuilder strCristalesJugadorVirtual = new StringBuilder();
+
         if (partidaCristalesDummyCursor.moveToFirst()){
+            int i = 0;
             do{
                 String cristal = partidaCristalesDummyCursor.getString(partidaCristalesDummyCursor.getColumnIndex(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE));
                 strCristalesJugadorVirtual.append(cristal);
                 strCristalesJugadorVirtual.append(" ");
-            }while(partidaCristalesDummyCursor.moveToNext() );
+                ++i;
+            }while(partidaCristalesDummyCursor.moveToNext() && i < 3);
         }
         partidaCristalesDummyCursor.close();
 
-        return strCristalesJugadorVirtual.toString();
+        return strCristalesJugadorVirtual.toString().trim();
+    }
+
+    @Override
+    public String getGameHeroeAddedCristalsDummyPlayer() {
+        partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
+
+        StringBuilder strCristalesJugadorVirtual = new StringBuilder();
+
+        if (partidaCristalesDummyCursor.moveToFirst()){
+            int i = 0;
+            do{
+                String cristal = partidaCristalesDummyCursor.getString(partidaCristalesDummyCursor.getColumnIndex(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE));
+                if(i >= 3){
+                    strCristalesJugadorVirtual.append(cristal);
+                    strCristalesJugadorVirtual.append(" ");
+                }
+                ++i;
+            }while(partidaCristalesDummyCursor.moveToNext());
+        }
+        partidaCristalesDummyCursor.close();
+
+        return strCristalesJugadorVirtual.toString().trim();
     }
 
     @Override
@@ -946,6 +1017,156 @@ public class GameServicesImpl implements GameServices {
         partidaCartasDummyCursor.close();
 
         return cartasDisponiblesJugadorVirtualPorNumero;
+    }
+
+    @Override
+    public int getMinIndexFromFirstToBeDiscardedGameCardsDummyPlayerDuringTurn() {
+        List<Integer> numeroIndicesCartasDisponiblesJugadorVirtual = new ArrayList<Integer>();
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE)) > 0;
+                if(!esDescartada){
+                    int numeroIndice = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                    numeroIndicesCartasDisponiblesJugadorVirtual.add(numeroIndice);
+                }
+            }while(partidaCartasDummyCursor.moveToNext());
+        }
+        partidaCartasDummyCursor.close();
+
+        int valorMinimoIndiceCartasDisponiblesJugadorVirtual = Collections.min(numeroIndicesCartasDisponiblesJugadorVirtual);
+
+        return valorMinimoIndiceCartasDisponiblesJugadorVirtual;
+    }
+
+    @Override
+    public int getMaxIndexFromDiscardedGameCardsDummyPlayerDuringTurn() {
+        List<Integer> numeroIndicesCartasDescartadasJugadorVirtual = new ArrayList<Integer>();
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            do{
+                boolean esDescartada = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_3_PARTIDA_CARTAS_HEROE_DUMMY_TABLE)) > 0;
+                if(esDescartada){
+                    int numeroIndice = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                    numeroIndicesCartasDescartadasJugadorVirtual.add(numeroIndice);
+                }
+            }while(partidaCartasDummyCursor.moveToNext());
+        }
+        partidaCartasDummyCursor.close();
+
+        int valorMaximoIndiceCartasDescartadasJugadorVirtual = Collections.max(numeroIndicesCartasDescartadasJugadorVirtual);
+
+        return valorMaximoIndiceCartasDescartadasJugadorVirtual;
+    }
+
+    @Override
+    public int getCardNumberDummyPlayerTurnFromIndex(int cardIndex) {
+        int numeroCarta = 0;
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroIndice = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_9_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                if(numeroIndice==cardIndex){
+                    numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                    ++i;
+                }
+            }while(partidaCartasDummyCursor.moveToNext() && i < 1);
+        }
+        partidaCartasDummyCursor.close();
+
+        return numeroCarta;
+    }
+
+    @Override
+    public String getColorFromLastDiscardedCardDummyPlayerTurnByCardNumber(int numeroUltimaCartaDescartadaJugadorVirtual) {
+        String colorUltimaCartaDescartadaJugadorVirtual = "";
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                if(numeroCarta==numeroUltimaCartaDescartadaJugadorVirtual){
+                    colorUltimaCartaDescartadaJugadorVirtual = partidaCartasDummyCursor.getString(partidaCartasDummyCursor.getColumnIndex(COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                    ++i;
+                }
+            }while(partidaCartasDummyCursor.moveToNext() && i < 1);
+        }
+        partidaCartasDummyCursor.close();
+
+        return colorUltimaCartaDescartadaJugadorVirtual;
+    }
+
+    @Override
+    public List<String> getColorsFromLastDiscardedCardDummyPlayerTurnByCardNumber(int numeroUltimaCartaDescartadaJugadorVirtual) {
+        List<String> coloresUltimaCartaDescartadaJugadorVirtual = new ArrayList<String>();
+
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()){
+            int i = 0;
+            do{
+                int numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                if(numeroCarta==numeroUltimaCartaDescartadaJugadorVirtual){
+                    String primerColorUltimaCartaDescartadaJugadorVirtual = partidaCartasDummyCursor.getString(partidaCartasDummyCursor.getColumnIndex(COL_4_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+                    String segundoColorUltimaCartaDescartadaJugadorVirtual = partidaCartasDummyCursor.getString(partidaCartasDummyCursor.getColumnIndex(COL_5_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                    coloresUltimaCartaDescartadaJugadorVirtual.add(primerColorUltimaCartaDescartadaJugadorVirtual);
+                    coloresUltimaCartaDescartadaJugadorVirtual.add(segundoColorUltimaCartaDescartadaJugadorVirtual);
+                    ++i;
+                }
+            }while(partidaCartasDummyCursor.moveToNext() && i < 1);
+        }
+        partidaCartasDummyCursor.close();
+
+        return coloresUltimaCartaDescartadaJugadorVirtual;
+    }
+
+    @Override
+    public int getNumberOfExtraCardsToBeDiscardedByLastCardDiscardedColor(String color) {
+        int numeroCartasExtrasADescartar = 0;
+        partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
+
+        if (partidaCristalesDummyCursor.moveToFirst()){
+            do{
+                String colorCristalJugadorVirtual = partidaCristalesDummyCursor.getString(partidaCristalesDummyCursor.getColumnIndex(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE));
+
+                if(colorCristalJugadorVirtual.equals(color)){
+                    ++numeroCartasExtrasADescartar;
+                }
+            }while(partidaCristalesDummyCursor.moveToNext());
+        }
+        partidaCristalesDummyCursor.close();
+
+        return numeroCartasExtrasADescartar;
+    }
+
+    @Override
+    public int getNumberOfExtraCardsToBeDiscardedByLastCardDiscardedColors(List<String> colores) {
+        int numeroCartasExtrasADescartar = 0;
+        partidaCristalesDummyCursor = myDB.getGameCristalsDummyPlayerCursor();
+
+        if (partidaCristalesDummyCursor.moveToFirst()){
+            do{
+                String colorCristalJugadorVirtual = partidaCristalesDummyCursor.getString(partidaCristalesDummyCursor.getColumnIndex(COL_1_PARTIDA_CRISTALES_HEROE_DUMMY_TABLE));
+
+                if(colorCristalJugadorVirtual.equals(colores.get(0)) || colorCristalJugadorVirtual.equals(colores.get(1))){
+                    ++numeroCartasExtrasADescartar;
+                }
+            }while(partidaCristalesDummyCursor.moveToNext());
+        }
+        partidaCristalesDummyCursor.close();
+
+        return numeroCartasExtrasADescartar;
     }
 
     @Override
@@ -1190,6 +1411,51 @@ public class GameServicesImpl implements GameServices {
     }
 
     @Override
+    public String getGameInformationTurnFirstDiscardedCardsLastCardBasicOrAdvancedActionCardType(int numeroCartasDescartadas, String colorUltimaCartaDescartada, int numeroTurno) {
+        StringBuilder strInformacionPrimeraParteTurno = new StringBuilder();
+
+        if(numeroCartasDescartadas == 1){
+            strInformacionPrimeraParteTurno.append("- Turno " + numeroTurno + ": Se ha descartado " + numeroCartasDescartadas + " carta en total del mazo del JV.");
+        } else {
+            strInformacionPrimeraParteTurno.append("- Turno " + numeroTurno + ": Se han descartado " + numeroCartasDescartadas + " cartas en total del mazo del JV.");
+        }
+        strInformacionPrimeraParteTurno.append("\n");
+        strInformacionPrimeraParteTurno.append("La última carta descartada tenía el color: " + colorUltimaCartaDescartada + ".");
+
+        return strInformacionPrimeraParteTurno.toString();
+    }
+
+    @Override
+    public String getGameInformationTurnFirstDiscardedCardsLastCardSpecialAdvancedActionCardType(int numeroCartasDescartadas, List<String> coloresUltimaCartaDescartada, int numeroTurno) {
+        StringBuilder strInformacionPrimeraParteTurno = new StringBuilder();
+
+        if(numeroCartasDescartadas == 1){
+            strInformacionPrimeraParteTurno.append("- Turno " + numeroTurno + ": Se ha descartado " + numeroCartasDescartadas + " carta en total del mazo del JV.");
+        } else {
+            strInformacionPrimeraParteTurno.append("- Turno " + numeroTurno + ": Se han descartado " + numeroCartasDescartadas + " cartas en total del mazo del JV.");
+        }
+        strInformacionPrimeraParteTurno.append("\n");
+        strInformacionPrimeraParteTurno.append("La última carta descartada tenía los colores: " + coloresUltimaCartaDescartada.get(0) + " y " + coloresUltimaCartaDescartada.get(1) + ".");
+
+        return strInformacionPrimeraParteTurno.toString();
+    }
+
+    @Override
+    public String getGameInformationTurnSecondExtraDiscardedCards(int numeroCartasExtrasDescartadas) {
+        StringBuilder strInformacionSegundaParteTurno = new StringBuilder();
+
+        if(numeroCartasExtrasDescartadas == 0){
+            strInformacionSegundaParteTurno.append("- No se han podido descartar cartas extras debido al mazo vacío del JV.");
+        } else if(numeroCartasExtrasDescartadas == 1){
+            strInformacionSegundaParteTurno.append("- Se ha descartado " + numeroCartasExtrasDescartadas + " carta extra del mazo del JV.");
+        } else {
+            strInformacionSegundaParteTurno.append("- Se han descartado " + numeroCartasExtrasDescartadas + " cartas extras del mazo del JV.");
+        }
+
+        return strInformacionSegundaParteTurno.toString();
+    }
+
+    @Override
     public String getGameInformationGameFinished() {
         String rondaFinalizada = "- ** PARTIDA FINALIZADA **";
 
@@ -1347,6 +1613,25 @@ public class GameServicesImpl implements GameServices {
             } while (partidaCartasAccionAvanzadaYEspecialCursor.moveToNext() && i < 1);
         }
         partidaCartasAccionAvanzadaYEspecialCursor.close();
+    }
+
+    @Override
+    public void modifyTableGameDummyPlayerCardAvailabilityByCardNumber(int cardNumber, boolean esDescartada) {
+        partidaCartasDummyCursor = myDB.getGameCardsDummyPlayerCursor();
+
+        if (partidaCartasDummyCursor.moveToFirst()) {
+            int i = 0;
+            do {
+                int numeroCarta = partidaCartasDummyCursor.getInt(partidaCartasDummyCursor.getColumnIndex(COL_1_PARTIDA_CARTAS_HEROE_DUMMY_TABLE));
+
+                if (numeroCarta==cardNumber) {
+                    //Modifica en la fila 'NUMERO'="cardNumber" de la tabla 'PARTIDA_CARTAS_HEROE_DUMMY_TABLE': la columna 'DESCARTADA'=1
+                    myDB.updateGameDummyPlayerCardAvailabilityByCardNumber(cardNumber, esDescartada);
+                    ++i;
+                }
+            } while (partidaCartasDummyCursor.moveToNext() && i < 1);
+        }
+        partidaCartasDummyCursor.close();
     }
 
 
@@ -1535,6 +1820,22 @@ public class GameServicesImpl implements GameServices {
         int numeroCartasAccionAvanzadaEspecialesJuego = getGameNumberOfAvailableSpecialAdvancedActionCards();
 
         if(numeroCartasAccionAvanzadaEspecialesJuego == 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isLastDiscardedCardDummyPlayerSpecialAdvancedActionCardType(int numeroUltimaCartaDescartadaJugadorVirtual) {
+        if(numeroUltimaCartaDescartadaJugadorVirtual == 266 || numeroUltimaCartaDescartadaJugadorVirtual == 267 || numeroUltimaCartaDescartadaJugadorVirtual == 268 || numeroUltimaCartaDescartadaJugadorVirtual == 269){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isDummyPlayerWithExtraCristals() {
+        if(getGameHeroeNumberOfCristalsDummyPlayer() >= 4){
             return true;
         }
         return false;
