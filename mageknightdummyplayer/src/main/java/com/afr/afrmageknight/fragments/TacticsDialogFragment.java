@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 
-import com.afr.afrmageknight.activities.GameActivity;
 import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.model.CartaTactica;
 

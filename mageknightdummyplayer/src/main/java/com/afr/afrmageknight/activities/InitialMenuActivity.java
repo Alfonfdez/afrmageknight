@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.databaseHelper.SQLiteDatabaseHelper;
-import com.afr.afrmageknight.model.TipoEstado;
 import com.afr.afrmageknight.services.GameServicesImpl;
 
 public class InitialMenuActivity extends AppCompatActivity {

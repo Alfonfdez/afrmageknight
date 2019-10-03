@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.afr.afrmageknight.activities.GameActivity;
 import com.afr.afrmageknight.activities.InitialMenuActivity;
 import com.afr.afrmageknight.model.FichaHabilidad;
 

@@ -23,6 +23,19 @@ public class SpellCardsDialogFragment extends DialogFragment {
 
         final String[] hechizosArrayFinal = getSpellCardArray(cartasAccionesHechizos);
 
+        //Método para actualizar la Ronda a la siguiente
+        String estadoRondaSiguiente = InitialMenuActivity.gameServicesImpl.getNextGameRoundFromCurrentRound(InitialMenuActivity.gameServicesImpl.getGameRound());
+        InitialMenuActivity.gameServicesImpl.modifyTableGameRound(estadoRondaSiguiente);
+
+        //Método para actualizar la columna 'RONDA_ESTADO_FINALIZADO'=0 (false) de la tabla 'PARTIDA_DATOS'
+        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundEnding(false);
+
+        //Método para actualizar la columna 'TURNO' de la tabla 'PARTIDA_DATOS' a un valor 0
+        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusTurnNumber(0);
+
+        //Crear método para convertir 'RONDA_ESTADO_INICIO' = 1 (true)
+        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(true);
+
 
         //AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -50,19 +63,6 @@ public class SpellCardsDialogFragment extends DialogFragment {
                         //Insertar la información del cristal añadido al Inventario del Jugador Virtual, a partir de la carta de Hechizo
                         String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationCristalAddedToDummyPlayer(cartaAccionHechizo);
                         InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
-
-                        //Método para actualizar la Ronda a la siguiente
-                        String estadoRondaSiguiente = InitialMenuActivity.gameServicesImpl.getNextGameRoundFromCurrentRound(InitialMenuActivity.gameServicesImpl.getGameRound());
-                        InitialMenuActivity.gameServicesImpl.modifyTableGameRound(estadoRondaSiguiente);
-
-                        //Método para actualizar la columna 'RONDA_ESTADO_FINALIZADO'=0 (false) de la tabla 'PARTIDA_DATOS'
-                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundEnding(false);
-
-                        //Método para actualizar la columna 'TURNO' de la tabla 'PARTIDA_DATOS' a un valor 0
-                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusTurnNumber(0);
-
-                        //Crear método para convertir 'RONDA_ESTADO_INICIO' = 1 (true)
-                        InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(true);
 
                         dialog.dismiss();
                     }

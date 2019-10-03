@@ -6,9 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afr.afrmageknight.R;
 import com.afr.afrmageknight.fragments.AdvancedActionCardsDialogFragment;
@@ -37,6 +36,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewRondaPartida;
     private TextView textViewInformacionPartida;
 
+    private ImageView imageSubirNivel;
+
     private DialogFragment tacticasDialogFragment;
     private DialogFragment tacticasListadoDialogFragment;
     private DialogFragment subidaNivelDialogFragment;
@@ -61,6 +62,8 @@ public class GameActivity extends AppCompatActivity {
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
 
+        imageSubirNivel = (ImageView) findViewById(R.id.imageViewSubirNivel);
+
         tacticasDialogFragment = new TacticsDialogFragment();
         tacticasListadoDialogFragment = new TacticsListDialogFragment();
         subidaNivelDialogFragment = new LevelUpDialogFragment();
@@ -73,6 +76,7 @@ public class GameActivity extends AppCompatActivity {
         showGameDataOnScreen();
         startRound();
 
+        //Botones
         //Jugar Turno a Turno
         buttonContinuarTurno.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,9 +184,11 @@ public class GameActivity extends AppCompatActivity {
                     } else {
                         showHechizosDialog();
                         showAccionesAvanzadasDialog();
-                        startRound();
                         showGameDataOnScreen();
                     }
+
+                    startRoundFromRoundFinishedButton();
+
                 }
             }
         });
@@ -208,8 +214,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     //Métodos privados
@@ -219,6 +223,8 @@ public class GameActivity extends AppCompatActivity {
             buttonSubirNivel.setEnabled(true);
         } else {
             buttonSubirNivel.setEnabled(false);
+            buttonSubirNivel.setVisibility(View.INVISIBLE);
+            imageSubirNivel.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -270,6 +276,27 @@ public class GameActivity extends AppCompatActivity {
                     InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(false);
                 }
             }
+        }
+    }
+
+    private void startRoundFromRoundFinishedButton(){
+        if(!InitialMenuActivity.gameServicesImpl.isLastTwoRounds()){ //Rondas 1, 2, 3, 4
+            showTacticasDialog();
+        } else{ //Rondas 5, 6
+            if(!InitialMenuActivity.gameServicesImpl.isGameTypeSolitaire()){ // COOPERATIVO
+                //Método para actualizar la carta Táctica seleccionada al azar por el Jugador VIrtual a 'DESCARTADA'=1 en COOPERATIVO
+                CartaTactica cartaTacticaDescartadaPartidaCooperativo = discardGameTacticCardRandomlyBeforePlayersTacticCardSelectionInCooperative();
+
+                //Insertar la información de la Ronda sobre la carta Táctica escogida aleatoriamente por el Jugador Virtual en el modo COOPERATIVO
+                String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationTacticCardDummyPlayerCooperativeType(cartaTacticaDescartadaPartidaCooperativo);
+                InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+            }
+
+            //Barajar cartas del Jugador Virtual y actualizar todas las cartas a NO descartadas
+            shuffleDummyPlayerCardsAndUpdateToAvailable();
+
+            //Crear método para convertir RONDA_ESTADO_INICIO = 0
+            InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundBeginning(false);
         }
     }
 
