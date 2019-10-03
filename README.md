@@ -40,7 +40,6 @@ Además ofrecer una guía auxiliar con toda la información de todas las cartas 
 
 ## 3.	Capturas de pantalla de la aplicación
 
-
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappantallainicial.jpg)
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappseleccionheroe.jpg)
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappjugarpartida.jpg)
@@ -51,3 +50,19 @@ Además ofrecer una guía auxiliar con toda la información de todas las cartas 
 ## 4.	UML POJOS
 
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightappumlpojos.jpg)
+
+
+## 5.	Documentación propia elaborada
+
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumencartasfichas.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumenfichascristalesheroes.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumencartasaacionesavanzadashechizostacticas.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumenmarcadorfamasubidanivel.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumeninventario.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumencooperaciontotal.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumencooperaciontotalpartedos.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumenconquistaensolitario.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumenconquistaensolitariopartedos.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumensecuenciaappandroid.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumensecuenciaappandroidpartedos.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/mageknightresumensecuenciaappandroidpartetres.jpg)
