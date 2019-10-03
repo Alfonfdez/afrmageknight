@@ -1,5 +1,5 @@
 # Proyecto final Android - Mage Knight Dummy Player app
-# Desarrollo de apps para Android (M1019) CIFO La Violeta
+# Desarrollo de apps para Android (M1019) - CIFO La Violeta
 
 ## 1.	Descripción del proyecto
 
