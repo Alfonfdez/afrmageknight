@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,13 +31,29 @@ import java.util.List;
 public class GameOptionsActivity extends AppCompatActivity {
 
     // I - Declarar las variables
-    private TextView arythea;
-    private TextView tovak;
-    private TextView norowas;
-    private TextView goldyx;
-    private TextView wolfhawk;
-    private TextView krang;
-    private TextView braevalar;
+    private TextView textViewArythea;
+    private TextView textViewTovak;
+    private TextView textViewNorowas;
+    private TextView textViewGoldyx;
+    private TextView textViewWolfhawk;
+    private TextView textViewKrang;
+    private TextView textViewBraevalar;
+
+    private ImageView imageViewArythea;
+    private ImageView imageViewTovak;
+    private ImageView imageViewNorowas;
+    private ImageView imageViewGoldyx;
+    private ImageView imageViewWolfhawk;
+    private ImageView imageViewKrang;
+    private ImageView imageViewBraevalar;
+
+    private ImageView imageViewOKArythea;
+    private ImageView imageViewOKTovak;
+    private ImageView imageViewOKNorowas;
+    private ImageView imageViewOKGoldyx;
+    private ImageView imageViewOKWolfhawk;
+    private ImageView imageViewOKKrang;
+    private ImageView imageViewOKBraevalar;
 
     private Switch switchTipoPartida;
     private Button buttonInsertGameData;
@@ -47,19 +64,35 @@ public class GameOptionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gameoptions);
 
-        arythea = (TextView) findViewById(R.id.idTVArythea);
-        tovak = (TextView) findViewById(R.id.idTVTovak);
-        norowas = (TextView) findViewById(R.id.idTVNorowas);
-        goldyx = (TextView) findViewById(R.id.idTVGoldyx);
-        wolfhawk = (TextView) findViewById(R.id.idTVWolfhawk);
-        krang = (TextView) findViewById(R.id.idTVKrang);
-        braevalar = (TextView) findViewById(R.id.idTVBraevalar);
+        textViewArythea = (TextView) findViewById(R.id.idTVArythea);
+        textViewTovak = (TextView) findViewById(R.id.idTVTovak);
+        textViewNorowas = (TextView) findViewById(R.id.idTVNorowas);
+        textViewGoldyx = (TextView) findViewById(R.id.idTVGoldyx);
+        textViewWolfhawk = (TextView) findViewById(R.id.idTVWolfhawk);
+        textViewKrang = (TextView) findViewById(R.id.idTVKrang);
+        textViewBraevalar = (TextView) findViewById(R.id.idTVBraevalar);
+
+        imageViewArythea = (ImageView) findViewById(R.id.imageViewArythea);
+        imageViewTovak = (ImageView) findViewById(R.id.imageViewTovak);
+        imageViewNorowas = (ImageView) findViewById(R.id.imageViewNorowas);
+        imageViewGoldyx = (ImageView) findViewById(R.id.imageViewGoldyx);
+        imageViewWolfhawk = (ImageView) findViewById(R.id.imageViewWolfhawk);
+        imageViewKrang = (ImageView) findViewById(R.id.imageViewKrang);
+        imageViewBraevalar = (ImageView) findViewById(R.id.imageViewBraevalar);
+
+        imageViewOKArythea = (ImageView) findViewById(R.id.imageViewOKArythea);
+        imageViewOKTovak = (ImageView) findViewById(R.id.imageViewOKTovak);
+        imageViewOKNorowas = (ImageView) findViewById(R.id.imageViewOKNorowas);
+        imageViewOKGoldyx = (ImageView) findViewById(R.id.imageViewOKGoldyx);
+        imageViewOKWolfhawk = (ImageView) findViewById(R.id.imageViewOKWolfhawk);
+        imageViewOKKrang = (ImageView) findViewById(R.id.imageViewOKKrang);
+        imageViewOKBraevalar = (ImageView) findViewById(R.id.imageViewOKBraevalar);
 
         switchTipoPartida = (Switch) findViewById(R.id.idSwitchTipoPartida);
         buttonInsertGameData = (Button) findViewById(R.id.idButtonInsertAllGameData);
 
         final List<TextView> heroesTextViews = new ArrayList<TextView>();
-        Collections.addAll(heroesTextViews, arythea, tovak, norowas, goldyx, wolfhawk, krang, braevalar);
+        Collections.addAll(heroesTextViews, textViewArythea, textViewTovak, textViewNorowas, textViewGoldyx, textViewWolfhawk, textViewKrang, textViewBraevalar);
 
         // 1) Vamos a instanciar un 'intent'
         final Intent intent = new Intent(this, GameActivity.class);
@@ -134,93 +167,135 @@ public class GameOptionsActivity extends AppCompatActivity {
             }
         });
 
-        arythea.setOnClickListener(new View.OnClickListener() {
+        textViewArythea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!arythea.isActivated()){
-                    arythea.setActivated(true);
-                    arythea.setTextColor(Color.RED);
+                if(!textViewArythea.isActivated()){
+                    textViewArythea.setActivated(true);
+                    textViewArythea.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewArythea.setVisibility(View.VISIBLE);
+                    imageViewOKArythea.setVisibility(View.VISIBLE);
                 } else{
-                    arythea.setActivated(false);
-                    arythea.setTextColor(Color.BLACK);
+                    textViewArythea.setActivated(false);
+                    textViewArythea.setTextColor(Color.BLACK);
+
+                    imageViewArythea.setVisibility(View.INVISIBLE);
+                    imageViewOKArythea.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        tovak.setOnClickListener(new View.OnClickListener() {
+        textViewTovak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!tovak.isActivated()){
-                    tovak.setActivated(true);
-                    tovak.setTextColor(Color.RED);
+                if(!textViewTovak.isActivated()){
+                    textViewTovak.setActivated(true);
+                    textViewTovak.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewTovak.setVisibility(View.VISIBLE);
+                    imageViewOKTovak.setVisibility(View.VISIBLE);
                 } else{
-                    tovak.setActivated(false);
-                    tovak.setTextColor(Color.BLACK);
+                    textViewTovak.setActivated(false);
+                    textViewTovak.setTextColor(Color.BLACK);
+
+                    imageViewTovak.setVisibility(View.INVISIBLE);
+                    imageViewOKTovak.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        norowas.setOnClickListener(new View.OnClickListener() {
+        textViewNorowas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!norowas.isActivated()){
-                    norowas.setActivated(true);
-                    norowas.setTextColor(Color.RED);
+                if(!textViewNorowas.isActivated()){
+                    textViewNorowas.setActivated(true);
+                    textViewNorowas.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewNorowas.setVisibility(View.VISIBLE);
+                    imageViewOKNorowas.setVisibility(View.VISIBLE);
                 } else{
-                    norowas.setActivated(false);
-                    norowas.setTextColor(Color.BLACK);
+                    textViewNorowas.setActivated(false);
+                    textViewNorowas.setTextColor(Color.BLACK);
+
+                    imageViewNorowas.setVisibility(View.INVISIBLE);
+                    imageViewOKNorowas.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        goldyx.setOnClickListener(new View.OnClickListener() {
+        textViewGoldyx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!goldyx.isActivated()){
-                    goldyx.setActivated(true);
-                    goldyx.setTextColor(Color.RED);
+                if(!textViewGoldyx.isActivated()){
+                    textViewGoldyx.setActivated(true);
+                    textViewGoldyx.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewGoldyx.setVisibility(View.VISIBLE);
+                    imageViewOKGoldyx.setVisibility(View.VISIBLE);
                 } else{
-                    goldyx.setActivated(false);
-                    goldyx.setTextColor(Color.BLACK);
+                    textViewGoldyx.setActivated(false);
+                    textViewGoldyx.setTextColor(Color.BLACK);
+
+                    imageViewGoldyx.setVisibility(View.INVISIBLE);
+                    imageViewOKGoldyx.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        wolfhawk.setOnClickListener(new View.OnClickListener() {
+        textViewWolfhawk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!wolfhawk.isActivated()){
-                    wolfhawk.setActivated(true);
-                    wolfhawk.setTextColor(Color.RED);
+                if(!textViewWolfhawk.isActivated()){
+                    textViewWolfhawk.setActivated(true);
+                    textViewWolfhawk.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewWolfhawk.setVisibility(View.VISIBLE);
+                    imageViewOKWolfhawk.setVisibility(View.VISIBLE);
                 } else{
-                    wolfhawk.setActivated(false);
-                    wolfhawk.setTextColor(Color.BLACK);
+                    textViewWolfhawk.setActivated(false);
+                    textViewWolfhawk.setTextColor(Color.BLACK);
+
+                    imageViewWolfhawk.setVisibility(View.INVISIBLE);
+                    imageViewOKWolfhawk.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        krang.setOnClickListener(new View.OnClickListener() {
+        textViewKrang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!krang.isActivated()){
-                    krang.setActivated(true);
-                    krang.setTextColor(Color.RED);
+                if(!textViewKrang.isActivated()){
+                    textViewKrang.setActivated(true);
+                    textViewKrang.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewKrang.setVisibility(View.VISIBLE);
+                    imageViewOKKrang.setVisibility(View.VISIBLE);
                 } else{
-                    krang.setActivated(false);
-                    krang.setTextColor(Color.BLACK);
+                    textViewKrang.setActivated(false);
+                    textViewKrang.setTextColor(Color.BLACK);
+
+                    imageViewKrang.setVisibility(View.INVISIBLE);
+                    imageViewOKKrang.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        braevalar.setOnClickListener(new View.OnClickListener() {
+        textViewBraevalar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!braevalar.isActivated()){
-                    braevalar.setActivated(true);
-                    braevalar.setTextColor(Color.RED);
+                if(!textViewBraevalar.isActivated()){
+                    textViewBraevalar.setActivated(true);
+                    textViewBraevalar.setTextColor(Color.argb(255,78, 154, 0));
+
+                    imageViewBraevalar.setVisibility(View.VISIBLE);
+                    imageViewOKBraevalar.setVisibility(View.VISIBLE);
                 } else{
-                    braevalar.setActivated(false);
-                    braevalar.setTextColor(Color.BLACK);
+                    textViewBraevalar.setActivated(false);
+                    textViewBraevalar.setTextColor(Color.BLACK);
+
+                    imageViewBraevalar.setVisibility(View.INVISIBLE);
+                    imageViewOKBraevalar.setVisibility(View.INVISIBLE);
                 }
             }
         });

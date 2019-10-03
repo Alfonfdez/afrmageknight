@@ -37,8 +37,6 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewRondaPartida;
     private TextView textViewInformacionPartida;
 
-    private ScrollView scrollView;
-
     private DialogFragment tacticasDialogFragment;
     private DialogFragment tacticasListadoDialogFragment;
     private DialogFragment subidaNivelDialogFragment;
@@ -62,8 +60,6 @@ public class GameActivity extends AppCompatActivity {
         textViewTipoPartida = (TextView) findViewById(R.id.idTextViewTipoPartida);
         textViewRondaPartida = (TextView) findViewById(R.id.idTextViewRonda);
         textViewInformacionPartida = (TextView) findViewById(R.id.idTextViewInformacionPartida);
-
-        //scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         tacticasDialogFragment = new TacticsDialogFragment();
         tacticasListadoDialogFragment = new TacticsListDialogFragment();
@@ -112,7 +108,6 @@ public class GameActivity extends AppCompatActivity {
 
                                     ++numeroCartasDescartadasPrincipio;
                                 }
-                                i++;
                             }
 
                             int numeroIndiceUltimaCartaDescartada = InitialMenuActivity.gameServicesImpl.getMaxIndexFromDiscardedGameCardsDummyPlayerDuringTurn();
@@ -157,7 +152,6 @@ public class GameActivity extends AppCompatActivity {
 
                                         ++numeroCartasDescartadasExtras;
                                     }
-                                    i++;
                                 }
 
                                 //Insertar la información del Turno sobre el número de cartas extras descartadas
