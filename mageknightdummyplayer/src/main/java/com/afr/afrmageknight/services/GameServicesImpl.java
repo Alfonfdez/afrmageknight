@@ -1191,6 +1191,13 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public String getGameInformationGameFinished() {
+        String rondaFinalizada = "- ** PARTIDA FINALIZADA **";
+
+        return rondaFinalizada;
+    }
+
+    @Override
+    public String getGameInformationRoundFinishedByEmptyDeedDeckDummyPlayer() {
         StringBuilder strInformacionRondaFinalizadaMazoVacioJugadorVirtual = new StringBuilder();
 
         strInformacionRondaFinalizadaMazoVacioJugadorVirtual.append("- El mazo de Gesta del JV está vacío y anuncia el Fin de la Ronda.\n");
@@ -1202,13 +1209,6 @@ public class GameServicesImpl implements GameServices {
         }
 
         return strInformacionRondaFinalizadaMazoVacioJugadorVirtual.toString();
-    }
-
-    @Override
-    public String getGameInformationRoundFinishedByEmptyDeedDeckDummyPlayer() {
-        String rondaFinalizada = "- ** PARTIDA FINALIZADA **";
-
-        return rondaFinalizada;
     }
 
     @Override
@@ -1580,6 +1580,24 @@ public class GameServicesImpl implements GameServices {
         }
 
         return estadoRondaSiguiente;
+    }
+
+    @Override
+    public String getGameRoundWithoutUnderscores() {
+        String rondaActual = getGameRound();
+        int guionBajo = rondaActual.indexOf("_");
+
+        StringBuilder strRondaActualSinGuionesBajos = new StringBuilder();
+
+        strRondaActualSinGuionesBajos.append(rondaActual.substring(0,5));
+        strRondaActualSinGuionesBajos.append(" ");
+        strRondaActualSinGuionesBajos.append(rondaActual.substring(6,7));
+        strRondaActualSinGuionesBajos.append(" ");
+        if(guionBajo != -1) {
+            strRondaActualSinGuionesBajos.append(rondaActual.substring(guionBajo + 3));
+        }
+
+        return strRondaActualSinGuionesBajos.toString();
     }
 
     // ********************************************

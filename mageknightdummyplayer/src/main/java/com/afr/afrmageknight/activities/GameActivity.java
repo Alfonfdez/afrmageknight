@@ -80,7 +80,7 @@ public class GameActivity extends AppCompatActivity {
                             InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundEnding(true);
 
                             //Insertar la información de la Ronda finalizada
-                            String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationGameFinished();
+                            String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationRoundFinishedByEmptyDeedDeckDummyPlayer();
                             InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
                         } else {
 
@@ -171,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
         textViewCristalesJugadorVirtual.setText(InitialMenuActivity.gameServicesImpl.getGameHeroeCristalsDummyPlayer());
         textViewNumeroTotalCartasJugadorVirtual.setText(Integer.toString(InitialMenuActivity.gameServicesImpl.getGameTotalAvailableCardsDummyPlayer()));
         textViewTipoPartida.setText(InitialMenuActivity.gameServicesImpl.getGameType());
-        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRound());
+        textViewRondaPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundWithoutUnderscores());
         textViewInformacionPartida.setText(InitialMenuActivity.gameServicesImpl.getGameRoundInformation());
     }
 

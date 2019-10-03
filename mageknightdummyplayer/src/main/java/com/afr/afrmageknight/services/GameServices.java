@@ -274,4 +274,7 @@ public interface GameServices {
     // RONDA_1_DIA -> RONDA_2_NOCHE / RONDA_2_NOCHE -> RONDA_3_DIA / RONDA_3_DIA -> RONDA_4_NOCHE / RONDA_4_NOCHE -> RONDA_5_DIA / RONDA_5_DIA -> RONDA_6_NOCHE
     public String getNextGameRoundFromCurrentRound(String estadoRondaActual);
 
+    //Método para obtener el nombre de la Ronda actual sin guiones bajos ("_")
+    public String getGameRoundWithoutUnderscores();
+
 }
