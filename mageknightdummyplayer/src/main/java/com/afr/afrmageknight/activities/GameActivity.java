@@ -72,8 +72,32 @@ public class GameActivity extends AppCompatActivity {
         buttonContinuarTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){
+                if(!InitialMenuActivity.gameServicesImpl.isGameStatusFinished()){ // PARTIDA_ESTADO = EN_PREPARACION || PARTIDA_ESTADO = INICIADA
+                    if(!InitialMenuActivity.gameServicesImpl.isRoundEnding()){ // RONDA_ESTADO_FINALIZADO = 0
 
+                        if(InitialMenuActivity.gameServicesImpl.isDummyPlayerCardsFinished()){ // Si el mazo de cartas del Jugador Virtual está vacío (0), cambiaremos a 'RONDA_ESTADO_FINALIZADO' = 1
+                            // Cambiaremos a 'RONDA_ESTADO_FINALIZADO' = 1 de la tabla 'PARTIDO_DATOS'
+                            InitialMenuActivity.gameServicesImpl.modifyTableGameStatusRoundEnding(true);
+
+                            //Insertar la información de la Ronda finalizada
+                            String informacionPartida = InitialMenuActivity.gameServicesImpl.getGameInformationGameFinished();
+                            InitialMenuActivity.gameServicesImpl.insertTableGameRoundInformation(informacionPartida);
+                        } else {
+
+                            //todo
+
+
+
+
+
+
+
+
+
+
+
+                        }
+                    }
                 }
             }
         });

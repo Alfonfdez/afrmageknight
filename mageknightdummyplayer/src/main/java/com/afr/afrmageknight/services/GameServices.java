@@ -163,6 +163,9 @@ public interface GameServices {
     //Método para obtener un "String" informativo sobre la finalización de la partida
     public String getGameInformationGameFinished();
 
+    //Método para obtener un "String" informativo sobre la finalización de la Ronda por parte del Jugador Virtual
+    public String getGameInformationRoundFinishedByEmptyDeedDeckDummyPlayer();
+
     //Método para obtener un "List<FichaHabilidad>" dependiendo del nivel de experiencia del Jugador (Niveles 4, 6, 8, 10)
     public List<FichaHabilidad> getGameSkillTokensDummyPlayerBasedOnPlayerExperience(int nivelExperienciaJugador);
 
@@ -204,7 +207,7 @@ public interface GameServices {
     public void modifyTableGameStatusRoundBeginning(boolean esRondaInicio);
 
     // Método para modificar la columna 'RONDA_ESTADO_FINALIZADO' de la tabla 'PARTIDA_DATOS'
-    public void modifyTableGameStatusRoundEnding(boolean esRondaInicio);
+    public void modifyTableGameStatusRoundEnding(boolean esRondaFinalizada);
 
     // Método para modificar la columna 'TURNO' de la tabla 'PARTIDA_DATOS'
     public void modifyTableGameStatusTurnNumber(int numeroTurno);

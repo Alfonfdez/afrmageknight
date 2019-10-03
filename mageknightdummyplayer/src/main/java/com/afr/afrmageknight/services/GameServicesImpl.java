@@ -1191,9 +1191,24 @@ public class GameServicesImpl implements GameServices {
 
     @Override
     public String getGameInformationGameFinished() {
-        String partidaFinalizada = "- ** PARTIDA FINALIZADA **";
+        StringBuilder strInformacionRondaFinalizadaMazoVacioJugadorVirtual = new StringBuilder();
 
-        return partidaFinalizada;
+        strInformacionRondaFinalizadaMazoVacioJugadorVirtual.append("- El mazo de Gesta del JV está vacío y anuncia el Fin de la Ronda.\n");
+
+        if(isGameTypeSolitaire()){ //Si es una partida en SOLITARIO
+            strInformacionRondaFinalizadaMazoVacioJugadorVirtual.append("El jugador tendrá un turno más y la Ronda terminará.");
+        } else{ //Si es una partida en COOPERATIVO
+            strInformacionRondaFinalizadaMazoVacioJugadorVirtual.append("Los demás jugadores tendrán un turno más y la Ronda terminará.");
+        }
+
+        return strInformacionRondaFinalizadaMazoVacioJugadorVirtual.toString();
+    }
+
+    @Override
+    public String getGameInformationRoundFinishedByEmptyDeedDeckDummyPlayer() {
+        String rondaFinalizada = "- ** PARTIDA FINALIZADA **";
+
+        return rondaFinalizada;
     }
 
     @Override
