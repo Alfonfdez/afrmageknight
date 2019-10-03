@@ -42,7 +42,8 @@ Además ofrecer una guía auxiliar con toda la información de todas las cartas 
 
 
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappantallainicial.jpg)
+![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappseleccionheroe.jpg)
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappjugarpartida.jpg)
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappjugarpartidaextra.jpg)
 ![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappjugarpartidaextras.jpg)
-![alt text](https://github.com/Alfonfdez/afrmageknight/blob/master/mageknightdummyplayer/src/main/res/drawable/capturamageknightappseleccionheroe.jpg)
+
